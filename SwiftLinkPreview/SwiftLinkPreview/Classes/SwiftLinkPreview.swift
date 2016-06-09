@@ -26,9 +26,11 @@ public class SwiftLinkPreview {
     }
     
     // MARK: - Functions
-    public func get(string: String!, onSuccess: ([String: AnyObject]) -> (), onError: (String) -> ()) {
+    public func get(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
         
-        if let url = NSURL(string: string) {
+        // TODO Extract URL from text
+        
+        if let url = NSURL(string: text) {
             
             if UIApplication.sharedApplication().canOpenURL(url) {
                 
@@ -36,13 +38,13 @@ public class SwiftLinkPreview {
                 
             } else {
                 
-                onError(PreviewError.throwOut(.CannotBeOpened, url: url))
+                onError(PreviewError(type: .CannotBeOpened, url: url))
                 
             }
             
         } else {
             
-            onError(PreviewError.throwOut(.CannotBeOpened, url: string))
+            onError(PreviewError(type: .CannotBeOpened, url: text))
             
         }
         

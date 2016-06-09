@@ -2,8 +2,6 @@
 
 **Under Development 🛠**
 
-Swift version from my previous projects [Link Preview (PHP + Angular + Bootstrap)](https://github.com/LeonardoCardoso/Link-Preview) and [Android Link Preview](https://github.com/LeonardoCardoso/Android-Link-Preview).
-
 It makes a preview from an url, grabbing all the information such as title, relevant texts and images.
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)]()
@@ -40,7 +38,7 @@ import SwiftLinkPreview
 let slp = SwiftLinkPreview()
 
 slp.get(
-    "YOUR URL",
+    "Text containing url",
     onSuccess: { result in
     	
         NSLog("\(result)")
@@ -56,7 +54,7 @@ slp.get(
 
 ### Result
 
-The result is a dictionary ```[String: AnyObject]```
+The result is a dictionary ```[String: AnyObject]```:
 
 ```swift
 	[
@@ -77,6 +75,11 @@ Developed by [@LeonardoCardoso](https://github.com/LeonardoCardoso).
 For more information, please visit [http://ios.leocardz.com/swift-link-preview/](http://ios.leocardz.com/swift-link-preview/).
 
 Contact me either by Twitter [@leocardz](https://twitter.com/leocardz) or emailing me to [contact@leocardz.com](mailto:contact@leocardz.com).
+
+## Related Projects
+
+* [Link Preview (PHP + Angular + Bootstrap)](https://github.com/LeonardoCardoso/Link-Preview)
+* [Android Link Preview](https://github.com/LeonardoCardoso/Android-Link-Preview)
 
 
 ## License

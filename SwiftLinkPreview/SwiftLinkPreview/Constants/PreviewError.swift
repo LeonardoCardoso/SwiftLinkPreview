@@ -9,20 +9,22 @@
 import Foundation
 
 // MARK: - Error enum
-public enum PreviewError: String {
+public class PreviewError {
     
-    case InvalidURL = "This data is not valid URL"
-    case CannotBeOpened = "This URL cannot be opened"
+    public var message: String?
+    public var type: PreviewErrorType?
     
-    public static func throwOut(type: PreviewError, url: NSURL) -> String {
+    public init(type: PreviewErrorType, url: NSURL) {
         
-        return type.rawValue + ": \(url.absoluteString)"
-        
+        self.type = type
+        self.message = type.rawValue + ": \"\(url.absoluteString)\""
+    
     }
     
-    public static func throwOut(type: PreviewError, url: String) -> String {
+    public init(type: PreviewErrorType, url: String){
         
-        return type.rawValue + ": \(url)"
+        self.type = type
+        self.message = type.rawValue + ": \"\(url)\""
         
     }
     
