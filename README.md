@@ -32,7 +32,42 @@ Although it's not recommended, you just need to drop SwiftLinkPreview folder int
 
 ## Usage
 
-# TODO
+```swift
+import SwiftLinkPreview
+
+// ...
+
+let slp = SwiftLinkPreview()
+
+slp.get(
+    "YOUR URL",
+    onSuccess: { result in
+    	
+        NSLog("\(result)")
+        
+    },
+    onError: { error in
+       
+       NSLog("\(error)")
+        
+    }
+)
+```
+
+### Result
+
+The result is a dictionary ```[String: AnyObject]```
+
+```swift
+	[
+       "title": "title",
+       "url": "original URL",
+       "pageUrl": "page URL",
+       "canonicalUrl": "canonical URL",
+       "description": "page description or relevant text",
+       "images": ["array of URLs of the images"]
+   ]
+```
 
 
 ## Information and Contact
