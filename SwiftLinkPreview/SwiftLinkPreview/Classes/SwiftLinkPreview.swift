@@ -11,7 +11,9 @@ import Foundation
 public class SwiftLinkPreview {
     
     // MARK: - Vars
-    private let result: [String: AnyObject] = [
+    private var text: String!
+    private var url: NSURL!
+    private var result: [String: AnyObject] = [
         "title": "",
         "url": "",
         "pageUrl": "",
@@ -28,25 +30,51 @@ public class SwiftLinkPreview {
     // MARK: - Functions
     public func get(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
         
-        // TODO Extract URL from text
+        self.text = text
         
-        if let url = NSURL(string: text) {
-            
-            if UIApplication.sharedApplication().canOpenURL(url) {
-                
-                onSuccess(self.result)
-                
-            } else {
-                
-                onError(PreviewError(type: .CannotBeOpened, url: url))
-                
-            }
+        if let url = self.extractURL() {
+        
+            self.url = url
+            self.result["url"] = self.url.absoluteString
+            onSuccess(self.result)
             
         } else {
             
-            onError(PreviewError(type: .CannotBeOpened, url: text))
+            onError(PreviewError(type: .NoURLHasBeenFound, url: self.text))
             
         }
+        
+    }
+    
+    // Extract first URL from text
+    private func extractURL() -> NSURL? {
+        
+        let explosion = self.text.characters.split{$0 == " "}.map(String.init)
+        
+        for var piece in explosion {
+            
+            piece = piece.trim
+            
+            if let url = NSURL(string: piece.trim) {
+                
+                if self.isValidURL(url) {
+                    
+                    return url
+                
+                }
+                
+            }
+            
+        }
+        
+        return nil
+        
+    }
+    
+    // Check URL validity
+    private func isValidURL(url: NSURL) -> Bool {
+        
+        return UIApplication.sharedApplication().canOpenURL(url)
         
     }
     

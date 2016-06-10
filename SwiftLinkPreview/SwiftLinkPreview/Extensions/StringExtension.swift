@@ -40,30 +40,4 @@ extension String {
         
     }
     
-    // Test regular expression
-    func testRegex(string: String, regex: String!) -> Bool? {
-        
-        do{
-            
-            let rx = try NSRegularExpression(pattern: regex, options: [])
-            
-            if let _ = rx.firstMatchInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {
-                
-                return true
-                
-            } else {
-                
-                return false
-                
-            }
-            
-        } catch {
-            
-            return false
-            
-        }
-        
-    }
-    
-    
 }

@@ -9,7 +9,6 @@
 import UIKit
 import SwiftLinkPreview
 import SwiftyDrop
-import Spring
 
 class ViewController: UIViewController {
     
@@ -160,11 +159,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    
         return 1
+    
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
         return self.tableViewItems.count
+    
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

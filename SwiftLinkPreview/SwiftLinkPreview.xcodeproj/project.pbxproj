@@ -21,7 +21,7 @@
 		98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreview.swift; sourceTree = "<group>"; };
 		98348AC11D09FC58003FA2B3 /* PreviewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreviewError.swift; path = ../Constants/PreviewError.swift; sourceTree = "<group>"; };
 		98348AC41D09FFED003FA2B3 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		98348AC71D0A00DF003FA2B3 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		98348AC71D0A00DF003FA2B3 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Regex.swift; path = ../Constants/Regex.swift; sourceTree = "<group>"; };
 		9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewErrorTypes.swift; sourceTree = "<group>"; };
 		98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C991D09AA6E00846726 /* SwiftLinkPreview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLinkPreview.h; sourceTree = "<group>"; };
@@ -62,6 +62,7 @@
 		98348AB21D09B26C003FA2B3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				98348AC71D0A00DF003FA2B3 /* Regex.swift */,
 				98348AC11D09FC58003FA2B3 /* PreviewError.swift */,
 				98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */,
 			);
@@ -79,7 +80,6 @@
 		98348AC31D09FD42003FA2B3 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				98348AC71D0A00DF003FA2B3 /* Regex.swift */,
 				9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */,
 			);
 			path = Constants;
