@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 public class SwiftLinkPreview {
     
@@ -16,7 +17,7 @@ public class SwiftLinkPreview {
     private var result: [String: AnyObject] = [
         "title": "",
         "url": "",
-        "pageUrl": "",
+        "finalUrl": "",
         "canonicalUrl": "",
         "description": "",
         "images": []
@@ -33,9 +34,10 @@ public class SwiftLinkPreview {
         self.text = text
         
         if let url = self.extractURL() {
-        
+            
             self.url = url
             self.result["url"] = self.url.absoluteString
+            self.result["finalURL"] = self.unshortenURL(url)
             onSuccess(self.result)
             
         } else {
@@ -60,7 +62,7 @@ public class SwiftLinkPreview {
                 if self.isValidURL(url) {
                     
                     return url
-                
+                    
                 }
                 
             }
@@ -74,7 +76,37 @@ public class SwiftLinkPreview {
     // Check URL validity
     private func isValidURL(url: NSURL) -> Bool {
         
-        return UIApplication.sharedApplication().canOpenURL(url)
+        return Regex.test(url.absoluteString, regex: Regex.rawURLPattern) && UIApplication.sharedApplication().canOpenURL(url)
+        
+    }
+    
+    // Unshorten URL
+    private func unshortenURL(url: NSURL) -> NSURL {
+        
+        var unshortened = NSURL(string: "");
+        
+        while(url.absoluteString != unshortened?.absoluteString) {
+            
+            // TODO make this request sync
+            Alamofire.request(.GET, url.absoluteString, parameters: [:])
+                .response { request, response, data, error in
+
+                    if let finalResult = response?.URL {
+
+                        unshortened = self.unshortenURL(finalResult)
+                        print(response?.URL)
+                        
+                    } else {
+                    
+                        return url
+                    
+                    }
+                    
+            }
+            
+        }
+        
+        return unshortened == nil ? url : unshortened!
         
     }
     

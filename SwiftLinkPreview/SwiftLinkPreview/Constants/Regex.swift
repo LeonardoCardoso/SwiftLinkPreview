@@ -22,6 +22,7 @@ class Regex {
     static let metatagPattern = "<meta(.*?)>"
     static let metatagContentPattern = "content=\"(.*?)\""
     static let urlPattern = "<\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
+    static let rawURLPattern = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
     
     
     // Test regular expression

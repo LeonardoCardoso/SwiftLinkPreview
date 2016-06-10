@@ -60,12 +60,18 @@ The result is a dictionary ```[String: AnyObject]```:
 	[
        "title": "title",
        "url": "original URL",
-       "pageUrl": "page URL",
+       "finalUrl": "final ~unshortened~ URL.",
        "canonicalUrl": "canonical URL",
        "description": "page description or relevant text",
        "images": ["array of URLs of the images"]
    ]
 ```
+
+## Important
+
+You need to set ```Allow Arbitrary Loads``` to ```YES``` on your project's Info.plist file.
+
+![app security.png](Images/app-security.png)
 
 
 ## Information and Contact
