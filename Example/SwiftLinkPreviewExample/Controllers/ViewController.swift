@@ -135,7 +135,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func postAction(sender: AnyObject) {
-        self.slp.cancel()
+        
     }
     
     

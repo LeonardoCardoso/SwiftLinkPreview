@@ -40,4 +40,18 @@ extension String {
         
     }
     
+    // Check if it's a valid url
+    func isValidURL() -> Bool {
+        
+        return Regex.test(self, regex: Regex.rawURLPattern) && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
+        
+    }
+    
+    // Check if url is an image
+    func isImage() -> Bool {
+        
+        return Regex.test(self, regex: Regex.imagePattern)
+        
+    }
+    
 }

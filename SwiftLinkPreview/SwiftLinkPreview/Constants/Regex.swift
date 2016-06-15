@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Regular expressions
 class Regex {
     
-    static let imagePattern = "(.+?)\\.(jpg|png|gif|bmp)$"
+    static let imagePattern = "(.+?)\\.(jp[e]?g|png|gif|bmp)$"
     static let imageTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
     static let iconTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
     static let iconRevTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
@@ -30,6 +30,7 @@ class Regex {
         
         do{
             
+            let string = string.lowercaseString
             let rx = try NSRegularExpression(pattern: regex, options: [])
             
             if let _ = rx.firstMatchInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {

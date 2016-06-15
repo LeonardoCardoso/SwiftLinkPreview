@@ -39,10 +39,19 @@ public class SwiftLinkPreview {
             
             self.url = url
             self.result["url"] = self.url.absoluteString
+            
             self.unshortenURL(url, completion: { unshortened in
                 
-                self.result["finalURL"] = unshortened
-                onSuccess(self.result)
+                self.result["finalUrl"] = unshortened
+                
+                // TODO get cannonical URL
+                self.result["canonicalUrl"] = ""
+                
+                self.extractInfo({
+                    
+                    onSuccess(self.result)
+                    
+                })
                 
             })
             
@@ -65,7 +74,7 @@ public class SwiftLinkPreview {
             
             if let url = NSURL(string: piece.trim) {
                 
-                if self.isValidURL(url) {
+                if url.absoluteString.isValidURL() {
                     
                     return url
                     
@@ -76,13 +85,6 @@ public class SwiftLinkPreview {
         }
         
         return nil
-        
-    }
-    
-    // Check URL validity
-    private func isValidURL(url: NSURL) -> Bool {
-        
-        return Regex.test(url.absoluteString, regex: Regex.rawURLPattern) && UIApplication.sharedApplication().canOpenURL(url)
         
     }
     
@@ -97,12 +99,11 @@ public class SwiftLinkPreview {
                     if(finalResult.absoluteString == url.absoluteString) {
                         
                         completion(url)
-                    
+                        
                     } else {
                         
-                        print(response?.URL)
                         self.unshortenURL(finalResult, completion: completion)
-                    
+                        
                     }
                     
                 } else {
@@ -115,7 +116,55 @@ public class SwiftLinkPreview {
         
     }
     
-    // Cancel Request
+    // Extract HTML code and the information contained on it
+    private func extractInfo(completion: () -> ()) {
+        
+        if let url: NSURL = self.result["finalUrl"] as? NSURL {
+            
+            if(url.absoluteString.isImage()) {
+                
+                NSLog("Completion 3")
+                self.fillRemainingInfo("", description: "", images: [url])
+                completion()
+                
+            } else {
+                
+                do {
+                    
+                    let myHTMLString = try String(contentsOfURL: url)
+                    NSLog("\(myHTMLString)")
+                    NSLog("Completion 2")
+                    completion()
+                    
+                } catch let error as NSError {
+                    
+                    NSLog("\(error)")
+                    NSLog("Completion 1")
+                    completion()
+                    
+                }
+                
+            }
+            
+        } else {
+            
+            self.fillRemainingInfo("", description: "", images: [])
+            completion()
+            
+        }
+        
+    }
+    
+    // Fill remaining info about the crawling
+    private func fillRemainingInfo(title: String, description: String, images: [NSURL]) {
+        
+        self.result["title"] = title
+        self.result["description"] = description
+        self.result["images"] = images
+        
+    }
+    
+    // Cancel request
     public func cancel() {
         
         if let request = self.request {
