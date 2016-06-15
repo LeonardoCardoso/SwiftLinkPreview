@@ -37,8 +37,12 @@ public class SwiftLinkPreview {
             
             self.url = url
             self.result["url"] = self.url.absoluteString
-            self.result["finalURL"] = self.unshortenURL(url)
-            onSuccess(self.result)
+            self.unshortenURL(url, completion: { unshortened in
+                
+                self.result["finalURL"] = unshortened
+                onSuccess(self.result)
+                
+            })
             
         } else {
             
@@ -81,32 +85,31 @@ public class SwiftLinkPreview {
     }
     
     // Unshorten URL
-    private func unshortenURL(url: NSURL) -> NSURL {
+    private func unshortenURL(url: NSURL, completion: (NSURL) -> ()) {
         
-        var unshortened = NSURL(string: "");
-        
-        while(url.absoluteString != unshortened?.absoluteString) {
-            
-            // TODO make this request sync
-            Alamofire.request(.GET, url.absoluteString, parameters: [:])
-                .response { request, response, data, error in
-
-                    if let finalResult = response?.URL {
-
-                        unshortened = self.unshortenURL(finalResult)
-                        print(response?.URL)
-                        
-                    } else {
+        Alamofire.request(.GET, url.absoluteString, parameters: [:])
+            .response { request, response, data, error in
+                
+                if let finalResult = response?.URL {
                     
-                        return url
+                    if(finalResult.absoluteString == url.absoluteString) {
+                        
+                        completion(url)
+                    
+                    } else {
+                        
+                        print(response?.URL)
+                        self.unshortenURL(finalResult, completion: completion)
                     
                     }
                     
-            }
-            
+                } else {
+                    
+                    completion(url)
+                    
+                }
+                
         }
-        
-        return unshortened == nil ? url : unshortened!
         
     }
     

@@ -7,6 +7,7 @@ It makes a preview from an url, grabbing all the information such as title, rele
 [![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)]()
 
 # TODO GIF
+# TODO FLOW IMAGE
 
 ## Requirements and Details
 
