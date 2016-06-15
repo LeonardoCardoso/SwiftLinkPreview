@@ -88,7 +88,7 @@ public class SwiftLinkPreview {
         
     }
     
-    // Unshorten URL
+    // Unshorten URL by following redirections
     private func unshortenURL(url: NSURL, completion: (NSURL) -> ()) {
         
         request = Alamofire.request(.GET, url.absoluteString, parameters: [:])
