@@ -114,7 +114,7 @@ class ViewController: UIViewController {
         
         
         self.startCrawling()
-        self.slp.get(
+        self.slp.preview(
             textField.text,
             onSuccess: { result in
                 
@@ -135,7 +135,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func postAction(sender: AnyObject) {
-        
+        self.slp.cancel()
     }
     
     

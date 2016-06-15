@@ -22,6 +22,7 @@ public class SwiftLinkPreview {
         "description": "",
         "images": []
     ]
+    private var request: Alamofire.Request?
     
     // MARK: - Constructor
     public init() {
@@ -29,7 +30,8 @@ public class SwiftLinkPreview {
     }
     
     // MARK: - Functions
-    public func get(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
+    // Make preview
+    public func preview(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
         
         self.text = text
         
@@ -87,7 +89,7 @@ public class SwiftLinkPreview {
     // Unshorten URL
     private func unshortenURL(url: NSURL, completion: (NSURL) -> ()) {
         
-        Alamofire.request(.GET, url.absoluteString, parameters: [:])
+        request = Alamofire.request(.GET, url.absoluteString, parameters: [:])
             .response { request, response, data, error in
                 
                 if let finalResult = response?.URL {
@@ -109,6 +111,17 @@ public class SwiftLinkPreview {
                     
                 }
                 
+        }
+        
+    }
+    
+    // Cancel Request
+    public func cancel() {
+        
+        if let request = self.request {
+            
+            request.cancel()
+            
         }
         
     }

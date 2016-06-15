@@ -31,14 +31,18 @@ Although it's not recommended, you just need to drop SwiftLinkPreview folder int
 
 ## Usage
 
+#### Instatiating
 ```swift
 import SwiftLinkPreview
 
 // ...
 
 let slp = SwiftLinkPreview()
+```
 
-slp.get(
+#### Requesting preview
+```swift
+slp.preview(
     "Text containing url",
     onSuccess: { result in
     	
@@ -52,21 +56,24 @@ slp.get(
     }
 )
 ```
-
-### Result
-
-The result is a dictionary ```[String: AnyObject]```:
+**result** is a dictionary ```[String: AnyObject]``` like:
 
 ```swift
-	[
-       "title": "title",
-       "url": "original URL",
-       "finalUrl": "final ~unshortened~ URL.",
-       "canonicalUrl": "canonical URL",
-       "description": "page description or relevant text",
-       "images": ["array of URLs of the images"]
-   ]
+[
+   "title": "title",
+   "url": "original URL",
+   "finalUrl": "final ~unshortened~ URL.",
+   "canonicalUrl": "canonical URL",
+   "description": "page description or relevant text",
+   "images": ["array of URLs of the images"]
+]
 ```
+
+#### Cancelling a request
+```swift
+slp.cancel()
+```
+
 
 ## Important
 
