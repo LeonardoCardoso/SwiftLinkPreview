@@ -21,8 +21,9 @@ class Regex {
     static let scriptPattern = "<script(.*?)>(.*?)</script>"
     static let metatagPattern = "<meta(.*?)>"
     static let metatagContentPattern = "content=(\"|')(.*?)(\"|')"
-    static let urlPattern = "<\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
-    static let rawURLPattern = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+    static let urlPattern = "<\\b(http[s]?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
+    static let rawUrlPattern = "((http[s]?)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+    static let cannonicalUrlPattern = "http[s]?://(.*)[/]?"
     
     
     // Test regular expression

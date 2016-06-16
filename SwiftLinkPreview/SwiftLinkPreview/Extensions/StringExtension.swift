@@ -48,7 +48,7 @@ extension String {
     // Check if it's a valid url
     func isValidURL() -> Bool {
         
-        return Regex.test(self, regex: Regex.rawURLPattern) && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
+        return Regex.test(self, regex: Regex.rawUrlPattern) && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
         
     }
     

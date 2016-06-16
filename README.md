@@ -48,12 +48,12 @@ slp.preview(
     "Text containing url",
     onSuccess: { result in
     	
-        NSLog("\(result)")
+		print("\(result)")
         
     },
     onError: { error in
        
-       NSLog("\(error)")
+		print("\(error)")
         
     }
 )

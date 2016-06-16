@@ -187,8 +187,16 @@ extension SwiftLinkPreview {
     // Extract get cannonical URL
     private func extractCannonicalURL() {
         
-        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L238
-        // self.result["canonicalUrl"] = ""
+        if let canonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
+            
+            let splitted = canonicalUrl.characters.split{$0 == "/"}.map(String.init)
+            self.result["canonicalUrl"] = splitted[0]
+            
+        } else {
+            
+            self.result["canonicalUrl"] = self.result["url"]
+            
+        }
         
     }
     
@@ -229,7 +237,19 @@ extension SwiftLinkPreview {
     // Crawl for title if needed
     private func crawlTitle(htmlCode: String) {
         
-        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L107
+        if let title: String = self.result["title"] as? String {
+            
+            if title.isEmpty {
+                
+                if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.tittlePattern, index: 2) {
+                    
+                    self.result["title"] = value
+                    
+                }
+                
+            }
+            
+        }
         
     }
     
