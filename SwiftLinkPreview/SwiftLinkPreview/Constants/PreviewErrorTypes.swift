@@ -14,5 +14,6 @@ public enum PreviewErrorType: String {
     case NoURLHasBeenFound = "No URL has been found"
     case InvalidURL = "This data is not valid URL"
     case CannotBeOpened = "This URL cannot be opened"
+    case ParseError = "An error occurred when parsing the HTML"
     
 }

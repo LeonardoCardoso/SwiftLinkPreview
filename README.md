@@ -62,12 +62,13 @@ slp.preview(
 
 ```swift
 [
-   "title": "title", 									// String
    "url": "original URL", 								// NSURL
    "finalUrl": "final ~unshortened~ URL.", 				// NSURL
    "canonicalUrl": "canonical URL", 					// NSURL
+   "title": "title", 									// String
    "description": "page description or relevant text", 	// String
-   "images": ["array of URLs of the images"] 			// NSURL array
+   "images": ["array of URLs of the images"], 			// String array
+   "image": "main image" 								// String
 ]
 ```
 

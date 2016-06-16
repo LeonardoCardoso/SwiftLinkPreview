@@ -20,32 +20,72 @@ class Regex {
     static let tittlePattern = "<title(.*?)>(.*?)</title>"
     static let scriptPattern = "<script(.*?)>(.*?)</script>"
     static let metatagPattern = "<meta(.*?)>"
-    static let metatagContentPattern = "content=\"(.*?)\""
+    static let metatagContentPattern = "content=(\"|')(.*?)(\"|')"
     static let urlPattern = "<\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
     static let rawURLPattern = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
     
     
     // Test regular expression
-    static func test(string: String, regex: String!) -> Bool {
+    static func test(string: String!, regex: String!) -> Bool {
+        
+        return Regex.pregMatchFirst(string, regex: regex) != nil
+        
+    }
+    
+    // Match all occurrencies
+    static func pregMatchFirst(string: String!, regex: String!, index: Int = 0) -> String? {
         
         do{
             
-            let string = string.lowercaseString
-            let rx = try NSRegularExpression(pattern: regex, options: [])
+            let rx = try NSRegularExpression(pattern: regex, options: [.CaseInsensitive])
             
-            if let _ = rx.firstMatchInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {
+            if let match = rx.firstMatchInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {
                 
-                return true
+                return string.substring(match.rangeAtIndex(index))
                 
             } else {
                 
-                return false
+                return nil
                 
             }
             
         } catch {
             
-            return false
+            return nil
+            
+        }
+        
+    }
+    
+    // Match all occurrencies
+    static func pregMatchAll(string: String!, regex: String!, index: Int = 0) -> [String] {
+        
+        do{
+            
+            let rx = try NSRegularExpression(pattern: regex, options: [.CaseInsensitive])
+            
+            if let matches: [NSTextCheckingResult] = rx.matchesInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {
+                
+                var result: [String] = []
+                
+                for match in matches {
+                    
+                    result.append(string.substring(match.rangeAtIndex(index)))
+                    
+                }
+                
+                return result
+                
+            } else {
+                
+                return []
+                
+            }
+            
+            
+        } catch {
+            
+            return []
             
         }
         

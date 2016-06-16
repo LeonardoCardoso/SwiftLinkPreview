@@ -39,6 +39,11 @@ extension String {
         return self.substringWithRange(Range(self.startIndex.advancedBy(start) ..< self.startIndex.advancedBy(end)))
         
     }
+    func substring(range: NSRange) -> String {
+        
+        return self.substringWithRange(Range(self.startIndex.advancedBy(range.location) ..< self.startIndex.advancedBy(range.location + range.length)))
+        
+    }
     
     // Check if it's a valid url
     func isValidURL() -> Bool {

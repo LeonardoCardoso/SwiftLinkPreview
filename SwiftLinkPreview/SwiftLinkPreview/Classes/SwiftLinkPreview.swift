@@ -14,14 +14,7 @@ public class SwiftLinkPreview {
     // MARK: - Vars
     private var text: String!
     private var url: NSURL!
-    private var result: [String: AnyObject] = [
-        "title": "",
-        "url": "",
-        "finalUrl": "",
-        "canonicalUrl": "",
-        "description": "",
-        "images": []
-    ]
+    private var result: [String: AnyObject] = [:]
     private var request: Alamofire.Request?
     
     // MARK: - Constructor
@@ -32,6 +25,16 @@ public class SwiftLinkPreview {
     // MARK: - Functions
     // Make preview
     public func preview(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
+        
+        self.result = [
+            "url": "",
+            "finalUrl": "",
+            "canonicalUrl": "",
+            "title": "",
+            "description": "",
+            "images": [],
+            "image": ""
+        ]
         
         self.text = text
         
@@ -44,14 +47,13 @@ public class SwiftLinkPreview {
                 
                 self.result["finalUrl"] = unshortened
                 
-                // TODO get cannonical URL
-                self.result["canonicalUrl"] = ""
+                self.extractCannonicalURL()
                 
                 self.extractInfo({
                     
                     onSuccess(self.result)
                     
-                })
+                    }, onError: onError)
                 
             })
             
@@ -62,6 +64,32 @@ public class SwiftLinkPreview {
         }
         
     }
+    
+    // Fill remaining info about the crawling
+    private func fillRemainingInfo(title: String, description: String, images: [String], image: String) {
+        
+        self.result["title"] = title
+        self.result["description"] = description
+        self.result["images"] = images
+        self.result["image"] = image
+        
+    }
+    
+    // Cancel request
+    public func cancel() {
+        
+        if let request = self.request {
+            
+            request.cancel()
+            
+        }
+        
+    }
+    
+}
+
+// Extraction functions
+extension SwiftLinkPreview {
     
     // Extract first URL from text
     private func extractURL() -> NSURL? {
@@ -117,30 +145,31 @@ public class SwiftLinkPreview {
     }
     
     // Extract HTML code and the information contained on it
-    private func extractInfo(completion: () -> ()) {
+    private func extractInfo(completion: () -> (), onError: (PreviewError) -> ()) {
         
         if let url: NSURL = self.result["finalUrl"] as? NSURL {
             
             if(url.absoluteString.isImage()) {
                 
-                NSLog("Completion 3")
-                self.fillRemainingInfo("", description: "", images: [url])
+                self.fillRemainingInfo("", description: "", images: [url.absoluteString], image: url.absoluteString)
                 completion()
                 
             } else {
                 
                 do {
                     
-                    let myHTMLString = try String(contentsOfURL: url)
-                    NSLog("\(myHTMLString)")
-                    NSLog("Completion 2")
+                    let htmlCode = try String(contentsOfURL: url)
+                    
+                    self.crawlMetaTags(htmlCode)
+                    self.crawlTitle(htmlCode)
+                    self.crawlDescription(htmlCode)
+                    self.crawlImages(htmlCode)
+                    
                     completion()
                     
-                } catch let error as NSError {
+                } catch _ as NSError {
                     
-                    NSLog("\(error)")
-                    NSLog("Completion 1")
-                    completion()
+                    onError(PreviewError(type: .ParseError, url: url.absoluteString))
                     
                 }
                 
@@ -148,30 +177,74 @@ public class SwiftLinkPreview {
             
         } else {
             
-            self.fillRemainingInfo("", description: "", images: [])
+            self.fillRemainingInfo("", description: "", images: [], image: "")
             completion()
             
         }
         
     }
     
-    // Fill remaining info about the crawling
-    private func fillRemainingInfo(title: String, description: String, images: [NSURL]) {
+    // Extract get cannonical URL
+    private func extractCannonicalURL() {
         
-        self.result["title"] = title
-        self.result["description"] = description
-        self.result["images"] = images
+        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L238
+        // self.result["canonicalUrl"] = ""
         
     }
     
-    // Cancel request
-    public func cancel() {
+}
+
+// Tag functions
+extension SwiftLinkPreview {
+    
+    // Search for meta tags
+    private func crawlMetaTags(htmlCode: String) {
         
-        if let request = self.request {
+        let possibleTags = ["url", "title", "description", "image"]
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
+        
+        for metatag in metatags {
             
-            request.cancel()
+            for tag in possibleTags {
+                
+                if metatag.rangeOfString("property=\"og:" + tag + "\"") != nil ||
+                    metatag.rangeOfString("property='og:" + tag + "'") != nil ||
+                    metatag.rangeOfString("name=\"" + tag + "\"") != nil ||
+                    metatag.rangeOfString("name='" + tag + "'") != nil {
+                    
+                    if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
+                        
+                        self.result[tag] = value
+                        
+                    }
+                    
+                }
+                
+            }
             
         }
+        
+    }
+    
+    // Crawl for title if needed
+    private func crawlTitle(htmlCode: String) {
+        
+        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L107
+        
+    }
+    
+    // Crawl for description if needed
+    private func crawlDescription(htmlCode: String) {
+        
+        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L116
+        
+    }
+    
+    // Crawl for images
+    private func crawlImages(htmlCode: String) {
+        
+        // If has already an image on ["image"], don't crawl and just add ["image"] to the array
+        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L190
         
     }
     
