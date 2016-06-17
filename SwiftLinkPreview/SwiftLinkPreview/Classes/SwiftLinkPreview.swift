@@ -187,10 +187,18 @@ extension SwiftLinkPreview {
     // Extract get cannonical URL
     private func extractCannonicalURL() {
         
-        if let canonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
+        if var cannonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
             
-            let splitted = canonicalUrl.characters.split{$0 == "/"}.map(String.init)
-            self.result["canonicalUrl"] = splitted[0]
+            cannonicalUrl = cannonicalUrl.replace("http://", with: "").replace("https://", with: "")
+            
+            if let slash = cannonicalUrl.rangeOfString("/") {
+                
+                let endIndex = cannonicalUrl.startIndex.distanceTo(slash.endIndex)
+                cannonicalUrl = cannonicalUrl.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
+                
+            }
+            
+            self.result["canonicalUrl"] = cannonicalUrl
             
         } else {
             
