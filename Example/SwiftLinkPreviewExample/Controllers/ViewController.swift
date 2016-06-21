@@ -9,6 +9,8 @@
 import UIKit
 import SwiftLinkPreview
 import SwiftyDrop
+import ImageSlideshow
+import KMPlaceholderTextView
 
 class ViewController: UIViewController {
     
@@ -16,28 +18,38 @@ class ViewController: UIViewController {
     @IBOutlet var textField: UITextField!
     @IBOutlet var randomTextButton: UIButton!
     @IBOutlet var submitButton: UIButton!
-    @IBOutlet var postButton: UIButton!
+    @IBOutlet var openWithButton: UIButton!
     @IBOutlet var indicator: UIActivityIndicatorView!
-    @IBOutlet var tableView: UITableView!
     @IBOutlet var previewArea: UIView!
+    @IBOutlet var previewAreaLabel: UILabel!
+    @IBOutlet var slideshow: ImageSlideshow!
+    @IBOutlet var previewTitle: UILabel!
+    @IBOutlet var previewCanonicalUrl: UILabel!
+    @IBOutlet var previewDescription: UILabel!
+    @IBOutlet var detailedView: UIView!
     
     // MARK: - Vars
     private let randomTexts: [String] = [
-        "Some Vietnamese chars http://vnexpress.net/",
-        "Let's try it on Facebook http://facebook.com/ ",
-        "Gmail must work http://gmail.com",
-        "Well, it's a gif! http://goo.gl/jKCPgp",
-        "Japan!!! http://www3.nhk.or.jp/",
-        "A Russian website >> http://habrahabr.ru",
-        "Youtube?! It does! http://www.youtube.com/watch?v=cv2mjAgFTaI",
-        "Also Vimeo http://vimeo.com/67992157",
-        "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
-        "NASA! 🖖🏽 http://www.nasa.gov/",
-        "Tweet! http://twitter.com",
-        "Shorten URL http://bit.ly/14SD1eR",
-        "http://uol.com.br"
+        "http://theverge.com/",
+//        "http://lifehacker.com/",
+//        "A Gallery https://www.nationalgallery.org.uk",
+//        "http://globo.com",
+//        "Some Vietnamese chars http://vnexpress.net/",
+//        "Let's try it on Facebook http://facebook.com/ ",
+//        "Gmail must work http://gmail.com",
+//        "Well, it's a gif! http://goo.gl/jKCPgp",
+//        "Japan!!! http://www3.nhk.or.jp/",
+//        "A Russian website >> http://habrahabr.ru",
+//        "Youtube?! It does! http://www.youtube.com/watch?v=cv2mjAgFTaI",
+//        "Also Vimeo http://vimeo.com/67992157",
+//        "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
+//        "NASA! 🖖🏽 http://www.nasa.gov/",
+//        "Tweet! http://twitter.com",
+//        "Shorten URL http://bit.ly/14SD1eR",
+//        "http://uol.com.br"
     ]
-    private let tableViewItems: [[String: AnyObject]] = []
+    private var result: [String: AnyObject] = [:]
+    private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
     
     private let slp = SwiftLinkPreview()
     
@@ -47,7 +59,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.setUpTableView()
+        self.showHideAll(true)
+        self.setUpSlideshow()
         
     }
     
@@ -55,14 +68,6 @@ class ViewController: UIViewController {
         
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
-    }
-    
-    // MARK: - Functions
-    private func setUpTableView() {
-        
-        //        self.tableView.registerNib(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
-        self.tableView.tableFooterView = UIView()
         
     }
     
@@ -75,6 +80,7 @@ class ViewController: UIViewController {
     private func startCrawling() {
         
         self.updateUI(false)
+        self.showHideAll(true)
         self.textField.resignFirstResponder()
         
     }
@@ -86,12 +92,125 @@ class ViewController: UIViewController {
     }
     
     // Update UI
+    private func showHideAll(hide: Bool) {
+        
+        self.slideshow.hidden = hide
+        self.detailedView.hidden = hide
+        self.openWithButton.hidden = hide
+        self.previewAreaLabel.hidden = !hide
+        
+    }
+    
     private func updateUI(enabled: Bool) {
         
         self.indicator.hidden = enabled
         self.textField.enabled = enabled
         self.randomTextButton.enabled = enabled
         self.submitButton.enabled = enabled
+        
+    }
+    
+    private func setData() {
+        
+        if let value: [String] = self.result["images"] as? [String] {
+            
+            if !value.isEmpty {
+                
+                var images: [InputSource] = []
+                for image in value {
+                    
+                    images.append(AlamofireSource(urlString: image)!)
+                    
+                }
+                
+                self.setImage(images)
+                
+                
+            } else {
+                
+                self.setImage(self.result["image"] as? String)
+                
+            }
+            
+        } else {
+            
+            self.setImage(self.result["image"] as? String)
+            
+        }
+        
+        if let value: String = self.result["title"] as? String {
+            
+            self.previewTitle.text = value.isEmpty ? "No title" : value
+            
+        } else {
+            
+            self.previewTitle.text = "No title"
+            
+        }
+        
+        if let value: String = self.result["canonicalUrl"] as? String {
+            
+            self.previewCanonicalUrl.text = value
+            
+        }
+        
+        if let value: String = self.result["description"] as? String {
+            
+            self.previewDescription.text = value.isEmpty ? "No description" : value
+            
+        } else {
+            
+            self.previewTitle.text = "No description"
+            
+        }
+        
+        self.showHideAll(false)
+        self.endCrawling()
+        
+    }
+    
+    private func setImage(image: String?) {
+        
+        if let image: String = image {
+            
+            if !image.isEmpty {
+                
+                self.setImage([AlamofireSource(urlString: image)!])
+                
+            } else {
+                
+                self.slideshow.setImageInputs(placeholderImages)
+                
+            }
+            
+        } else {
+            
+            self.slideshow.setImageInputs(placeholderImages)
+            
+        }
+        
+    }
+    
+    private func setImage(images: [InputSource]?) {
+        
+        if let images = images {
+            
+            self.slideshow.setImageInputs(images)
+            
+        } else {
+            
+            self.slideshow.setImageInputs(placeholderImages)
+            
+        }
+        
+    }
+    
+    private func setUpSlideshow() {
+        
+        self.slideshow.backgroundColor = UIColor.whiteColor()
+        self.slideshow.slideshowInterval = 7.0
+        self.slideshow.pageControlPosition = PageControlPosition.Hidden
+        self.slideshow.contentScaleMode = .ScaleAspectFill
         
     }
     
@@ -119,7 +238,8 @@ class ViewController: UIViewController {
             onSuccess: { result in
                 
                 NSLog("\(result)")
-                self.endCrawling()
+                self.result = result
+                self.setData()
                 
             },
             onError: { error in
@@ -134,7 +254,13 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func postAction(sender: AnyObject) {
+    @IBAction func openWithAction(sender: UIButton) {
+        
+        if let url: NSURL = self.result["finalUrl"] as? NSURL {
+            
+            UIApplication.sharedApplication().openURL(url)
+            
+        }
         
     }
     
@@ -151,38 +277,6 @@ extension ViewController: UITextFieldDelegate {
         return true
         
     }
-    
-}
-
-// MARK: - UITableViewDelegate, UITableViewDataSource
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    
-        return 1
-    
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-        return self.tableViewItems.count
-    
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        //        let cell = tableView.dequeueReusableCellWithIdentifier("RoomTableViewCell", forIndexPath: indexPath) as! TableViewCell
-        
-        return UITableViewCell()
-        
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        
-    }
-    
     
 }
 

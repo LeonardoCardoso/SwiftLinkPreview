@@ -1,8 +1,10 @@
 platform :ios, '8.0'
 
 target 'SwiftLinkPreviewExample' do
-  use_frameworks!
-  pod 'SwiftLinkPreview', :path => '../SwiftLinkPreview/'
+  	use_frameworks!
+  	pod 'SwiftLinkPreview', :path => '../SwiftLinkPreview/'
   
-  pod 'SwiftyDrop', '~>2.0'
+  	pod 'SwiftyDrop', '~>2.0'
+	pod 'ImageSlideshow', '~> 0.3'
+	pod 'ImageSlideshow/Alamofire'
 end

@@ -17,6 +17,51 @@ extension String {
         
     }
     
+    // Remove extra white spaces
+    var extendedTrim: String {
+        
+        let components = self.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        return components.filter { !$0.isEmpty }.joinWithSeparator(" ").trim
+        
+    }
+    
+    // Decode HTML entities
+    var decoded: String {
+        
+        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
+        let attributedOptions : [String: AnyObject] = [
+            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+        ]
+        
+        do {
+            
+            let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
+            
+            return attributedString.string
+            
+        } catch _ {
+            
+            return self
+            
+        }
+        
+    }
+    
+    // Strip tags
+    var tagsStripped: String {
+        
+        return self.stringByReplacingOccurrencesOfString(Regex.rawTagPattern, withString: "", options: .RegularExpressionSearch, range: nil)
+        
+    }
+    
+    // Delete HTML tags
+    func deleteHTMLTag(tag:String) -> String {
+        
+        return self.stringByReplacingOccurrencesOfString("(?i)</?\(tag)\\b[^<]*>", withString: "", options: .RegularExpressionSearch, range: nil)
+        
+    }
+    
     // Replace
     func replace(search: String, with: String) -> String {
         

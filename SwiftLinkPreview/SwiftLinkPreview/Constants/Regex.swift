@@ -11,12 +11,8 @@ import Foundation
 // MARK: - Regular expressions
 class Regex {
     
-    static let imagePattern = "(.+?)\\.(jp[e]?g|png|gif|bmp)$"
-    static let imageTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
-    static let iconTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
-    static let iconRevTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
-    static let itempropImageTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
-    static let itempropImageRevTagPattern = "<img(.*?)src=(\"|')(.+?)(gif|jpg|png|bmp)(\"|')(.*?)(/)?>(</img>)?"
+    static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
+    static let imageTagPattern = "<img(.*?)src=[(\"|')(.+?)(gif|jpg|jpeg|png|bmp)(.*?)(\"|')]{1}(.*?)(/)?>(</img>)?"
     static let tittlePattern = "<title(.*?)>(.*?)</title>"
     static let scriptPattern = "<script(.*?)>(.*?)</script>"
     static let metatagPattern = "<meta(.*?)>"
@@ -24,6 +20,8 @@ class Regex {
     static let urlPattern = "<\\b(http[s]?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
     static let rawUrlPattern = "((http[s]?)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
     static let cannonicalUrlPattern = "http[s]?://(.*)[/]?"
+    static let rawTagPattern = "<[^>]+>"
+    static let htmlCommentPattern = "<!--[\\s\\S]*-->"
     
     
     // Test regular expression
@@ -59,7 +57,7 @@ class Regex {
     }
     
     // Match all occurrencies
-    static func pregMatchAll(string: String!, regex: String!, index: Int = 0) -> [String] {
+    static func pregMatchAll(string: String!, regex: String!, index: Int = 0, indexes: [Int]? = nil) -> [String] {
         
         do{
             
@@ -71,7 +69,23 @@ class Regex {
                 
                 for match in matches {
                     
-                    result.append(string.substring(match.rangeAtIndex(index)))
+                    var value = "";
+                    
+                    if let indexes = indexes {
+                        
+                        for i in indexes {
+                            
+                            value += string.substring(match.rangeAtIndex(i))
+                            
+                        }
+                        
+                    } else {
+                        
+                        value = string.substring(match.rangeAtIndex(index))
+                        
+                    }
+                    
+                    result.append(value)
                     
                 }
                 
@@ -89,6 +103,13 @@ class Regex {
             return []
             
         }
+        
+    }
+    
+    // Return tag pattern
+    static func tagPattern(tag: String) -> String {
+        
+        return "<" + tag + "(.*?)>(.*?)</" + tag + ">"
         
     }
     

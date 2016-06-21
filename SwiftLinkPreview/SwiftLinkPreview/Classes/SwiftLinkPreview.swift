@@ -12,6 +12,7 @@ import Alamofire
 public class SwiftLinkPreview {
     
     // MARK: - Vars
+    static let minimumRelevant: Int = 120
     private var text: String!
     private var url: NSURL!
     private var result: [String: AnyObject] = [:]
@@ -158,7 +159,12 @@ extension SwiftLinkPreview {
                 
                 do {
                     
-                    let htmlCode = try String(contentsOfURL: url)
+                    var htmlCode = try String(contentsOfURL: url)
+                    htmlCode = htmlCode.extendedTrim
+                    htmlCode = htmlCode.deleteHTMLTag("script")
+                    htmlCode = htmlCode.deleteHTMLTag("link")
+                    
+                    print("\(htmlCode)")
                     
                     self.crawlMetaTags(htmlCode)
                     self.crawlTitle(htmlCode)
@@ -216,8 +222,10 @@ extension SwiftLinkPreview {
     // Search for meta tags
     private func crawlMetaTags(htmlCode: String) {
         
+        let index = 1
+        
         let possibleTags = ["url", "title", "description", "image"]
-        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: index)
         
         for metatag in metatags {
             
@@ -230,7 +238,7 @@ extension SwiftLinkPreview {
                     
                     if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                         
-                        self.result[tag] = value
+                        self.result[tag] = value.decoded
                         
                     }
                     
@@ -251,7 +259,7 @@ extension SwiftLinkPreview {
                 
                 if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.tittlePattern, index: 2) {
                     
-                    self.result["title"] = value
+                    self.result["title"] = value.decoded
                     
                 }
                 
@@ -264,15 +272,127 @@ extension SwiftLinkPreview {
     // Crawl for description if needed
     private func crawlDescription(htmlCode: String) {
         
-        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L116
+        if let description: String = self.result["description"] as? String {
+            
+            if description.isEmpty {
+                
+                if let value: String = self.crawlCode(htmlCode) {
+                    
+                    self.result["description"] = value
+                    
+                }
+                
+            }
+            
+        }
         
     }
     
     // Crawl for images
     private func crawlImages(htmlCode: String) {
         
-        // If has already an image on ["image"], don't crawl and just add ["image"] to the array
-        // TODO https://github.com/LeonardoCardoso/Android-Link-Preview/blob/master/library/src/main/java/com/leocardz/link/preview/library/TextCrawler.java#L190
+        if let images: [String] = self.result["images"] as? [String] {
+            
+            if images.isEmpty {
+                
+                if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, indexes: [3, 4]) {
+                    
+                    var imgs: [String] = []
+                    
+                    for value in values {
+                        
+                        var value = value
+                        
+                        if !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
+                            
+                            value = (self.result["finalUrl"] as! NSURL).absoluteString + value
+                            
+                        }
+                        
+                        imgs.append(value)
+                        
+                    }
+                    
+                    self.result["images"] = imgs
+                    
+                    if let mainImage: String = self.result["image"] as? String {
+                        
+                        if mainImage.isEmpty && imgs.count > 0 {
+                            
+                            self.result["image"] = imgs[0]
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    // Crawl the entire code
+    private func crawlCode(content: String) -> String {
+        
+        let resultSpan = self.getTagContent("span", content: content)
+        let resultParagraph = self.getTagContent("p", content: content)
+        let resultDiv = self.getTagContent("div", content: content)
+        var result = resultSpan
+        
+        if (resultParagraph.characters.count > result.characters.count) {
+            
+            if (resultParagraph.characters.count >= resultDiv.characters.count) {
+                
+                result = resultParagraph
+                
+            } else {
+                
+                result = resultDiv
+                
+            }
+            
+        }
+        
+        return result
+        
+    }
+    
+    
+    private func getTagContent(tag: String, content: String) -> String {
+        
+        let pattern = Regex.tagPattern(tag)
+        var result = ""
+        var currentMatch = ""
+        
+        let index = 2
+        let matches = Regex.pregMatchAll(content, regex: pattern, index: index)
+        
+        for match in matches {
+            
+            currentMatch = match.extendedTrim.tagsStripped
+            
+            if (currentMatch.characters.count >= SwiftLinkPreview.minimumRelevant) {
+                
+                result = match
+                break
+                
+            }
+            
+        }
+        
+        if result.isEmpty {
+            
+            if let match = Regex.pregMatchFirst(content, regex: pattern, index: 2) {
+                
+                result = match.extendedTrim.tagsStripped
+                
+            }
+            
+        }
+        
+        return result.decoded
         
     }
     
