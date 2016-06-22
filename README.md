@@ -6,15 +6,15 @@ It makes a preview from an url, grabbing all the information such as title, rele
 
 **UTF-8** | **Extended UTF-8**	 |
 :--:|:--:|	
-![UTF-8](Images/normal.gif?raw=true "UTF-8") | ![Extended UTF-8](Images/langs.gif?raw=true "Extended UTF-8") |
+![UTF-8](Images/default.gif "UTF-8") | ![Extended UTF-8](Images/langs.gif "Extended UTF-8") |
 **Gallery** | **Video Websites** |
-![Gallery](Images/gallery.gif?raw=true "Gallery") | ![Video Websites](Images/videos.gif?raw=true "Video Websites") |
+![Gallery](Images/gallery.gif "Gallery") | ![Video Websites](Images/videos.gif "Video Websites") |
 **Images** | |
-![Images](Images/images.gif?raw=true "Images") |  |
+![Images](Images/images.gif "Images") |  |
 
 # FLOW
 
-![flow](Images/flow.png)
+![flow](http://i.imgur.com/SMueQkA.png)
 
 ## Requirements and Details
 
@@ -87,7 +87,7 @@ slp.cancel()
 
 You need to set ```Allow Arbitrary Loads``` to ```YES``` on your project's Info.plist file.
 
-![app security.png](Images/app-security.png)
+![app security.png](http://i.imgur.com/41hGjCC.png)
 
 
 ## TIPS
