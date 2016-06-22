@@ -6,7 +6,14 @@ It makes a preview from an url, grabbing all the information such as title, rele
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)]()
 
-# TODO GIF
+**UTF-8** | **Extended UTF-8**	 |
+:--:|:--:|	
+![UTF-8](Images/normal.gif?raw=true "UTF-8") | ![Extended UTF-8](Images/langs.gif?raw=true "Extended UTF-8") |
+**Gallery** | **Video Websites** |
+![Gallery](Images/gallery.gif?raw=true "Gallery") | ![Video Websites](Images/videos.gif?raw=true "Video Websites") |
+**Images** | |
+![Images](Images/images.gif?raw=true "Images") |  |
+
 # FLOW
 
 ![flow](Images/flow.png)
