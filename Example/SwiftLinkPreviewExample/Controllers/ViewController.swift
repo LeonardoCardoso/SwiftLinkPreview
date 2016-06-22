@@ -10,7 +10,6 @@ import UIKit
 import SwiftLinkPreview
 import SwiftyDrop
 import ImageSlideshow
-import KMPlaceholderTextView
 
 class ViewController: UIViewController {
     
@@ -30,28 +29,27 @@ class ViewController: UIViewController {
     
     // MARK: - Vars
     private var randomTexts: [String] = [
-    
-         "http://lab.leocardz.com/link-preview/",
-         "NASA! 🖖🏽 http://www.nasa.gov/",
-         "http://www.theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
-         "Shorten URL http://bit.ly/14SD1eR",
         
-        // "A Gallery https://www.nationalgallery.org.uk",
+        "http://ios.leocardz.com/swift-link-preview/",
+        "NASA! 🖖🏽 http://www.nasa.gov/",
+        "http://www.theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
+        "Shorten URL http://bit.ly/14SD1eR",
+        "Tweet! https://twitter.com",
         
-        // "A Brazilian website http://globo.com",
-        // "Another Brazilian website http://uol.com.br",
-        // "Some Vietnamese chars http://vnexpress.net/",
-        // "Japan!!! http://www3.nhk.or.jp/",
-        // "A Russian website >> http://habrahabr.ru",
+        "A Gallery https://www.nationalgallery.org.uk",
         
-        // "Youtube?! It does! http://www.youtube.com/watch?v=cv2mjAgFTaI",
-        // "Also Vimeo http://vimeo.com/67992157",
+        "A Brazilian website http://globo.com",
+        "Another Brazilian website http://uol.com.br",
+        "Some Vietnamese chars http://vnexpress.net/",
+        "Japan!!! http://www3.nhk.or.jp/",
+        "A Russian website >> http://habrahabr.ru",
         
-        // "Tweet! https://twitter.com",
+        "Youtube?! It does! http://www.youtube.com/watch?v=cv2mjAgFTaI",
+        "Also Vimeo http://vimeo.com/67992157",
         
-        // "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
-        // "Well, it's a gif! http://goo.gl/jKCPgp"
-    
+        "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
+        "Well, it's a gif! http://goo.gl/jKCPgp"
+        
     ]
     private var result: [String: AnyObject] = [:]
     private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
@@ -78,11 +76,7 @@ class ViewController: UIViewController {
     
     private func getRandomText() -> String {
         
-        let rand = Int(arc4random_uniform(UInt32(randomTexts.count)))
-        let text = randomTexts[rand]
-        randomTexts.removeAtIndex(0)
-        
-        return text
+        return randomTexts[Int(arc4random_uniform(UInt32(randomTexts.count)))]
         
     }
     
@@ -254,7 +248,6 @@ class ViewController: UIViewController {
         }
         
         
-        print("started \(NSDate())")
         self.startCrawling()
         self.slp.preview(
             textField.text,
@@ -263,7 +256,6 @@ class ViewController: UIViewController {
                 NSLog("\(result)")
                 self.result = result
                 self.setData()
-                print("end \(NSDate())")
                 
             },
             onError: { error in

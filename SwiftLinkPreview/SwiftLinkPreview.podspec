@@ -9,10 +9,10 @@ Pod::Spec.new do |s|
 	s.license = { :type => "MIT", :file => "LICENSE" }
 	s.author = { "Leonardo Cardoso" => "contact@leocardz.com" }
 	s.homepage = "http://ios.leocardz.com/swift-link-preview/"
-	s.source = { :git => "git@github.com:LeonardoCardoso/Swift-Link-Preview.git", :tag => "#{s.version}"}
+	s.source = { :git => "https://github.com/LeonardoCardoso/Swift-Link-Preview.git", :tag => "#{s.version}"}
 	s.framework = "UIKit"
 	s.dependency 'Alamofire', '~> 3.4'
 	s.source_files = "SwiftLinkPreview/**/*.{swift}"
-	s.resources = "SwiftLinkPreview/**/*.{png,jpeg,jpg,storyboard,xib}"
+	s.resources = "SwiftLinkPreview/**/*.{swift}"
 
 end

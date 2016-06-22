@@ -172,15 +172,10 @@ extension SwiftLinkPreview {
                     // htmlCode = htmlCode.deleteCData()
                     // htmlCode = htmlCode.deleteInputs()
                     
-                    print("received \(NSDate())")
                     self.crawlMetaTags(htmlCode)
-                    print("crawlMetaTags \(NSDate())")
                     self.crawlTitle(htmlCode)
-                    print("crawlTitle \(NSDate())")
                     self.crawlDescription(htmlCode)
-                    print("crawlDescription \(NSDate())")
                     self.crawlImages(htmlCode)
-                    print("crawlImages \(NSDate())")
                     
                     completion()
                     
@@ -359,17 +354,10 @@ extension SwiftLinkPreview {
     private func crawlCode(content: String) -> String {
         
         let resultSpan = self.getTagContent("span", content: content)
-        print("resultSpan \(NSDate())")
-        
         let resultParagraph = self.getTagContent("p", content: content)
-        print("resultParagraph \(NSDate())")
-        
         let resultDiv = self.getTagContent("div", content: content)
-        print("resultDiv \(NSDate())")
-        
         var result = resultSpan
         
-        print("start CrawlCode \(NSDate())")
         if (resultParagraph.characters.count > result.characters.count) {
             
             if (resultParagraph.characters.count >= resultDiv.characters.count) {
@@ -383,7 +371,6 @@ extension SwiftLinkPreview {
             }
             
         }
-        print("end CrawlCode \(NSDate())")
         
         return result
         
