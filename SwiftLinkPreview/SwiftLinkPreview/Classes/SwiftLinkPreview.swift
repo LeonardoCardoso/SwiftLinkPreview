@@ -168,6 +168,8 @@ extension SwiftLinkPreview {
                     htmlCode = htmlCode.deleteHtmlComments()
                     htmlCode = htmlCode.deleteCData()
                     
+                    print("\(htmlCode)")
+                    
                     self.crawlMetaTags(htmlCode)
                     self.crawlTitle(htmlCode)
                     self.crawlDescription(htmlCode)

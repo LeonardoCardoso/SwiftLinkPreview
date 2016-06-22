@@ -1,7 +1,5 @@
 # Swift Link Preview
 
-**Under Development 🛠**
-
 It makes a preview from an url, grabbing all the information such as title, relevant texts and images.
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)]()

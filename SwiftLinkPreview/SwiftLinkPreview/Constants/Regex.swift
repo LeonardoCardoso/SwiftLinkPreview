@@ -16,7 +16,7 @@ class Regex {
     static let tittlePattern = "<title(.*?)>(.*?)</title>"
     static let scriptPattern = "<script(.*?)>(.*?)</script>"
     static let metatagPattern = "<meta(.*?)>"
-    static let metatagContentPattern = "content=(\"|')(.*?)(\"|')"
+    static let metatagContentPattern = "content=(\"(.*?)\")|('(.*?)')"
     static let urlPattern = "<\\b(http[s]?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
     static let rawUrlPattern = "((http[s]?)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
     static let cannonicalUrlPattern = "http[s]?://(.*)[/]?"
