@@ -12,7 +12,7 @@ import Foundation
 class Regex {
     
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
-    static let imageTagPattern = "<img(.*?)src=(\"|')(.*?(gif|jpg|jpeg|png|bmp))(.*?)(\"|')(.*?)(/)?>(</img>)?"
+    static let imageTagPattern = "<img.*?src=\"([^\"]+)\".*?>"
     static let tittlePattern = "<title(.*?)>(.*?)</title>"
     static let scriptPattern = "<script(.*?)>(.*?)</script>"
     static let metatagPattern = "<meta(.*?)>"
@@ -23,6 +23,9 @@ class Regex {
     static let rawTagPattern = "<[^>]+>"
     static let htmlCommentPattern = "(?=<!--)([\\s\\S]*?-->)"
     static let cDataPattern = "(?=(//)?<!\\[CDATA)([\\s\\S]*?\\]\\]>)"
+    static let inputPattern = "<input(.*?[^>])>"
+    static let textareaPattern = "<textarea(.*?[^>])>(.*)</textarea>"
+    static let aPattern = "<(/)?a(.*?[^>])?>"
     
     
     // Test regular expression
@@ -41,7 +44,8 @@ class Regex {
             
             if let match = rx.firstMatchInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {
                 
-                return string.substring(match.rangeAtIndex(index))
+                var result: [String] = Regex.stringMatches([match], text: string, index: index)
+                return result.count == 0 ? nil : result[0]
                 
             } else {
                 
@@ -66,23 +70,7 @@ class Regex {
             
             if let matches: [NSTextCheckingResult] = rx.matchesInString(string, options: [], range: NSMakeRange(0, string.characters.count)) {
                 
-                var result: [String] = []
-                
-                for match in matches {
-                    
-                    var value = "";
-                    
-                    if index < match.numberOfRanges  {
-                        
-                        value = string.substring(match.rangeAtIndex(index))
-                        
-                    }
-                    
-                    result.append(value)
-                    
-                }
-                
-                return result
+                return Regex.stringMatches(matches, text: string, index: index)
                 
             } else {
                 
@@ -92,6 +80,21 @@ class Regex {
             
             
         } catch {
+            
+            return []
+            
+        }
+        
+    }
+    
+    // Extract matches from string
+    static func stringMatches(results: [NSTextCheckingResult], text: String, index: Int = 0) -> [String] {
+        
+        do {
+            
+            return results.map { (text as NSString).substringWithRange($0.rangeAtIndex(index)) }
+            
+        } catch _ {
             
             return []
             

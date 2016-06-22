@@ -48,17 +48,24 @@ extension String {
         
     }
     
+    // Encode HTML entities
+    var encoded: String {
+        
+        return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        
+    }
+    
     // Strip tags
     var tagsStripped: String {
         
-        return self.stringByReplacingOccurrencesOfString(Regex.rawTagPattern, withString: "", options: .RegularExpressionSearch, range: nil)
+        return self.deleteTagByPattern(Regex.rawTagPattern)
         
     }
     
     // Delete HTML comments
     func deleteHtmlComments() -> String {
         
-        return self.stringByReplacingOccurrencesOfString(Regex.htmlCommentPattern, withString: "", options: .RegularExpressionSearch, range: nil)
+        return self.deleteTagByPattern(Regex.htmlCommentPattern)
         
     }
     
@@ -66,7 +73,21 @@ extension String {
     // Delete CDATA
     func deleteCData() -> String {
         
-        return self.stringByReplacingOccurrencesOfString(Regex.cDataPattern, withString: "", options: .RegularExpressionSearch, range: nil)
+        return self.deleteTagByPattern(Regex.cDataPattern)
+        
+    }
+    
+    // Delete inputs
+    func deleteInputs() -> String {
+        
+        return self.deleteTagByPattern(Regex.inputPattern).deleteTagByPattern(Regex.textareaPattern)
+        
+    }
+    
+    // Delete tab by pattern
+    func deleteTagByPattern(pattern: String) -> String {
+        
+        return self.stringByReplacingOccurrencesOfString(pattern, withString: "", options: .RegularExpressionSearch, range: nil)
         
     }
     
@@ -102,7 +123,10 @@ extension String {
     }
     func substring(range: NSRange) -> String {
         
-        return self.substringWithRange(Range(self.startIndex.advancedBy(range.location) ..< self.startIndex.advancedBy(range.location + range.length)))
+        var end = range.location + range.length
+        end = end > self.characters.count ? self.characters.count - 1 : end
+        
+        return self.substring(range.location, end: end)
         
     }
     

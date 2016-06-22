@@ -161,19 +161,26 @@ extension SwiftLinkPreview {
                     
                     var htmlCode = try String(contentsOfURL: url)
                     htmlCode = htmlCode.extendedTrim
-                    htmlCode = htmlCode.deleteHTMLTag("script")
-                    htmlCode = htmlCode.deleteHTMLTag("link")
-                    htmlCode = htmlCode.deleteHTMLTag("path")
-                    htmlCode = htmlCode.deleteHTMLTag("style")
-                    htmlCode = htmlCode.deleteHtmlComments()
-                    htmlCode = htmlCode.deleteCData()
+                    // htmlCode = htmlCode.deleteHTMLTag("script")
+                    // htmlCode = htmlCode.deleteHTMLTag("link")
+                    // htmlCode = htmlCode.deleteHTMLTag("path")
+                    // htmlCode = htmlCode.deleteHTMLTag("style")
+                    // htmlCode = htmlCode.deleteHTMLTag("iframe")
+                    // htmlCode = htmlCode.deleteHTMLTag("a")
+                    // htmlCode = htmlCode.deleteTagByPattern(Regex.aPattern)
+                    // htmlCode = htmlCode.deleteHtmlComments()
+                    // htmlCode = htmlCode.deleteCData()
+                    // htmlCode = htmlCode.deleteInputs()
                     
-                    print("\(htmlCode)")
-                    
+                    print("received \(NSDate())")
                     self.crawlMetaTags(htmlCode)
+                    print("crawlMetaTags \(NSDate())")
                     self.crawlTitle(htmlCode)
+                    print("crawlTitle \(NSDate())")
                     self.crawlDescription(htmlCode)
+                    print("crawlDescription \(NSDate())")
                     self.crawlImages(htmlCode)
+                    print("crawlImages \(NSDate())")
                     
                     completion()
                     
@@ -226,10 +233,8 @@ extension SwiftLinkPreview {
     // Search for meta tags
     private func crawlMetaTags(htmlCode: String) {
         
-        let index = 1
-        
         let possibleTags = ["title", "description", "image"]
-        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: index)
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
         
         for metatag in metatags {
             
@@ -309,7 +314,7 @@ extension SwiftLinkPreview {
                 
                 if images.isEmpty {
                     
-                    if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 3) {
+                    if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 1) {
                         
                         var imgs: [String] = []
                         
@@ -319,7 +324,7 @@ extension SwiftLinkPreview {
                             
                             if !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
                                 
-                                value = (self.result["finalUrl"] as! NSURL).absoluteString + value
+                                value = (value.hasPrefix("//") ? "http:" : (self.result["finalUrl"] as! NSURL).absoluteString) + value
                                 
                             }
                             
@@ -354,10 +359,17 @@ extension SwiftLinkPreview {
     private func crawlCode(content: String) -> String {
         
         let resultSpan = self.getTagContent("span", content: content)
+        print("resultSpan \(NSDate())")
+        
         let resultParagraph = self.getTagContent("p", content: content)
+        print("resultParagraph \(NSDate())")
+        
         let resultDiv = self.getTagContent("div", content: content)
+        print("resultDiv \(NSDate())")
+        
         var result = resultSpan
         
+        print("start CrawlCode \(NSDate())")
         if (resultParagraph.characters.count > result.characters.count) {
             
             if (resultParagraph.characters.count >= resultDiv.characters.count) {
@@ -371,6 +383,7 @@ extension SwiftLinkPreview {
             }
             
         }
+        print("end CrawlCode \(NSDate())")
         
         return result
         
