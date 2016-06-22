@@ -55,10 +55,26 @@ extension String {
         
     }
     
-    // Delete HTML tags
-    func deleteHTMLTag(tag:String) -> String {
+    // Delete HTML comments
+    func deleteHtmlComments() -> String {
         
-        return self.stringByReplacingOccurrencesOfString("(?i)</?\(tag)\\b[^<]*>", withString: "", options: .RegularExpressionSearch, range: nil)
+        return self.stringByReplacingOccurrencesOfString(Regex.htmlCommentPattern, withString: "", options: .RegularExpressionSearch, range: nil)
+        
+    }
+    
+    
+    // Delete CDATA
+    func deleteCData() -> String {
+        
+        return self.stringByReplacingOccurrencesOfString(Regex.cDataPattern, withString: "", options: .RegularExpressionSearch, range: nil)
+        
+    }
+    
+    // Delete HTML tags
+    func deleteHTMLTag(tag: String) -> String {
+        
+        return
+            self.stringByReplacingOccurrencesOfString("<\(tag)([^>]*)/>" , withString: "", options: .RegularExpressionSearch, range: nil).stringByReplacingOccurrencesOfString("<\(tag)([^>]*)>(.*?)</\(tag)>", withString: "", options: .RegularExpressionSearch, range: nil).stringByReplacingOccurrencesOfString("(?i)</?\(tag)\\b[^<]*>", withString: "", options: .RegularExpressionSearch, range: nil)
         
     }
     
@@ -93,7 +109,8 @@ extension String {
     // Check if it's a valid url
     func isValidURL() -> Bool {
         
-        return Regex.test(self, regex: Regex.rawUrlPattern) && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
+        return Regex.test(self, regex: Regex.rawUrlPattern)
+            // && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
         
     }
     

@@ -87,7 +87,7 @@ You need to set ```Allow Arbitrary Loads``` to ```YES``` on your project's Info.
 
 ## TIPS
 
-Not all websites will have their info brought, you can treat the info your implementation gets as you like. But here are two tips about posting a preview:
+Not all websites will have their info brought, you can treat the info that your implementation gets as you like. But here are two tips about posting a preview:
 
 * If some info is missing, you can offer the user to enter it. Take for example the description.
 * If more than one image is fetched, you can offer the user the feature of picking one image.

@@ -48,7 +48,7 @@ public class SwiftLinkPreview {
                 
                 self.result["finalUrl"] = unshortened
                 
-                self.extractCannonicalURL()
+                self.extractCanonicalURL()
                 
                 self.extractInfo({
                     
@@ -163,8 +163,10 @@ extension SwiftLinkPreview {
                     htmlCode = htmlCode.extendedTrim
                     htmlCode = htmlCode.deleteHTMLTag("script")
                     htmlCode = htmlCode.deleteHTMLTag("link")
-                    
-                    print("\(htmlCode)")
+                    htmlCode = htmlCode.deleteHTMLTag("path")
+                    htmlCode = htmlCode.deleteHTMLTag("style")
+                    htmlCode = htmlCode.deleteHtmlComments()
+                    htmlCode = htmlCode.deleteCData()
                     
                     self.crawlMetaTags(htmlCode)
                     self.crawlTitle(htmlCode)
@@ -190,21 +192,21 @@ extension SwiftLinkPreview {
         
     }
     
-    // Extract get cannonical URL
-    private func extractCannonicalURL() {
+    // Extract get canonical URL
+    private func extractCanonicalURL() {
         
-        if var cannonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
+        if var canonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
             
-            cannonicalUrl = cannonicalUrl.replace("http://", with: "").replace("https://", with: "")
+            canonicalUrl = canonicalUrl.replace("http://", with: "").replace("https://", with: "")
             
-            if let slash = cannonicalUrl.rangeOfString("/") {
+            if let slash = canonicalUrl.rangeOfString("/") {
                 
-                let endIndex = cannonicalUrl.startIndex.distanceTo(slash.endIndex)
-                cannonicalUrl = cannonicalUrl.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
+                let endIndex = canonicalUrl.startIndex.distanceTo(slash.endIndex)
+                canonicalUrl = canonicalUrl.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
                 
             }
             
-            self.result["canonicalUrl"] = cannonicalUrl
+            self.result["canonicalUrl"] = canonicalUrl
             
         } else {
             
@@ -224,21 +226,27 @@ extension SwiftLinkPreview {
         
         let index = 1
         
-        let possibleTags = ["url", "title", "description", "image"]
+        let possibleTags = ["title", "description", "image"]
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: index)
         
         for metatag in metatags {
             
             for tag in possibleTags {
                 
-                if metatag.rangeOfString("property=\"og:" + tag + "\"") != nil ||
-                    metatag.rangeOfString("property='og:" + tag + "'") != nil ||
-                    metatag.rangeOfString("name=\"" + tag + "\"") != nil ||
-                    metatag.rangeOfString("name='" + tag + "'") != nil {
+                if (metatag.rangeOfString("property=\"og:\(tag)\"") != nil ||
+                    metatag.rangeOfString("property='og:\(tag)'") != nil ||
+                    metatag.rangeOfString("property=\"twitter:\(tag)\"") != nil ||
+                    metatag.rangeOfString("property='twitter:\(tag)'") != nil ||
+                    metatag.rangeOfString("name=\"\(tag)\"") != nil ||
+                    metatag.rangeOfString("name='\(tag)'") != nil) {
                     
-                    if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
+                    if((self.result[tag] as! String).isEmpty) {
                         
-                        self.result[tag] = value.decoded
+                        if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
+                            
+                            self.result[tag] = value.decoded
+                            
+                        }
                         
                     }
                     
@@ -291,33 +299,36 @@ extension SwiftLinkPreview {
     // Crawl for images
     private func crawlImages(htmlCode: String) {
         
-        if let images: [String] = self.result["images"] as? [String] {
+        let mainImage: String = self.result["image"] as! String
+        
+        if mainImage.isEmpty {
             
-            if images.isEmpty {
+            if let images: [String] = self.result["images"] as? [String] {
                 
-                if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, indexes: [3, 4]) {
+                if images.isEmpty {
                     
-                    var imgs: [String] = []
-                    
-                    for value in values {
+                    if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 3) {
                         
-                        var value = value
+                        var imgs: [String] = []
                         
-                        if !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
+                        for value in values {
                             
-                            value = (self.result["finalUrl"] as! NSURL).absoluteString + value
+                            var value = value
+                            
+                            if !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
+                                
+                                value = (self.result["finalUrl"] as! NSURL).absoluteString + value
+                                
+                            }
+                            
+                            imgs.append(value)
                             
                         }
                         
-                        imgs.append(value)
+                        self.result["images"] = imgs
                         
-                    }
-                    
-                    self.result["images"] = imgs
-                    
-                    if let mainImage: String = self.result["image"] as? String {
                         
-                        if mainImage.isEmpty && imgs.count > 0 {
+                        if imgs.count > 0 {
                             
                             self.result["image"] = imgs[0]
                             
@@ -328,6 +339,10 @@ extension SwiftLinkPreview {
                 }
                 
             }
+            
+        } else {
+            
+            self.result["images"] = [mainImage]
             
         }
         

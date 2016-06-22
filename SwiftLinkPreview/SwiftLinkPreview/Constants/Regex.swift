@@ -12,7 +12,7 @@ import Foundation
 class Regex {
     
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
-    static let imageTagPattern = "<img(.*?)src=[(\"|')(.+?)(gif|jpg|jpeg|png|bmp)(.*?)(\"|')]{1}(.*?)(/)?>(</img>)?"
+    static let imageTagPattern = "<img(.*?)src=(\"|')(.*?(gif|jpg|jpeg|png|bmp))(.*?)(\"|')(.*?)(/)?>(</img>)?"
     static let tittlePattern = "<title(.*?)>(.*?)</title>"
     static let scriptPattern = "<script(.*?)>(.*?)</script>"
     static let metatagPattern = "<meta(.*?)>"
@@ -21,7 +21,8 @@ class Regex {
     static let rawUrlPattern = "((http[s]?)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
     static let cannonicalUrlPattern = "http[s]?://(.*)[/]?"
     static let rawTagPattern = "<[^>]+>"
-    static let htmlCommentPattern = "<!--[\\s\\S]*-->"
+    static let htmlCommentPattern = "(?=<!--)([\\s\\S]*?-->)"
+    static let cDataPattern = "(?=(//)?<!\\[CDATA)([\\s\\S]*?\\]\\]>)"
     
     
     // Test regular expression
@@ -31,7 +32,7 @@ class Regex {
         
     }
     
-    // Match all occurrencies
+    // Match first occurrency
     static func pregMatchFirst(string: String!, regex: String!, index: Int = 0) -> String? {
         
         do{
@@ -57,7 +58,7 @@ class Regex {
     }
     
     // Match all occurrencies
-    static func pregMatchAll(string: String!, regex: String!, index: Int = 0, indexes: [Int]? = nil) -> [String] {
+    static func pregMatchAll(string: String!, regex: String!, index: Int = 0) -> [String] {
         
         do{
             
@@ -71,15 +72,7 @@ class Regex {
                     
                     var value = "";
                     
-                    if let indexes = indexes {
-                        
-                        for i in indexes {
-                            
-                            value += string.substring(match.rangeAtIndex(i))
-                            
-                        }
-                        
-                    } else {
+                    if index < match.numberOfRanges  {
                         
                         value = string.substring(match.rangeAtIndex(index))
                         
