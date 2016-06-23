@@ -20,9 +20,9 @@
 /* Begin PBXFileReference section */
 		1A34CA018B8949932AE8A3F2 /* Pods-SwiftLinkPreview.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreview.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreview/Pods-SwiftLinkPreview.release.xcconfig"; sourceTree = "<group>"; };
 		98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreview.swift; sourceTree = "<group>"; };
-		98348AC11D09FC58003FA2B3 /* PreviewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreviewError.swift; path = ../Constants/PreviewError.swift; sourceTree = "<group>"; };
+		98348AC11D09FC58003FA2B3 /* PreviewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewError.swift; sourceTree = "<group>"; };
 		98348AC41D09FFED003FA2B3 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		98348AC71D0A00DF003FA2B3 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Regex.swift; path = ../Constants/Regex.swift; sourceTree = "<group>"; };
+		98348AC71D0A00DF003FA2B3 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLSessionExtension.swift; sourceTree = "<group>"; };
 		9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewErrorTypes.swift; sourceTree = "<group>"; };
 		98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,8 +64,8 @@
 		98348AB21D09B26C003FA2B3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				98348AC71D0A00DF003FA2B3 /* Regex.swift */,
 				98348AC11D09FC58003FA2B3 /* PreviewError.swift */,
+				98348AC71D0A00DF003FA2B3 /* Regex.swift */,
 				98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */,
 			);
 			path = Classes;
@@ -74,8 +74,8 @@
 		98348AB31D09B2AA003FA2B3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				98348AC41D09FFED003FA2B3 /* StringExtension.swift */,
 				9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */,
+				98348AC41D09FFED003FA2B3 /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -144,12 +144,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98846C9E1D09AA6E00846726 /* Build configuration list for PBXNativeTarget "SwiftLinkPreview" */;
 			buildPhases = (
-				82AE4FCB6007067C969F19AB /* 📦 Check Pods Manifest.lock */,
+				82AE4FCB6007067C969F19AB /* [CP] Check Pods Manifest.lock */,
 				98846C911D09AA6E00846726 /* Sources */,
 				98846C921D09AA6E00846726 /* Frameworks */,
 				98846C931D09AA6E00846726 /* Headers */,
 				98846C941D09AA6E00846726 /* Resources */,
-				95A1148987F3C47687D70DE4 /* 📦 Copy Pods Resources */,
+				95A1148987F3C47687D70DE4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -203,14 +203,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		82AE4FCB6007067C969F19AB /* 📦 Check Pods Manifest.lock */ = {
+		82AE4FCB6007067C969F19AB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,14 +218,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		95A1148987F3C47687D70DE4 /* 📦 Copy Pods Resources */ = {
+		95A1148987F3C47687D70DE4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
