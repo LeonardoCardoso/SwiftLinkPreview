@@ -10,7 +10,6 @@ import UIKit
 import SwiftLinkPreview
 import SwiftyDrop
 import ImageSlideshow
-import KMPlaceholderTextView
 
 class ViewController: UIViewController {
     
