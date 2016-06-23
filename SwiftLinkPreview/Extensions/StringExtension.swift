@@ -48,13 +48,6 @@ extension String {
         
     }
     
-    // Encode HTML entities
-    var encoded: String {
-        
-        return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        
-    }
-    
     // Strip tags
     var tagsStripped: String {
         

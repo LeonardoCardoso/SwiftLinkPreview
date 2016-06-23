@@ -10,7 +10,6 @@ Pod::Spec.new do |s|
 	s.author = { "Leonardo Cardoso" => "contact@leocardz.com" }
 	s.homepage = "http://ios.leocardz.com/swift-link-preview/"
 	s.source = { :git => "https://github.com/LeonardoCardoso/Swift-Link-Preview.git", :tag => "#{s.version}"}
-	s.social_media_url = 'https://twitter.com/leocardz'
 	s.framework = "UIKit"
 	s.dependency 'Alamofire', '~> 3.4'
 	s.source_files = "SwiftLinkPreview/**/*.{swift}"

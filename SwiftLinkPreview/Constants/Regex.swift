@@ -90,15 +90,7 @@ class Regex {
     // Extract matches from string
     static func stringMatches(results: [NSTextCheckingResult], text: String, index: Int = 0) -> [String] {
         
-        do {
-            
-            return results.map { (text as NSString).substringWithRange($0.rangeAtIndex(index)) }
-            
-        } catch _ {
-            
-            return []
-            
-        }
+        return results.map { (text as NSString).substringWithRange($0.rangeAtIndex(index)) }
         
     }
     
