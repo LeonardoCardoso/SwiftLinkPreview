@@ -28,7 +28,7 @@ It makes a preview from an url, grabbing all the information such as title, rele
 
 ```ruby
 	use_frameworks!
-	pod 'SwiftLinkPreview', '~> 0.0.1'
+	pod 'SwiftLinkPreview', '~> 0.0.2'
 ```
 
 ### Manually
