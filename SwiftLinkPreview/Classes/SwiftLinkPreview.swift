@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Alamofire
 
 public class SwiftLinkPreview {
     
@@ -16,7 +15,8 @@ public class SwiftLinkPreview {
     private var text: String!
     private var url: NSURL!
     private var result: [String: AnyObject] = [:]
-    private var request: Alamofire.Request?
+    private var task: NSURLSessionDataTask?
+    private let session = NSURLSession.sharedSession()
     
     // MARK: - Constructor
     public init() {
@@ -79,9 +79,9 @@ public class SwiftLinkPreview {
     // Cancel request
     public func cancel() {
         
-        if let request = self.request {
+        if let _ = self.task {
             
-            request.cancel()
+            self.task!.cancel()
             
         }
         
@@ -120,27 +120,43 @@ extension SwiftLinkPreview {
     // Unshorten URL by following redirections
     private func unshortenURL(url: NSURL, completion: (NSURL) -> ()) {
         
-        request = Alamofire.request(.GET, url.absoluteString, parameters: [:])
-            .response { request, response, data, error in
+        self.task = session.dataTaskWithURL(url) { data, response, error in
+            
+            print("\(response?.URL)")
+            
+            if let finalResult = response?.URL {
                 
-                if let finalResult = response?.URL {
+                if(finalResult.absoluteString == url.absoluteString) {
                     
-                    if(finalResult.absoluteString == url.absoluteString) {
-                        
+                    dispatch_async(dispatch_get_main_queue()){
+                    
                         completion(url)
-                        
-                    } else {
-                        
-                        self.unshortenURL(finalResult, completion: completion)
-                        
+                    
                     }
                     
                 } else {
+                    
+                    self.task!.cancel()
+                    self.unshortenURL(finalResult, completion: completion)
+                    
+                }
+                
+            } else {
+                
+                dispatch_async(dispatch_get_main_queue()){
                     
                     completion(url)
                     
                 }
                 
+            }
+            
+        }
+        
+        if let _ = self.task {
+            
+            self.task!.resume()
+            
         }
         
     }
@@ -161,16 +177,6 @@ extension SwiftLinkPreview {
                     
                     var htmlCode = try String(contentsOfURL: url)
                     htmlCode = htmlCode.extendedTrim
-                    // htmlCode = htmlCode.deleteHTMLTag("script")
-                    // htmlCode = htmlCode.deleteHTMLTag("link")
-                    // htmlCode = htmlCode.deleteHTMLTag("path")
-                    // htmlCode = htmlCode.deleteHTMLTag("style")
-                    // htmlCode = htmlCode.deleteHTMLTag("iframe")
-                    // htmlCode = htmlCode.deleteHTMLTag("a")
-                    // htmlCode = htmlCode.deleteTagByPattern(Regex.aPattern)
-                    // htmlCode = htmlCode.deleteHtmlComments()
-                    // htmlCode = htmlCode.deleteCData()
-                    // htmlCode = htmlCode.deleteInputs()
                     
                     self.crawlMetaTags(htmlCode)
                     self.crawlTitle(htmlCode)
