@@ -14,8 +14,20 @@
 		9851A6951D11B83000B39FCD /* NSURLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */; };
 		9853E3DF1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */; };
 		98846C9A1D09AA6E00846726 /* SwiftLinkPreview.h in Headers */ = {isa = PBXBuildFile; fileRef = 98846C991D09AA6E00846726 /* SwiftLinkPreview.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		98DC533B1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */; };
+		98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */; };
 		FB9589A6FE218CCC2181CBE5 /* Pods_SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B662FE8E49D2C18985F2085 /* Pods_SwiftLinkPreview.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		98DC533E1D1D73DB001134E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98846C8D1D09AA6E00846726 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98846C951D09AA6E00846726;
+			remoteInfo = SwiftLinkPreview;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1A34CA018B8949932AE8A3F2 /* Pods-SwiftLinkPreview.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreview.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreview/Pods-SwiftLinkPreview.release.xcconfig"; sourceTree = "<group>"; };
@@ -28,6 +40,9 @@
 		98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C991D09AA6E00846726 /* SwiftLinkPreview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLinkPreview.h; sourceTree = "<group>"; };
 		98846C9B1D09AA6E00846726 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLinkPreviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreviewTests.swift; sourceTree = "<group>"; };
+		98DC533C1D1D73DB001134E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B662FE8E49D2C18985F2085 /* Pods_SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E39200CC70144D36028B2BE9 /* Pods-SwiftLinkPreview.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreview.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreview/Pods-SwiftLinkPreview.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -38,6 +53,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB9589A6FE218CCC2181CBE5 /* Pods_SwiftLinkPreview.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98DC53351D1D73DB001134E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +118,7 @@
 				7F19DE6828EE3D23B6256F92 /* Pods */,
 				98846C971D09AA6E00846726 /* Products */,
 				98846C981D09AA6E00846726 /* SwiftLinkPreview */,
+				98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */,
+				98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +141,15 @@
 				98846C9B1D09AA6E00846726 /* Info.plist */,
 			);
 			path = SwiftLinkPreview;
+			sourceTree = "<group>";
+		};
+		98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */ = {
+			isa = PBXGroup;
+			children = (
+				98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */,
+				98DC533C1D1D73DB001134E3 /* Info.plist */,
+			);
+			path = SwiftLinkPreviewTests;
 			sourceTree = "<group>";
 		};
 		D6CDAA2DE2E0922B88F50E71 /* Frameworks */ = {
@@ -160,6 +194,24 @@
 			productReference = 98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		98DC53371D1D73DB001134E3 /* SwiftLinkPreviewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98DC53421D1D73DB001134E3 /* Build configuration list for PBXNativeTarget "SwiftLinkPreviewTests" */;
+			buildPhases = (
+				98DC53341D1D73DB001134E3 /* Sources */,
+				98DC53351D1D73DB001134E3 /* Frameworks */,
+				98DC53361D1D73DB001134E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98DC533F1D1D73DB001134E3 /* PBXTargetDependency */,
+			);
+			name = SwiftLinkPreviewTests;
+			productName = SwiftLinkPreviewTests;
+			productReference = 98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -171,6 +223,9 @@
 				ORGANIZATIONNAME = leocardz.com;
 				TargetAttributes = {
 					98846C951D09AA6E00846726 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					98DC53371D1D73DB001134E3 = {
 						CreatedOnToolsVersion = 7.3;
 					};
 				};
@@ -188,12 +243,20 @@
 			projectRoot = "";
 			targets = (
 				98846C951D09AA6E00846726 /* SwiftLinkPreview */,
+				98DC53371D1D73DB001134E3 /* SwiftLinkPreviewTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		98846C941D09AA6E00846726 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98DC53361D1D73DB001134E3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -249,7 +312,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		98DC53341D1D73DB001134E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98DC533B1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		98DC533F1D1D73DB001134E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98846C951D09AA6E00846726 /* SwiftLinkPreview */;
+			targetProxy = 98DC533E1D1D73DB001134E3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		98846C9C1D09AA6E00846726 /* Debug */ = {
@@ -380,6 +459,26 @@
 			};
 			name = Release;
 		};
+		98DC53401D1D73DB001134E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SwiftLinkPreviewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		98DC53411D1D73DB001134E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SwiftLinkPreviewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -400,6 +499,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		98DC53421D1D73DB001134E3 /* Build configuration list for PBXNativeTarget "SwiftLinkPreviewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98DC53401D1D73DB001134E3 /* Debug */,
+				98DC53411D1D73DB001134E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

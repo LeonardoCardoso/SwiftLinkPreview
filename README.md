@@ -4,7 +4,7 @@ It makes a preview from an url, grabbing all the information such as title, rele
 
 [![Platform](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)
 [![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)
-[^]: [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![LICENSE](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)
 
 **UTF-8** | **Extended UTF-8**	 |

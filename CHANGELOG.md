@@ -6,12 +6,12 @@
 ---
 
 ## [0.0.3](<!-- https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.0.3 -->)
-<!--- Released on ????-??-??.
+<!--- Released on ????-??-??. -->
 
 #### Added
 - Support for Carthage. [#3](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/3)
 
-  - Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
+<!---   - Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - Support for Swift Package Manager. [#3](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/3)
 
   - Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso). -->
@@ -22,7 +22,7 @@
 
 
 ## [0.0.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.0.2)
-Released on 2016-06-26.
+Released on 2016-06-23.
 
 #### Added
 - Initial release of SwiftLinkPreview.
