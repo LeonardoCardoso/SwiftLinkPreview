@@ -34,6 +34,12 @@ It makes a preview from an url, grabbing all the information such as title, rele
 	pod 'SwiftLinkPreview', '~> 0.0.3'
 ```
 
+### Carthage
+
+```ruby
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.0.3
+```
+
 ### Manually
 
 Although it's not recommended, you just need to drop SwiftLinkPreview folder into Xcode project (make sure to enable "Copy items if needed" and "Create groups").

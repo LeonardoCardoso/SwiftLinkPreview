@@ -16,7 +16,6 @@
 		98846C9A1D09AA6E00846726 /* SwiftLinkPreview.h in Headers */ = {isa = PBXBuildFile; fileRef = 98846C991D09AA6E00846726 /* SwiftLinkPreview.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98DC533B1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */; };
 		98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */; };
-		FB9589A6FE218CCC2181CBE5 /* Pods_SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B662FE8E49D2C18985F2085 /* Pods_SwiftLinkPreview.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +29,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1A34CA018B8949932AE8A3F2 /* Pods-SwiftLinkPreview.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreview.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreview/Pods-SwiftLinkPreview.release.xcconfig"; sourceTree = "<group>"; };
 		98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreview.swift; sourceTree = "<group>"; };
 		98348AC11D09FC58003FA2B3 /* PreviewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewError.swift; sourceTree = "<group>"; };
 		98348AC41D09FFED003FA2B3 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -43,8 +41,6 @@
 		98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLinkPreviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreviewTests.swift; sourceTree = "<group>"; };
 		98DC533C1D1D73DB001134E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9B662FE8E49D2C18985F2085 /* Pods_SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E39200CC70144D36028B2BE9 /* Pods-SwiftLinkPreview.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreview.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreview/Pods-SwiftLinkPreview.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +48,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB9589A6FE218CCC2181CBE5 /* Pods_SwiftLinkPreview.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,15 +62,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7F19DE6828EE3D23B6256F92 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E39200CC70144D36028B2BE9 /* Pods-SwiftLinkPreview.debug.xcconfig */,
-				1A34CA018B8949932AE8A3F2 /* Pods-SwiftLinkPreview.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		98348AB11D09B265003FA2B3 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,8 +100,6 @@
 		98846C8C1D09AA6E00846726 = {
 			isa = PBXGroup;
 			children = (
-				D6CDAA2DE2E0922B88F50E71 /* Frameworks */,
-				7F19DE6828EE3D23B6256F92 /* Pods */,
 				98846C971D09AA6E00846726 /* Products */,
 				98846C981D09AA6E00846726 /* SwiftLinkPreview */,
 				98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */,
@@ -150,14 +134,6 @@
 				98DC533C1D1D73DB001134E3 /* Info.plist */,
 			);
 			path = SwiftLinkPreviewTests;
-			sourceTree = "<group>";
-		};
-		D6CDAA2DE2E0922B88F50E71 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9B662FE8E49D2C18985F2085 /* Pods_SwiftLinkPreview.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -424,7 +400,6 @@
 		};
 		98846C9F1D09AA6E00846726 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E39200CC70144D36028B2BE9 /* Pods-SwiftLinkPreview.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -443,7 +418,6 @@
 		};
 		98846CA01D09AA6E00846726 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A34CA018B8949932AE8A3F2 /* Pods-SwiftLinkPreview.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -507,6 +481,7 @@
 				98DC53411D1D73DB001134E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
