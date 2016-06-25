@@ -64,7 +64,7 @@ class ViewController: UIViewController {
         
         self.showHideAll(true)
         self.setUpSlideshow()
-        
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -253,14 +253,14 @@ class ViewController: UIViewController {
             textField.text,
             onSuccess: { result in
                 
-                NSLog("\(result)")
+                print(result)
                 self.result = result
                 self.setData()
                 
             },
             onError: { error in
                 
-                NSLog("\(error)")
+                print(error)
                 self.endCrawling()
                 
                 Drop.down(error.message!, state: .Error)

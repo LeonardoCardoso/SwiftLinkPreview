@@ -107,8 +107,11 @@ slp.cancel()
 
 You need to set ```Allow Arbitrary Loads``` to ```YES``` on your project's Info.plist file.
 
-![app security.png](http://i.imgur.com/41hGjCC.png)
+![app security](http://i.imgur.com/41hGjCC.png)
 
+If you don't want to use the option above and you are using ```SwiftLinkPreview``` for services of your knowledge, you can whitelist them on Info.plist file as well.
+
+![app security](http://i.imgur.com/INEp6q5.png)
 
 ## TIPS
 
