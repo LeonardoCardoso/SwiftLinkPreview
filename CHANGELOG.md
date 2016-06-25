@@ -11,6 +11,8 @@ Released on ????-??-??.
 #### Added
 - Support for Swift Package Manager. [#7](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/7) [#8](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/8)
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
+- GitHub configs
+	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [0.0.3](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.0.3)
 Released on 2016-06-25.
