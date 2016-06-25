@@ -109,7 +109,7 @@ You need to set ```Allow Arbitrary Loads``` to ```YES``` on your project's Info.
 
 ![app security](http://i.imgur.com/41hGjCC.png)
 
-If you don't want to use the option above and you are using ```SwiftLinkPreview``` for services of your knowledge, you can whitelist them on Info.plist file as well.
+If you don't want to use the option above and you are using ```SwiftLinkPreview``` for services of your knowledge, you can whitelist them on Info.plist file as well. You can read more about it [here](http://stackoverflow.com/questions/30739473/nsurlsession-nsurlconnection-http-load-failed-on-ios-9), [here](https://github.com/Alamofire/Alamofire#app-transport-security) and [here](https://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/).
 
 ![app security](http://i.imgur.com/INEp6q5.png)
 
