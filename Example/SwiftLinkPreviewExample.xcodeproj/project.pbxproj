@@ -12,12 +12,11 @@
 		98846C801D09AA1C00846726 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98846C7E1D09AA1C00846726 /* Main.storyboard */; };
 		98846C821D09AA1C00846726 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98846C811D09AA1C00846726 /* Assets.xcassets */; };
 		98846C851D09AA1C00846726 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98846C831D09AA1C00846726 /* LaunchScreen.storyboard */; };
-		EE24D22148B7978D242A1AA1 /* Pods_SwiftLinkPreviewExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E703BBF0F89CC92E254BEAD /* Pods_SwiftLinkPreviewExample.framework */; };
+		ED48B344ADB4A0DF71484F4D /* Pods_SwiftLinkPreviewExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A24484655DB6B1981C776C /* Pods_SwiftLinkPreviewExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4E703BBF0F89CC92E254BEAD /* Pods_SwiftLinkPreviewExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftLinkPreviewExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		95586BDA0C29F8DA47A60E25 /* Pods-SwiftLinkPreviewExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreviewExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreviewExample/Pods-SwiftLinkPreviewExample.release.xcconfig"; sourceTree = "<group>"; };
+		68A24484655DB6B1981C776C /* Pods_SwiftLinkPreviewExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftLinkPreviewExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C771D09AA1B00846726 /* SwiftLinkPreviewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftLinkPreviewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C7A1D09AA1C00846726 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98846C7C1D09AA1C00846726 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -25,7 +24,8 @@
 		98846C811D09AA1C00846726 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98846C841D09AA1C00846726 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		98846C861D09AA1C00846726 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB22076029F7DF2DAD5721C5 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreviewExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreviewExample/Pods-SwiftLinkPreviewExample.debug.xcconfig"; sourceTree = "<group>"; };
+		E6A43798BC54B9888EBE2981 /* Pods-SwiftLinkPreviewExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreviewExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreviewExample/Pods-SwiftLinkPreviewExample.release.xcconfig"; sourceTree = "<group>"; };
+		F9B1124CC518583F00C46360 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreviewExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreviewExample/Pods-SwiftLinkPreviewExample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,18 +33,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE24D22148B7978D242A1AA1 /* Pods_SwiftLinkPreviewExample.framework in Frameworks */,
+				ED48B344ADB4A0DF71484F4D /* Pods_SwiftLinkPreviewExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4638DF45074377EE0B858090 /* Pods */ = {
+		16BB4C0C5F62127D991CF664 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BB22076029F7DF2DAD5721C5 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */,
-				95586BDA0C29F8DA47A60E25 /* Pods-SwiftLinkPreviewExample.release.xcconfig */,
+				68A24484655DB6B1981C776C /* Pods_SwiftLinkPreviewExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		916230C3EB65588793C70B39 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F9B1124CC518583F00C46360 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */,
+				E6A43798BC54B9888EBE2981 /* Pods-SwiftLinkPreviewExample.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -84,10 +92,10 @@
 		98846C6E1D09AA1B00846726 = {
 			isa = PBXGroup;
 			children = (
-				D50F5AE1EA2BACA2B3E2CB87 /* Frameworks */,
-				4638DF45074377EE0B858090 /* Pods */,
 				98846C781D09AA1B00846726 /* Products */,
 				98846C791D09AA1B00846726 /* SwiftLinkPreviewExample */,
+				916230C3EB65588793C70B39 /* Pods */,
+				16BB4C0C5F62127D991CF664 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,14 +118,6 @@
 				98846C861D09AA1C00846726 /* Info.plist */,
 			);
 			path = SwiftLinkPreviewExample;
-			sourceTree = "<group>";
-		};
-		D50F5AE1EA2BACA2B3E2CB87 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4E703BBF0F89CC92E254BEAD /* Pods_SwiftLinkPreviewExample.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,7 +358,7 @@
 		};
 		98846C8A1D09AA1C00846726 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB22076029F7DF2DAD5721C5 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */;
+			baseConfigurationReference = F9B1124CC518583F00C46360 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SwiftLinkPreviewExample/Info.plist;
@@ -371,7 +371,7 @@
 		};
 		98846C8B1D09AA1C00846726 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95586BDA0C29F8DA47A60E25 /* Pods-SwiftLinkPreviewExample.release.xcconfig */;
+			baseConfigurationReference = E6A43798BC54B9888EBE2981 /* Pods-SwiftLinkPreviewExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SwiftLinkPreviewExample/Info.plist;

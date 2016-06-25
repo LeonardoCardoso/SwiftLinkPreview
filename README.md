@@ -2,7 +2,10 @@
 
 It makes a preview from an url, grabbing all the information such as title, relevant texts and images.
 
-[![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)]() [![CocoaPods](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)]()
+[![Platform](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)
+[![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![LICENSE](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)
 
 **UTF-8** | **Extended UTF-8**	 |
 :--:|:--:|	
@@ -27,8 +30,23 @@ It makes a preview from an url, grabbing all the information such as title, rele
 ### CocoaPods
 
 ```ruby
-	use_frameworks!
-	pod 'SwiftLinkPreview', '~> 0.0.1'
+	source 'https://github.com/CocoaPods/Specs.git'
+	platform :ios, '8.0'
+	
+	target 'Your Project Name' do
+	  	use_frameworks!
+	  	// ...
+	  	pod 'SwiftLinkPreview', '~> 0.0.3'
+	  	// ...
+	end
+```
+
+### Carthage
+
+```ruby
+  	// ...
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.0.3
+  	// ...
 ```
 
 ### Manually
