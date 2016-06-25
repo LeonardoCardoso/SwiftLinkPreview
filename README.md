@@ -30,14 +30,23 @@ It makes a preview from an url, grabbing all the information such as title, rele
 ### CocoaPods
 
 ```ruby
-	use_frameworks!
-	pod 'SwiftLinkPreview', '~> 0.0.3'
+	source 'https://github.com/CocoaPods/Specs.git'
+	platform :ios, '8.0'
+	
+	target 'Your Project Name' do
+	  	use_frameworks!
+	  	// ...
+	  	pod 'SwiftLinkPreview', '~> 0.0.3'
+	  	// ...
+	end
 ```
 
 ### Carthage
 
 ```ruby
+  	// ...
 	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.0.3
+  	// ...
 ```
 
 ### Manually

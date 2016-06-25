@@ -122,8 +122,6 @@ extension SwiftLinkPreview {
         
         self.task = session.dataTaskWithURL(url) { data, response, error in
             
-            print("\(response?.URL)")
-            
             if let finalResult = response?.URL {
                 
                 if(finalResult.absoluteString == url.absoluteString) {
