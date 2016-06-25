@@ -46,6 +46,7 @@ playground.xcworkspace
 Pods/
 Podfile*
 *.xcworkspace
+SwiftLinkPreview/*/*.podspec
 
 # Carthage
 #
