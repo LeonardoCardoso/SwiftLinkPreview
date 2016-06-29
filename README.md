@@ -2,27 +2,41 @@
 
 It makes a preview from an url, grabbing all the information such as title, relevant texts and images.
 
-[![Platform](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/p/SwiftLinkPreview.svg?maxAge=2592000)
-[![CocoaPods](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/v/SwiftLinkPreview.svg?maxAge=2592000)
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![LICENSE](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)](https://img.shields.io/cocoapods/l/SwiftLinkPreview.svg?maxAge=2592000)
+[![Platform](https://img.shields.io/badge/platform-iOS-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
+[![CocoaPods](https://img.shields.io/badge/pod-v0.0.3-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 
-**UTF-8** | **Extended UTF-8**	 |
-:--:|:--:|	
-![UTF-8](Images/default.gif "UTF-8") | ![Extended UTF-8](Images/langs.gif "Extended UTF-8") |
-**Gallery** | **Video Websites** |
-![Gallery](Images/gallery.gif "Gallery") | ![Video Websites](Images/videos.gif "Video Websites") |
-**Images** | |
-![Images](Images/images.gif "Images") |  |
+#### Index 
 
-# FLOW
+* [Visual Examples](#visual-examples)
+* [Requirements and Details](#requirements-and-details)
+* [Installation](#installation)
+	* [CocoaPods](#cocoapods)
+	* [Carthage](#carthage)
+	* [Manually](#manually)
+* [Usage](#usage)
+	* [Instatiating](#instatiating)
+	* [Requesting preview](#requesting-preview)
+	* [Cancelling a request](#cancelling-a-request)
+* [Flow](#flow)
+* [Important](#important)
+* [Tips](#tips)
+* [Information and Contact](#information-and-contact)
+* [Related Projects](#related-projects)
+* [License](#license)
 
-![flow](http://i.imgur.com/SMueQkA.png)
+## Visual Examples
+
+**UTF-8** | **Extended UTF-8**	 | **Gallery** 
+:--:|:--:|:--:|	
+![UTF-8](Images/default.gif "UTF-8") | ![Extended UTF-8](Images/langs.gif "Extended UTF-8") |![Gallery](Images/gallery.gif "Gallery")
+**Video Websites** | **Images** 
+![Video Websites](Images/videos.gif "Video Websites") | ![Images](Images/images.gif "Images") | 
 
 ## Requirements and Details
 
 * iOS 8.0+
-* Xcode 7.3 or above
+* Xcode 7.3+
 * Built with Swift 2.2
 
 ## Installation
@@ -33,7 +47,7 @@ It makes a preview from an url, grabbing all the information such as title, rele
 	source 'https://github.com/CocoaPods/Specs.git'
 	platform :ios, '8.0'
 	
-	target 'Your Project Name' do
+	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
 	  	pod 'SwiftLinkPreview', '~> 0.0.3'
@@ -49,11 +63,9 @@ It makes a preview from an url, grabbing all the information such as title, rele
   	// ...
 ```
 
-#TODO Swift Package Manager
-
 ### Manually
 
-Although it's not recommended, you just need to drop SwiftLinkPreview folder into Xcode project (make sure to enable "Copy items if needed" and "Create groups").
+You just need to drop SwiftLinkPreview folder into Xcode project (make sure to enable "Copy items if needed" and "Create groups").
 
 
 ## Usage
@@ -102,6 +114,9 @@ slp.preview(
 slp.cancel()
 ```
 
+# FLOW
+
+![flow](http://i.imgur.com/SMueQkA.png)
 
 ## Important
 
