@@ -5,7 +5,6 @@
 //  Created by Leonardo Cardoso on 15/06/2016.
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
-
 import Foundation
 
 extension NSURLSession {

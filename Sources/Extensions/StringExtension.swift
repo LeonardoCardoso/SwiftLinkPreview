@@ -5,8 +5,17 @@
 //  Created by Leonardo Cardoso on 09/06/2016.
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
-
 import Foundation
+
+#if os(iOS) || os(watchOS) || os(tvOS)
+    
+    import UIKit
+
+#elseif os(OSX)
+
+    import Cocoa
+
+#endif
 
 extension String {
     
@@ -28,23 +37,31 @@ extension String {
     // Decode HTML entities
     var decoded: String {
         
-        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
-        let attributedOptions : [String: AnyObject] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
-        ]
-        
-        do {
+        #if os(iOS) || os(watchOS) || os(tvOS)
             
-            let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
+            let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
+            let attributedOptions : [String: AnyObject] = [
+                NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+            ]
             
-            return attributedString.string
+            do {
+                
+                let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
+                
+                return attributedString.string
+                
+            } catch _ {
+                
+                return self
+                
+            }
             
-        } catch _ {
+        #elseif os(OSX)
             
-            return self
+            return CFXMLCreateStringByUnescapingEntities(nil, self, nil) as String
             
-        }
+        #endif
         
     }
     
@@ -127,7 +144,7 @@ extension String {
     func isValidURL() -> Bool {
         
         return Regex.test(self, regex: Regex.rawUrlPattern)
-            // && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
+        // && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
         
     }
     

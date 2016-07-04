@@ -13,7 +13,6 @@
 		98348AC81D0A00DF003FA2B3 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC71D0A00DF003FA2B3 /* Regex.swift */; };
 		9851A6951D11B83000B39FCD /* NSURLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */; };
 		9853E3DF1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */; };
-		98846C9A1D09AA6E00846726 /* SwiftLinkPreview.h in Headers */ = {isa = PBXBuildFile; fileRef = 98846C991D09AA6E00846726 /* SwiftLinkPreview.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98DC533B1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */; };
 		98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */; };
 		98F7FEE41D2A97CF00F7F70B /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F7FEE31D2A97CF00F7F70B /* Package.swift */; };
@@ -37,7 +36,6 @@
 		9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLSessionExtension.swift; sourceTree = "<group>"; };
 		9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewErrorTypes.swift; sourceTree = "<group>"; };
 		98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		98846C991D09AA6E00846726 /* SwiftLinkPreview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLinkPreview.h; sourceTree = "<group>"; };
 		98846C9B1D09AA6E00846726 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLinkPreviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreviewTests.swift; sourceTree = "<group>"; };
@@ -64,14 +62,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		98348AB11D09B265003FA2B3 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				98846C991D09AA6E00846726 /* SwiftLinkPreview.h */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
 		98348AB21D09B26C003FA2B3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,7 +114,6 @@
 				98348AB21D09B26C003FA2B3 /* Classes */,
 				98348AC31D09FD42003FA2B3 /* Constants */,
 				98348AB31D09B2AA003FA2B3 /* Extensions */,
-				98348AB11D09B265003FA2B3 /* Headers */,
 				98846C9B1D09AA6E00846726 /* Info.plist */,
 			);
 			path = Sources;
@@ -146,7 +135,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98846C9A1D09AA6E00846726 /* SwiftLinkPreview.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +308,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -362,6 +351,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -382,6 +372,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 			};
 			name = Debug;
 		};
@@ -399,6 +390,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 			};
 			name = Release;
 		};
