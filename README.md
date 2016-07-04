@@ -1,10 +1,24 @@
-# Swift Link Preview
+<p align="center">
+![Swift Link Preview](Images/badge.png)
+<p>
 
-It makes a preview from an url, grabbing all the information such as title, relevant texts and images.
+<p align="center">
+**Link Previewer** for **iOS**
+<p>
 
-[![Platform](https://img.shields.io/badge/platform-iOS-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-[![CocoaPods](https://img.shields.io/badge/pod-v0.0.3-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+<p align="center">
+It makes a preview from an URL, grabbing all the information such as title, relevant texts and images.
+<p>
+
+<p align="center">
+	[![Platform](https://img.shields.io/badge/platform-iOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
+	[![CocoaPods](https://img.shields.io/badge/pod-v0.0.4-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+<p>
+<p>
+
+<hr />
 
 #### Index 
 
@@ -13,6 +27,7 @@ It makes a preview from an url, grabbing all the information such as title, rele
 * [Installation](#installation)
 	* [CocoaPods](#cocoapods)
 	* [Carthage](#carthage)
+	* [Swift Package Manager](#swift-package-manager)
 	* [Manually](#manually)
 * [Usage](#usage)
 	* [Instatiating](#instatiating)
@@ -24,6 +39,8 @@ It makes a preview from an url, grabbing all the information such as title, rele
 * [Information and Contact](#information-and-contact)
 * [Related Projects](#related-projects)
 * [License](#license)
+
+<hr />
 
 ## Visual Examples
 
@@ -43,6 +60,8 @@ It makes a preview from an url, grabbing all the information such as title, rele
 
 ### CocoaPods
 
+To use **SwiftLinkPreview** as a pod package just add the following in your **Podfile** file.
+
 ```ruby
 	source 'https://github.com/CocoaPods/Specs.git'
 	platform :ios, '8.0'
@@ -50,17 +69,34 @@ It makes a preview from an url, grabbing all the information such as title, rele
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 0.0.3'
+	  	pod 'SwiftLinkPreview', '~> 0.0.4'
 	  	// ...
 	end
 ```
 
 ### Carthage
 
+To use **SwiftLinkPreview** as a Carthage module package just add the following in your **Cartfile** file.
+
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.0.3
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.0.4
   	// ...
+```
+
+### Swift Package Manager
+
+To use **SwiftLinkPreview** as a Swift Package Manager package just add the following in your **Package.swift** file.
+
+```swift
+import PackageDescription
+
+let package = Package(
+  name: "Your Target Name",
+  dependencies: [
+    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", majorVersion: 0)
+  ]
+)
 ```
 
 ### Manually
@@ -82,7 +118,7 @@ let slp = SwiftLinkPreview()
 #### Requesting preview
 ```swift
 slp.preview(
-    "Text containing url",
+    "Text containing URL",
     onSuccess: { result in
     	
 		print("\(result)")
