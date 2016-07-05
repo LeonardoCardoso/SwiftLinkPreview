@@ -1,5 +1,5 @@
 //
-//  FullTests.swift
+//  CompleteTests.swift
 //  SwiftLinkPreview
 //
 //  Created by Leonardo Cardoso on 05/07/2016.
@@ -9,7 +9,7 @@
 import XCTest
 
 // This class tests the complete function of previewing
-class FullTests: XCTestCase {
+class CompleteTests: XCTestCase {
     
     func test() {
         
