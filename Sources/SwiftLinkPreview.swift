@@ -379,7 +379,7 @@ extension SwiftLinkPreview {
         
     }
     
-    
+    // Get tag content
     private func getTagContent(tag: String, content: String) -> String {
         
         let pattern = Regex.tagPattern(tag)

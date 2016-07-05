@@ -12,7 +12,7 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 
 <p align="center">
 	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.0-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.1-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 <p>
@@ -69,7 +69,7 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 0.1.0'
+	  	pod 'SwiftLinkPreview', '~> 0.1.1'
 	  	// ...
 	end
 ```
@@ -80,7 +80,7 @@ To use **SwiftLinkPreview** as a Carthage module package just add the following 
 
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.1.0
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.1.1
   	// ...
 ```
 
@@ -94,7 +94,9 @@ import PackageDescription
 let package = Package(
   name: "Your Target Name",
   dependencies: [
+  	// ...
     .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", majorVersion: 0)
+  	// ...
   ]
 )
 ```

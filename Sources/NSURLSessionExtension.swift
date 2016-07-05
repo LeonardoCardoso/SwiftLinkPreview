@@ -9,7 +9,7 @@ import Foundation
 
 extension NSURLSession {
     
-    // Synchronous request
+    // Synchronous request to get the real URL
     func synchronousDataTaskWithURL(url: NSURL) -> (NSData?, NSURLResponse?, NSError?) {
         
         var data: NSData?, response: NSURLResponse?, error: NSError?
