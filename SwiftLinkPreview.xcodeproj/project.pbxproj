@@ -37,6 +37,7 @@
 		9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewErrorTypes.swift; sourceTree = "<group>"; };
 		98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C9B1D09AA6E00846726 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98C545951D2B30AD0003A74E /* SwiftLinkPreview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLinkPreview.h; sourceTree = "<group>"; };
 		98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLinkPreviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98DC533A1D1D73DB001134E3 /* SwiftLinkPreviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreviewTests.swift; sourceTree = "<group>"; };
 		98DC533C1D1D73DB001134E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,40 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		98348AB21D09B26C003FA2B3 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				98348AC11D09FC58003FA2B3 /* PreviewError.swift */,
-				98348AC71D0A00DF003FA2B3 /* Regex.swift */,
-				98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		98348AB31D09B2AA003FA2B3 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */,
-				98348AC41D09FFED003FA2B3 /* StringExtension.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		98348AC31D09FD42003FA2B3 /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */,
-			);
-			path = Constants;
-			sourceTree = "<group>";
-		};
 		98846C8C1D09AA6E00846726 = {
 			isa = PBXGroup;
 			children = (
-				98F7FEE31D2A97CF00F7F70B /* Package.swift */,
+				98C545941D2B30930003A74E /* Headers */,
 				98846C971D09AA6E00846726 /* Products */,
 				98846C981D09AA6E00846726 /* Sources */,
 				98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */,
+				98F7FEE31D2A97CF00F7F70B /* Package.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -111,12 +86,47 @@
 		98846C981D09AA6E00846726 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				98348AB21D09B26C003FA2B3 /* Classes */,
-				98348AC31D09FD42003FA2B3 /* Constants */,
-				98348AB31D09B2AA003FA2B3 /* Extensions */,
+				98C545981D2B32990003A74E /* Extensions */,
+				98C545971D2B32940003A74E /* Constants */,
+				98C545961D2B32870003A74E /* Classes */,
 				98846C9B1D09AA6E00846726 /* Info.plist */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		98C545941D2B30930003A74E /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				98C545951D2B30AD0003A74E /* SwiftLinkPreview.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		98C545961D2B32870003A74E /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				98348AC11D09FC58003FA2B3 /* PreviewError.swift */,
+				98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */,
+				98348AC71D0A00DF003FA2B3 /* Regex.swift */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		98C545971D2B32940003A74E /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		98C545981D2B32990003A74E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */,
+				98348AC41D09FFED003FA2B3 /* StringExtension.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */ = {
@@ -308,7 +318,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -351,7 +361,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -372,7 +382,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -390,7 +400,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};

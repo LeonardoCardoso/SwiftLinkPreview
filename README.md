@@ -54,7 +54,7 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 
 * iOS 8.0+ / macOS 10.9+ / tvOS 9.0+ / watchOS 2.0+
 * Xcode 7.3+
-* Built with Swift 2.2.1
+* Built with Swift 2.2
 
 ## Installation
 
