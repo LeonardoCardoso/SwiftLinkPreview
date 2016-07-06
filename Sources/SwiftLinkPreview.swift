@@ -13,9 +13,9 @@ public class SwiftLinkPreview {
     static let minimumRelevant: Int = 120
     private var text: String!
     private var url: NSURL!
-    private var result: [String: AnyObject] = [:]
     private var task: NSURLSessionDataTask?
     private let session = NSURLSession.sharedSession()
+    internal var result: [String: AnyObject] = [:]
     
     // MARK: - Constructor
     public init() {
@@ -26,15 +26,7 @@ public class SwiftLinkPreview {
     // Make preview
     public func preview(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
         
-        self.result = [
-            "url": "",
-            "finalUrl": "",
-            "canonicalUrl": "",
-            "title": "",
-            "description": "",
-            "images": [],
-            "image": ""
-        ]
+        self.resetResult()
         
         self.text = text
         
@@ -62,6 +54,19 @@ public class SwiftLinkPreview {
             onError(PreviewError(type: .NoURLHasBeenFound, url: self.text))
             
         }
+        
+    }
+    
+    // Reset data on result
+    internal func resetResult() {
+        
+        self.result = ["url": "",
+                       "finalUrl": "",
+                       "canonicalUrl": "",
+                       "title": "",
+                       "description": "",
+                       "images": [],
+                       "image": ""]
         
     }
     
@@ -126,9 +131,9 @@ extension SwiftLinkPreview {
                 if(finalResult.absoluteString == url.absoluteString) {
                     
                     dispatch_async(dispatch_get_main_queue()){
-                    
+                        
                         completion(url)
-                    
+                        
                     }
                     
                 } else {
@@ -172,8 +177,7 @@ extension SwiftLinkPreview {
                 
                 do {
                     
-                    var htmlCode = try String(contentsOfURL: url)
-                    htmlCode = htmlCode.extendedTrim
+                    let htmlCode = try String(contentsOfURL: url).extendedTrim
                     
                     self.crawlMetaTags(htmlCode)
                     self.crawlTitle(htmlCode)
@@ -229,7 +233,7 @@ extension SwiftLinkPreview {
 extension SwiftLinkPreview {
     
     // Search for meta tags
-    private func crawlMetaTags(htmlCode: String) {
+    internal func crawlMetaTags(htmlCode: String) {
         
         let possibleTags = ["title", "description", "image"]
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
@@ -238,12 +242,12 @@ extension SwiftLinkPreview {
             
             for tag in possibleTags {
                 
-                if (metatag.rangeOfString("property=\"og:\(tag)\"") != nil ||
-                    metatag.rangeOfString("property='og:\(tag)'") != nil ||
-                    metatag.rangeOfString("property=\"twitter:\(tag)\"") != nil ||
-                    metatag.rangeOfString("property='twitter:\(tag)'") != nil ||
-                    metatag.rangeOfString("name=\"\(tag)\"") != nil ||
-                    metatag.rangeOfString("name='\(tag)'") != nil) {
+                if (metatag.rangeOfString("property=\"og:\(tag)") != nil ||
+                    metatag.rangeOfString("property='og:\(tag)") != nil ||
+                    metatag.rangeOfString("name=\"twitter:\(tag)") != nil ||
+                    metatag.rangeOfString("name='twitter:\(tag)") != nil ||
+                    metatag.rangeOfString("name=\"\(tag)") != nil ||
+                    metatag.rangeOfString("name='\(tag)") != nil) {
                     
                     if((self.result[tag] as! String).isEmpty) {
                         
@@ -264,7 +268,7 @@ extension SwiftLinkPreview {
     }
     
     // Crawl for title if needed
-    private func crawlTitle(htmlCode: String) {
+    internal func crawlTitle(htmlCode: String) {
         
         if let title: String = self.result["title"] as? String {
             
@@ -283,7 +287,7 @@ extension SwiftLinkPreview {
     }
     
     // Crawl for description if needed
-    private func crawlDescription(htmlCode: String) {
+    internal func crawlDescription(htmlCode: String) {
         
         if let description: String = self.result["description"] as? String {
             
@@ -302,7 +306,7 @@ extension SwiftLinkPreview {
     }
     
     // Crawl for images
-    private func crawlImages(htmlCode: String) {
+    internal func crawlImages(htmlCode: String) {
         
         let mainImage: String = self.result["image"] as! String
         
@@ -354,7 +358,7 @@ extension SwiftLinkPreview {
     }
     
     // Crawl the entire code
-    private func crawlCode(content: String) -> String {
+    internal func crawlCode(content: String) -> String {
         
         let resultSpan = self.getTagContent("span", content: content)
         let resultParagraph = self.getTagContent("p", content: content)

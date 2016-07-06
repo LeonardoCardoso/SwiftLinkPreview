@@ -7,119 +7,151 @@
 //
 
 import XCTest
+import SwiftLinkPreview
 
 // This class tests head meta info
 class MetaTests: XCTestCase {
     
     // MARK: - Vars
     var twitterTemplate = ""
-    var twitterData =
-        [
-            Constants.twitterTitle: "",
-            Constants.twitterSite: "",
-            Constants.twitterDescription: "",
-            Constants.twitterImageSrc: ""
-    ]
-    
     var facebookTemplate = ""
-    var facebookData =
-        [
-            Constants.facebookTitle: "",
-            Constants.facebookSite: "",
-            Constants.facebookDescription: "",
-            Constants.facebookImage: ""
-    ]
-    
     var metaTemplate = ""
-    var metaData =
-        [
-            Constants.title: "",
-            Constants.site: "",
-            Constants.description: "",
-            Constants.image: ""
-    ]
+    let slp = SwiftLinkPreview()
     
     // MARK: - SetUps
     // Those setup functions get that template, and fulfil determinated areas with rand texts, images and tags
     override func setUp() {
         super.setUp()
         
-        self.setUpTwitter()
-        self.setUpFacebook()
-        self.setUpMeta()
-        
-    }
-    
-    func setUpTwitter() {
-        
         self.twitterTemplate = File.toString(Constants.headMetaTwitter)
-        
-        // TODO generate random data and add to respective dictionary to compare on test fuction
-        
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.headRandomPre, with: "leo")
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.headRandomPos, with: "leo")
-        
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.twitterTitle, with: "leo")
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.twitterSite, with: "leo")
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.twitterDescription, with: "leo")
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.twitterImageSrc, with: "leo")
-        
-        self.twitterTemplate = self.twitterTemplate.replace(Constants.bodyRandom, with: "leo")
-        
-    }
-    
-    func setUpFacebook() {
-        
         self.facebookTemplate = File.toString(Constants.headMetaFacebook)
-        
-        // TODO generate random data and add to respective dictionary to compare on test fuction
-        
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.headRandomPre, with: "leo")
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.headRandomPos, with: "leo")
-        
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.facebookTitle, with: "leo")
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.facebookSite, with: "leo")
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.facebookDescription, with: "leo")
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.facebookImage, with: "leo")
-        
-        self.facebookTemplate = self.facebookTemplate.replace(Constants.bodyRandom, with: "leo")
-        
-    }
-    
-    func setUpMeta() {
-        
         self.metaTemplate = File.toString(Constants.headMetaMeta)
         
-        // TODO generate random data and add to respective dictionary to compare on test fuction
+    }
+    
+    // MARK: - Twitter
+    func setUpTwitterAndRun() {
         
-        self.metaTemplate = self.metaTemplate.replace(Constants.headRandomPre, with: "leo")
-        self.metaTemplate = self.metaTemplate.replace(Constants.headRandomPos, with: "leo")
+        let twitterData =
+            [
+                Constants.twitterTitle: String.randomText(),
+                Constants.twitterSite: String.randomUrl(),
+                Constants.twitterDescription: String.randomText(),
+                Constants.twitterImageSrc: String.randomImage()
+        ]
         
-        self.metaTemplate = self.metaTemplate.replace(Constants.title, with: "leo")
-        self.metaTemplate = self.metaTemplate.replace(Constants.site, with: "leo")
-        self.metaTemplate = self.metaTemplate.replace(Constants.description, with: "leo")
-        self.metaTemplate = self.metaTemplate.replace(Constants.image, with: "leo")
+        var twitterTemplate = self.twitterTemplate
+        twitterTemplate = twitterTemplate.replace(Constants.headRandomPre, with: String.randomTag())
+        twitterTemplate = twitterTemplate.replace(Constants.headRandomPos, with: String.randomTag())
         
-        self.metaTemplate = self.metaTemplate.replace(Constants.bodyRandom, with: "leo")
+        twitterTemplate = twitterTemplate.replace(Constants.twitterTitle, with: twitterData[Constants.twitterTitle]!)
+        twitterTemplate = twitterTemplate.replace(Constants.twitterSite, with: twitterData[Constants.twitterSite]!)
+        twitterTemplate = twitterTemplate.replace(Constants.twitterDescription, with: twitterData[Constants.twitterDescription]!)
+        twitterTemplate = twitterTemplate.replace(Constants.twitterImageSrc, with: twitterData[Constants.twitterImageSrc]!)
+        
+        twitterTemplate = twitterTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
+        
+        slp.resetResult()
+        slp.crawlMetaTags(twitterTemplate)
+        
+        XCTAssert((slp.result["title"] as! String) == twitterData[Constants.twitterTitle], "title extracted must be equal that was generated")
+        XCTAssert((slp.result["description"] as! String) == twitterData[Constants.twitterDescription], "description extracted must be equal that was generated")
+        XCTAssert((slp.result["image"] as! String) == twitterData[Constants.twitterImageSrc], "image extracted must be equal that was generated")
+        
+        print("\(twitterData)")
+        print("\(slp.result)")
         
     }
     
-    // MARK: - Tests
     func testTwitter() {
         
-        print(self.twitterTemplate)
+        for _ in 0 ..< 100 {
+            
+            self.setUpTwitterAndRun()
+        
+        }
+        
+    }
+    
+    // MARK: - Facebook
+    func setUpFacebookAndRun() {
+        
+        let facebookData =
+            [
+                Constants.facebookTitle: String.randomText(),
+                Constants.facebookSite: String.randomUrl(),
+                Constants.facebookDescription: String.randomText(),
+                Constants.facebookImage: String.randomImage()
+        ]
+        
+        var facebookTemplate = self.facebookTemplate
+        facebookTemplate = facebookTemplate.replace(Constants.headRandomPre, with: String.randomTag())
+        facebookTemplate = facebookTemplate.replace(Constants.headRandomPos, with: String.randomTag())
+        
+        facebookTemplate = facebookTemplate.replace(Constants.facebookTitle, with: facebookData[Constants.facebookTitle]!)
+        facebookTemplate = facebookTemplate.replace(Constants.facebookSite, with: facebookData[Constants.facebookSite]!)
+        facebookTemplate = facebookTemplate.replace(Constants.facebookDescription, with: facebookData[Constants.facebookDescription]!)
+        facebookTemplate = facebookTemplate.replace(Constants.facebookImage, with: facebookData[Constants.facebookImage]!)
+        
+        facebookTemplate = facebookTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
+        
+        slp.resetResult()
+        slp.crawlMetaTags(facebookTemplate)
+        
+        XCTAssert((slp.result["title"] as! String) == facebookData[Constants.facebookTitle], "title extracted must be equal that was generated")
+        XCTAssert((slp.result["description"] as! String) == facebookData[Constants.facebookDescription], "description extracted must be equal that was generated")
+        XCTAssert((slp.result["image"] as! String) == facebookData[Constants.facebookImage], "image extracted must be equal that was generated")
         
     }
     
     func testFacebook() {
         
-        print(self.facebookTemplate)
+        for _ in 0 ..< 100 {
+            
+            self.setUpFacebookAndRun()
+            
+        }
+        
+    }
+    
+    // MARK: - Meta
+    func setUpMetaAndRun() {
+        
+        let metaData =
+            [
+                Constants.title: String.randomText(),
+                Constants.site: String.randomUrl(),
+                Constants.description: String.randomText(),
+                Constants.image: String.randomImage()
+        ]
+        
+        var metaTemplate = self.metaTemplate
+        metaTemplate = metaTemplate.replace(Constants.headRandomPre, with: String.randomTag())
+        metaTemplate = metaTemplate.replace(Constants.headRandomPos, with: String.randomTag())
+        
+        metaTemplate = metaTemplate.replace(Constants.title, with: metaData[Constants.title]!)
+        metaTemplate = metaTemplate.replace(Constants.site, with: metaData[Constants.site]!)
+        metaTemplate = metaTemplate.replace(Constants.description, with: metaData[Constants.description]!)
+        metaTemplate = metaTemplate.replace(Constants.image, with: metaData[Constants.image]!)
+        
+        metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
+        
+        slp.resetResult()
+        slp.crawlMetaTags(metaTemplate)
+        
+        XCTAssert((slp.result["title"] as! String) == metaData[Constants.title], "title extracted must be equal that was generated")
+        XCTAssert((slp.result["description"] as! String) == metaData[Constants.description], "description extracted must be equal that was generated")
+        XCTAssert((slp.result["image"] as! String) == metaData[Constants.image], "image extracted must be equal that was generated")
         
     }
     
     func testMeta() {
         
-        print(self.metaTemplate)
+        for _ in 0 ..< 100 {
+            
+            self.setUpMetaAndRun()
+            
+        }
         
     }
     

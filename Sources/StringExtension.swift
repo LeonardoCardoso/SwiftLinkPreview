@@ -112,8 +112,7 @@ extension String {
     // Replace
     func replace(search: String, with: String) -> String {
         
-        if let clearWith: String = with.stringByReplacingOccurrencesOfString(" ", withString: ""),
-            let replaced: String = self.stringByReplacingOccurrencesOfString(search, withString: clearWith) {
+        if let replaced: String = self.stringByReplacingOccurrencesOfString(search, withString: with) {
             
             return replaced
             

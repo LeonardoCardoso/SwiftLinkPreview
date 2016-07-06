@@ -1,5 +1,5 @@
 //
-//  StringExtension.swift
+//  StringTestExtension.swift
 //  SwiftLinkPreview
 //
 //  Created by Leonardo Cardoso on 05/07/2016.
@@ -29,6 +29,7 @@ extension String {
             "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
     ]
     
+    static let protocolType = ["http://", "https://"]
     static let tagType = ["span", "p", "div"]
     static let imageType = ["gif", "jpg", "jpeg", "png", "bmp"]
     
@@ -72,7 +73,8 @@ extension String {
         rand = rand.hashValue > 3 ? 3 : rand
         let end = String.randomString(rand)
         
-        let url = "http://\(base).\(end.lowercaseString)"
+        let prtcl = self.protocolType[GKRandomSource.sharedRandom().nextIntWithUpperBound(protocolType.count)]
+        let url = "\(prtcl)\(base).\(end.lowercaseString)"
         
         return url
         
@@ -81,23 +83,7 @@ extension String {
     // Random Image
     static func randomImage() -> String {
         
-        return "\(randomUrl())/\(String.randomString(GKRandomSource.sharedRandom().nextIntWithUpperBound(15) + 5)).\(imageType[GKRandomSource.sharedRandom().nextIntWithUpperBound(imageType.count)]))"
-        
-    }
-    
-    // Replace
-    func replace(search: String, with: String) -> String {
-        
-        if let clearWith: String = with.stringByReplacingOccurrencesOfString(" ", withString: ""),
-            let replaced: String = self.stringByReplacingOccurrencesOfString(search, withString: clearWith) {
-            
-            return replaced
-            
-        } else {
-            
-            return self
-            
-        }
+        return "\(randomUrl())/\(String.randomString(GKRandomSource.sharedRandom().nextIntWithUpperBound(15) + 5)).\(imageType[GKRandomSource.sharedRandom().nextIntWithUpperBound(imageType.count)])"
         
     }
     
