@@ -316,7 +316,7 @@ extension SwiftLinkPreview {
                 
                 if images.isEmpty {
                     
-                    if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 1) {
+                    if let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2) {
                         
                         var imgs: [String] = []
                         
@@ -324,7 +324,7 @@ extension SwiftLinkPreview {
                             
                             var value = value
                             
-                            if !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
+                            if !value.extendedTrim.isEmpty && !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
                                 
                                 value = (value.hasPrefix("//") ? "http:" : (self.result["finalUrl"] as! NSURL).absoluteString) + value
                                 

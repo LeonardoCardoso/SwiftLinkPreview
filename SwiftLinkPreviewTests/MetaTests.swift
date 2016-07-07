@@ -58,9 +58,6 @@ class MetaTests: XCTestCase {
         XCTAssert((slp.result["description"] as! String) == twitterData[Constants.twitterDescription], "description extracted must be equal that was generated")
         XCTAssert((slp.result["image"] as! String) == twitterData[Constants.twitterImageSrc], "image extracted must be equal that was generated")
         
-        print("\(twitterData)")
-        print("\(slp.result)")
-        
     }
     
     func testTwitter() {

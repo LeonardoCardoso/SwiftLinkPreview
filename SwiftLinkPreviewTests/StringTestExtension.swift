@@ -63,6 +63,19 @@ extension String {
         
     }
     
+    // Random Tag
+    static func randomImageTag() -> String {
+        
+        let options = [
+            "<img src=\"\(randomImage())\" />",
+            "<img src=\"\(randomImage())\" ></img>",
+            "<img src=\"\(randomImage())\" >"
+        ]
+        
+        return options[GKRandomSource.sharedRandom().nextIntWithUpperBound(options.count)]
+        
+    }
+    
     // Random URL
     static func randomUrl() -> String {
         

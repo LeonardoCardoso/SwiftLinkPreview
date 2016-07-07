@@ -21,10 +21,13 @@ struct Constants {
     static let headMetaFacebook = "head-meta-facebook"
     
     
+    static let headRandom = "[:head-random]"
     static let headRandomPre = "[:head-random-pre]"
     static let headRandomPos = "[:head-random-pos]"
     
     static let bodyRandom = "[:body-random]"
+    static let bodyRandomPre = "[:body-random-pre]"
+    static let bodyRandomPos = "[:body-random-pos]"
     
     static let twitterTitle = "[:twitter-title]"
     static let twitterSite = "[:twitter-site]"
