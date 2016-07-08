@@ -44,4 +44,8 @@ struct Constants {
     static let image = "[:image]"
     static let description = "[:description]"
     
+    static let image1 = "[:image-1]"
+    static let image2 = "[:image-2]"
+    static let image3 = "[:image-3]"
+    
 }

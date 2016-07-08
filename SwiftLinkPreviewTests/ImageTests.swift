@@ -58,4 +58,43 @@ class ImageTests: XCTestCase {
         
     }
     
+    // MARK: - Gallery
+    func setUpGallery() {
+        
+        let data = [
+            Constants.image1: String.randomImage(),
+            Constants.image2: String.randomImage(),
+            Constants.image3: String.randomImage()
+        ]
+        
+        var galleryImageTemplate = self.galleryImageTemplate
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.headRandom, with: String.randomTag())
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandomPre, with: String.randomTag())
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandomPos, with: String.randomTag())
+        
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.image1, with: data[Constants.image1]!)
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.image2, with: data[Constants.image2]!)
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.image3, with: data[Constants.image3]!)
+        
+        galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
+        
+        slp.resetResult()
+        slp.crawlImages(galleryImageTemplate)
+        
+        XCTAssert((slp.result["images"] as! [String])[0] == data[Constants.image1], "image 1 extracted must be equal that was generated")
+        XCTAssert((slp.result["images"] as! [String])[1] == data[Constants.image2], "image 2 extracted must be equal that was generated")
+        XCTAssert((slp.result["images"] as! [String])[2] == data[Constants.image3], "image 3 extracted must be equal that was generated")
+        
+    }
+    
+    func testGallery() {
+        
+        for _ in 0 ..< 100 {
+            
+            self.setUpGallery()
+            
+        }
+        
+    }
+    
 }
