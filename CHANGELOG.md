@@ -7,7 +7,7 @@
 ---
 
 ## [0.1.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.1)
-Released on ????-??-??.
+Released on 2016-07-11.
 
 #### Added
 - Tests. [#1](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/1)

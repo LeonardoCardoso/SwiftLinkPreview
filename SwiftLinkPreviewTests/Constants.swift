@@ -10,6 +10,7 @@ import Foundation
 
 struct Constants {
     
+    static let bodyTitle = "body-text-span"
     static let bodyTextSpan = "body-text-span"
     static let bodyTextP = "body-text-p"
     static let bodyTextDiv = "body-text-div"
@@ -19,6 +20,7 @@ struct Constants {
     static let headMetaTwitter = "head-meta-twitter"
     static let headMetaMeta = "head-meta-meta"
     static let headMetaFacebook = "head-meta-facebook"
+    static let headTitle = "head-title"
     
     
     static let headRandom = "[:head-random]"
