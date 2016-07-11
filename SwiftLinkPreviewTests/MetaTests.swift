@@ -54,9 +54,9 @@ class MetaTests: XCTestCase {
         slp.resetResult()
         slp.crawlMetaTags(twitterTemplate)
         
-        XCTAssert((slp.result["title"] as! String) == twitterData[Constants.twitterTitle], "title must be equal that was generated")
-        XCTAssert((slp.result["description"] as! String) == twitterData[Constants.twitterDescription], "description must be equal that was generated")
-        XCTAssert((slp.result["image"] as! String) == twitterData[Constants.twitterImageSrc], "image must be equal that was generated")
+        XCTAssertEqual((slp.result["title"] as! String), twitterData[Constants.twitterTitle])
+        XCTAssertEqual((slp.result["description"] as! String), twitterData[Constants.twitterDescription])
+        XCTAssertEqual((slp.result["image"] as! String), twitterData[Constants.twitterImageSrc])
         
     }
     
@@ -95,9 +95,9 @@ class MetaTests: XCTestCase {
         slp.resetResult()
         slp.crawlMetaTags(facebookTemplate)
         
-        XCTAssert((slp.result["title"] as! String) == facebookData[Constants.facebookTitle], "title must be equal that was generated")
-        XCTAssert((slp.result["description"] as! String) == facebookData[Constants.facebookDescription], "description must be equal that was generated")
-        XCTAssert((slp.result["image"] as! String) == facebookData[Constants.facebookImage], "image must be equal that was generated")
+        XCTAssertEqual((slp.result["title"] as! String), facebookData[Constants.facebookTitle])
+        XCTAssertEqual((slp.result["description"] as! String), facebookData[Constants.facebookDescription])
+        XCTAssertEqual((slp.result["image"] as! String), facebookData[Constants.facebookImage])
         
     }
     
@@ -136,9 +136,9 @@ class MetaTests: XCTestCase {
         slp.resetResult()
         slp.crawlMetaTags(metaTemplate)
         
-        XCTAssert((slp.result["title"] as! String) == metaData[Constants.title], "title must be equal that was generated")
-        XCTAssert((slp.result["description"] as! String) == metaData[Constants.description], "description must be equal that was generated")
-        XCTAssert((slp.result["image"] as! String) == metaData[Constants.image], "image must be equal that was generated")
+        XCTAssertEqual((slp.result["title"] as! String), metaData[Constants.title])
+        XCTAssertEqual((slp.result["description"] as! String), metaData[Constants.description])
+        XCTAssertEqual((slp.result["image"] as! String), metaData[Constants.image])
         
     }
     

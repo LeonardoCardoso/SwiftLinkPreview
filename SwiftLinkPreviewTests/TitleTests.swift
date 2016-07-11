@@ -9,7 +9,7 @@
 import XCTest
 import SwiftLinkPreview
 
-// This class tests body texts
+// This class tests head title
 class TitleTests: XCTestCase {
     
     // MARK: - Vars
@@ -44,7 +44,7 @@ class TitleTests: XCTestCase {
         slp.resetResult()
         slp.crawlTitle(metaTemplate)
         
-        XCTAssert((slp.result["title"] as! String) == metaData[Constants.title], "title must be equal that was generated")
+        XCTAssertEqual((slp.result["title"] as! String), metaData[Constants.title])
         
     }
     

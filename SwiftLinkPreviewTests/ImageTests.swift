@@ -44,7 +44,7 @@ class ImageTests: XCTestCase {
         slp.resetResult()
         slp.crawlImages(singleImageTemplate)
         
-        XCTAssert((slp.result["image"] as! String) == data[Constants.image], "image must be equal that was generated")
+        XCTAssertEqual((slp.result["image"] as! String), data[Constants.image])
         
     }
     
@@ -81,9 +81,9 @@ class ImageTests: XCTestCase {
         slp.resetResult()
         slp.crawlImages(galleryImageTemplate)
         
-        XCTAssert((slp.result["images"] as! [String])[0] == data[Constants.image1], "image 1 must be equal that was generated")
-        XCTAssert((slp.result["images"] as! [String])[1] == data[Constants.image2], "image 2 must be equal that was generated")
-        XCTAssert((slp.result["images"] as! [String])[2] == data[Constants.image3], "image 3 must be equal that was generated")
+        XCTAssertEqual((slp.result["images"] as! [String])[0], data[Constants.image1])
+        XCTAssertEqual((slp.result["images"] as! [String])[1], data[Constants.image2])
+        XCTAssertEqual((slp.result["images"] as! [String])[2], data[Constants.image3])
         
     }
     

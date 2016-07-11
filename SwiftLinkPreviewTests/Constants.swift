@@ -14,7 +14,6 @@ struct Constants {
     static let bodyTextSpan = "body-text-span"
     static let bodyTextP = "body-text-p"
     static let bodyTextDiv = "body-text-div"
-    static let bodyTextDivSpanP = "body-text-div-span-p"
     static let bodyImageSingle = "body-image-single"
     static let bodyImageGallery = "body-image-gallery"
     static let headMetaTwitter = "head-meta-twitter"
@@ -29,6 +28,7 @@ struct Constants {
     
     static let bodyRandom = "[:body-random]"
     static let bodyRandomPre = "[:body-random-pre]"
+    static let bodyRandomMiddle = "[:body-random-middle]"
     static let bodyRandomPos = "[:body-random-pos]"
     
     static let twitterTitle = "[:twitter-title]"
@@ -49,5 +49,13 @@ struct Constants {
     static let image1 = "[:image-1]"
     static let image2 = "[:image-2]"
     static let image3 = "[:image-3]"
+    
+    static let random1 = "[:random-1]"
+    static let random2 = "[:random-2]"
+    static let random3 = "[:random-3]"
+    
+    static let tag1 = "[:tag-1]"
+    static let tag2 = "[:tag-2]"
+    static let tag3 = "[:tag-3]"
     
 }

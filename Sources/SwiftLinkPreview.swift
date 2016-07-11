@@ -365,7 +365,7 @@ extension SwiftLinkPreview {
         let resultDiv = self.getTagContent("div", content: content)
         var result = resultSpan
         
-        if (resultParagraph.characters.count > result.characters.count) {
+        if (resultParagraph.characters.count >= result.characters.count) {
             
             if (resultParagraph.characters.count >= resultDiv.characters.count) {
                 
