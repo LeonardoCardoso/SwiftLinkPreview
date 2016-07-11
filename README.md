@@ -15,6 +15,7 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.1-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+	[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
 <p>
 <p>
 

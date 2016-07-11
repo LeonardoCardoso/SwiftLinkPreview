@@ -6,8 +6,8 @@
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
 
-//import PackageDescription
-//
-//let package = Package(
-//    name: "SwiftLinkPreview"
-//)
+import PackageDescription
+
+let package = Package(
+    name: "SwiftLinkPreview"
+)
