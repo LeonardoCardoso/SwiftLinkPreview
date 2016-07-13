@@ -177,11 +177,11 @@ extension SwiftLinkPreview {
                 
                 do {
                     
-                    let htmlCode = try String(contentsOfURL: url).extendedTrim
+                    var htmlCode = try String(contentsOfURL: url).extendedTrim
                     
                     self.crawlMetaTags(htmlCode)
-                    self.crawlTitle(htmlCode)
-                    self.crawlDescription(htmlCode)
+                    htmlCode = self.crawlTitle(htmlCode)
+                    htmlCode = self.crawlDescription(htmlCode)
                     self.crawlImages(htmlCode)
                     
                     completion()
@@ -253,7 +253,7 @@ extension SwiftLinkPreview {
                         
                         if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                             
-                            self.result[tag] = value.decoded
+                            self.result[tag] = value.decoded.extendedTrim
                             
                         }
                         
@@ -268,7 +268,7 @@ extension SwiftLinkPreview {
     }
     
     // Crawl for title if needed
-    internal func crawlTitle(htmlCode: String) {
+    internal func crawlTitle(htmlCode: String) -> String {
         
         if let title: String = self.result["title"] as? String {
             
@@ -276,7 +276,22 @@ extension SwiftLinkPreview {
                 
                 if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.tittlePattern, index: 2) {
                     
-                    self.result["title"] = value.decoded
+                    if let fromBody: String = self.crawlCode(htmlCode) {
+                        
+                        self.result["title"] = fromBody.decoded.extendedTrim
+                        
+                        if !fromBody.isEmpty {
+                            
+                            return htmlCode.replace(fromBody, with: "")
+                        
+                        }
+                        
+                        
+                    } else {
+                        
+                        self.result["title"] = value.decoded.extendedTrim
+                        
+                    }
                     
                 }
                 
@@ -284,10 +299,12 @@ extension SwiftLinkPreview {
             
         }
         
+        return htmlCode
+        
     }
     
     // Crawl for description if needed
-    internal func crawlDescription(htmlCode: String) {
+    internal func crawlDescription(htmlCode: String) -> String {
         
         if let description: String = self.result["description"] as? String {
             
@@ -295,13 +312,15 @@ extension SwiftLinkPreview {
                 
                 if let value: String = self.crawlCode(htmlCode) {
                     
-                    self.result["description"] = value
+                    self.result["description"] = value.decoded.extendedTrim
                     
                 }
                 
             }
             
         }
+        
+        return htmlCode
         
     }
     
@@ -416,7 +435,7 @@ extension SwiftLinkPreview {
             
         }
         
-        return result.decoded
+        return result
         
     }
     

@@ -32,7 +32,7 @@ class MetaTests: XCTestCase {
     // MARK: - Twitter
     func setUpTwitterAndRun() {
         
-        let twitterData =
+        var twitterData =
             [
                 Constants.twitterTitle: String.randomText(),
                 Constants.twitterSite: String.randomUrl(),
@@ -54,8 +54,8 @@ class MetaTests: XCTestCase {
         slp.resetResult()
         slp.crawlMetaTags(twitterTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), twitterData[Constants.twitterTitle])
-        XCTAssertEqual((slp.result["description"] as! String), twitterData[Constants.twitterDescription])
+        XCTAssertEqual((slp.result["title"] as! String), twitterData[Constants.twitterTitle]!.decoded)
+        XCTAssertEqual((slp.result["description"] as! String), twitterData[Constants.twitterDescription]!.decoded)
         XCTAssertEqual((slp.result["image"] as! String), twitterData[Constants.twitterImageSrc])
         
     }
@@ -73,7 +73,7 @@ class MetaTests: XCTestCase {
     // MARK: - Facebook
     func setUpFacebookAndRun() {
         
-        let facebookData =
+        var facebookData =
             [
                 Constants.facebookTitle: String.randomText(),
                 Constants.facebookSite: String.randomUrl(),
@@ -95,8 +95,8 @@ class MetaTests: XCTestCase {
         slp.resetResult()
         slp.crawlMetaTags(facebookTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), facebookData[Constants.facebookTitle])
-        XCTAssertEqual((slp.result["description"] as! String), facebookData[Constants.facebookDescription])
+        XCTAssertEqual((slp.result["title"] as! String), facebookData[Constants.facebookTitle]!.decoded)
+        XCTAssertEqual((slp.result["description"] as! String), facebookData[Constants.facebookDescription]!.decoded)
         XCTAssertEqual((slp.result["image"] as! String), facebookData[Constants.facebookImage])
         
     }
@@ -114,7 +114,7 @@ class MetaTests: XCTestCase {
     // MARK: - Meta
     func setUpMetaAndRun() {
         
-        let metaData =
+        var metaData =
             [
                 Constants.title: String.randomText(),
                 Constants.site: String.randomUrl(),
@@ -136,8 +136,8 @@ class MetaTests: XCTestCase {
         slp.resetResult()
         slp.crawlMetaTags(metaTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), metaData[Constants.title])
-        XCTAssertEqual((slp.result["description"] as! String), metaData[Constants.description])
+        XCTAssertEqual((slp.result["title"] as! String), metaData[Constants.title]!.decoded)
+        XCTAssertEqual((slp.result["description"] as! String), metaData[Constants.description]!.decoded)
         XCTAssertEqual((slp.result["image"] as! String), metaData[Constants.image])
         
     }

@@ -28,23 +28,30 @@ class TitleTests: XCTestCase {
     // MARK: - Single
     func setUpTitle() {
         
-        let metaData =
+        var metaData =
             [
-                Constants.title: String.randomText()
+                Constants.title: String.randomText(),
+                Constants.headRandom: String.randomTag(),
+                Constants.bodyRandom: String.randomTag()
         ]
         
         var metaTemplate = self.titleTemplate
-        metaTemplate = metaTemplate.replace(Constants.headRandomPre, with: String.randomTag())
-        metaTemplate = metaTemplate.replace(Constants.headRandomPos, with: String.randomTag())
+        metaTemplate = metaTemplate.replace(Constants.headRandomPre, with: metaData[Constants.headRandom]!)
+        metaTemplate = metaTemplate.replace(Constants.headRandomPos, with: metaData[Constants.headRandom]!)
         
         metaTemplate = metaTemplate.replace(Constants.title, with: metaData[Constants.title]!)
         
-        metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
+        metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: metaData[Constants.bodyRandom]!).extendedTrim
         
         slp.resetResult()
         slp.crawlTitle(metaTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), metaData[Constants.title])
+        let comparable = (slp.result["title"] as! String)
+        let comparison = comparable == metaData[Constants.title]!.decoded.extendedTrim ||
+            comparable == metaData[Constants.headRandom]!.decoded.extendedTrim ||
+            comparable == metaData[Constants.bodyRandom]!.decoded.extendedTrim
+        
+        XCTAssert(comparison)
         
     }
     
