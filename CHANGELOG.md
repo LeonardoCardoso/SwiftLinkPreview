@@ -15,6 +15,10 @@ Released on 2016-07-11.
 - CI. [#5](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/5)
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
+#### Fixed
+- Crash when parsing pages without title - [#11](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/11)
+	- Fixed by [Fraser](https://github.com/fraserscottmorrison)	
+
 ## [0.1.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.0)
 Released on 2016-07-04.
 
