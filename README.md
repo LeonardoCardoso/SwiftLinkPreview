@@ -11,10 +11,10 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 <p>
 
 <p align="center">
-	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.2-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
+	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.2-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
-	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 	[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
 <p>
 <p>
