@@ -32,7 +32,7 @@ class BodyTests: XCTestCase {
     // MARK: - Span
     func setUpSpan() {
         
-        let metaData =
+        var metaData =
             [
                 Constants.random1: String.randomText(),
                 Constants.random2: String.randomText()
@@ -56,7 +56,7 @@ class BodyTests: XCTestCase {
         
         let comparable = (slp.result["description"] as! String)
         
-        XCTAssert(comparable == metaData[Constants.random1] || comparable == metaData[Constants.random2])
+        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
         
     }
     
@@ -97,7 +97,7 @@ class BodyTests: XCTestCase {
         
         let comparable = (slp.result["description"] as! String)
         
-        XCTAssert(comparable == metaData[Constants.random1] || comparable == metaData[Constants.random2])
+        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
         
     }
     
@@ -138,7 +138,7 @@ class BodyTests: XCTestCase {
         
         let comparable = (slp.result["description"] as! String)
         
-        XCTAssert(comparable == metaData[Constants.random1] || comparable == metaData[Constants.random2])
+        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
         
     }
     

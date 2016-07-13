@@ -1,10 +1,18 @@
 # Change Log
 
 #### 0.x Releases
-- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011)  
+- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012)  
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [0.1.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.2)
+Released on 2016-07-13.
+
+#### Added
+- Improved way to get the info. [#13](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/13)
+	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
+
 
 ## [0.1.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.1)
 Released on 2016-07-11.
