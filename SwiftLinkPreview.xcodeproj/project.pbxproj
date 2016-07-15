@@ -30,7 +30,6 @@
 		988B48D51D2C39F10040A4AD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988B48D41D2C39F10040A4AD /* File.swift */; };
 		988B48D81D2C3C3D0040A4AD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988B48D71D2C3C3D0040A4AD /* Constants.swift */; };
 		98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */; };
-		98F7FEE41D2A97CF00F7F70B /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F7FEE31D2A97CF00F7F70B /* Package.swift */; };
 		98FA76E11D2D31090042A7E4 /* SwiftLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */; };
 		98FA76E21D2D311E0042A7E4 /* PreviewErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9853E3DE1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift */; };
 		98FA76E31D2D311E0042A7E4 /* PreviewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC11D09FC58003FA2B3 /* PreviewError.swift */; };
@@ -78,7 +77,6 @@
 		98C545951D2B30AD0003A74E /* SwiftLinkPreview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLinkPreview.h; sourceTree = "<group>"; };
 		98DC53381D1D73DB001134E3 /* SwiftLinkPreviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLinkPreviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98DC533C1D1D73DB001134E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		98F7FEE31D2A97CF00F7F70B /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,7 +121,6 @@
 				98846C971D09AA6E00846726 /* Products */,
 				98846C981D09AA6E00846726 /* Sources */,
 				98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */,
-				98F7FEE31D2A97CF00F7F70B /* Package.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -334,7 +331,6 @@
 				98348ABD1D09B794003FA2B3 /* SwiftLinkPreview.swift in Sources */,
 				98348AC81D0A00DF003FA2B3 /* Regex.swift in Sources */,
 				98348AC21D09FC58003FA2B3 /* PreviewError.swift in Sources */,
-				98F7FEE41D2A97CF00F7F70B /* Package.swift in Sources */,
 				9853E3DF1D0A13CF00B4C0A1 /* PreviewErrorTypes.swift in Sources */,
 				98348AC51D09FFED003FA2B3 /* StringExtension.swift in Sources */,
 				9851A6951D11B83000B39FCD /* NSURLSessionExtension.swift in Sources */,
