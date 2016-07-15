@@ -13,6 +13,9 @@ Released on 2016-07-13.
 - Improved way to get the info. [#13](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/13)
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
+#### Removed
+- Remove Package.swift from .xcproject to avoid build issues. Still supporting SPM though. [#16](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/16)
+	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [0.1.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.1)
 Released on 2016-07-11.
