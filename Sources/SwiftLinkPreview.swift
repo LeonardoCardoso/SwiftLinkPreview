@@ -104,7 +104,7 @@ extension SwiftLinkPreview {
         for var piece in explosion {
             
             piece = piece.trim
-
+            
             if piece.isValidURL() {
                 
                 if let url = NSURL(string: piece.trim) {
@@ -203,27 +203,60 @@ extension SwiftLinkPreview {
         
     }
     
-    // Extract get canonical URL
-    private func extractCanonicalURL() {
+    // Extract canonical URL
+    internal func extractCanonicalURL() {
         
-        if var canonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
+        if let finalUrl: NSURL = self.result["finalUrl"] as? NSURL {
             
-            canonicalUrl = canonicalUrl.replace("http://", with: "").replace("https://", with: "")
+            let preUrl: String = finalUrl.absoluteString
+            let url = preUrl
+                .replace("http://", with: "")
+                .replace("https://", with: "")
+                .replace("file://", with: "")
+                .replace("ftp://", with: "")
             
-            if let slash = canonicalUrl.rangeOfString("/") {
+            if preUrl != url {
                 
-                let endIndex = canonicalUrl.startIndex.distanceTo(slash.endIndex)
-                canonicalUrl = canonicalUrl.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
+                if let canonicalUrl = Regex.pregMatchFirst(url, regex: Regex.cannonicalUrlPattern, index: 1) {
+                    
+                    if(!canonicalUrl.isEmpty) {
+                        
+                        self.result["canonicalUrl"] = self.extractBaseUrl(canonicalUrl)
+                        
+                    } else {
+                        
+                        self.result["canonicalUrl"] = self.extractBaseUrl(url)
+                        
+                    }
+                    
+                } else {
+                    
+                    self.result["canonicalUrl"] = self.extractBaseUrl(url)
+                    
+                }
+                
+            } else {
+                
+                self.result["canonicalUrl"] = self.extractBaseUrl(preUrl)
                 
             }
             
-            self.result["canonicalUrl"] = canonicalUrl
+        }
+        
+    }
+    
+    // Extract base URL
+    private func extractBaseUrl(url: String) -> String {
+        
+        var url = url
+        if let slash = url.rangeOfString("/") {
             
-        } else {
-            
-            self.result["canonicalUrl"] = self.result["url"]
+            let endIndex = url.startIndex.distanceTo(slash.endIndex)
+            url = url.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
             
         }
+        
+        return url
         
     }
     
