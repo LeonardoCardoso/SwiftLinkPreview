@@ -10,9 +10,8 @@ env:
     - DESTINATION="OS=9.2,name=Apple TV 1080p"      SCHEME="SwiftLinkPreviewTvOS"      SDK="appletvsimulator9.2"
     - DESTINATION="arch=x86_64"                     SCHEME="SwiftLinkPreviewMacOS"     SDK="macosx10.11"
 script:
-  - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" | xcpretty -c;
-
-# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreview         -destination "OS=9.3,name=iPhone 6S"          -sdk "iphonesimulator9.3"   RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
-# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreviewWatchOS  -destination "OS=2.2,name=Apple Watch - 42mm" -sdk "watchsimulator2.2"    RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
-# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreviewTvOS     -destination "OS=9.2,name=Apple TV 1080p"     -sdk "appletvsimulator9.2"  RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
-# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreviewMacOS    -destination "arch=x86_64"                    -sdk "macosx10.11"          RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
+  - if [ $RUN_TESTS == "YES" ]; then
+      xcodebuild -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" test  | xcpretty -c;
+    else
+      xcodebuild -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES RUN_TESTS="NO"  BUILD_EXAMPLE="NO" POD_LINT="NO" build | xcpretty -c;
+    fi

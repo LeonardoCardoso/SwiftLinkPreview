@@ -10,11 +10,11 @@ import Foundation
 #if os(iOS) || os(watchOS) || os(tvOS)
     
     import UIKit
-
+    
 #elseif os(OSX)
-
+    
     import Cocoa
-
+    
 #endif
 
 extension String {
@@ -37,31 +37,24 @@ extension String {
     // Decode HTML entities
     var decoded: String {
         
-        #if os(iOS) || os(watchOS) || os(tvOS)
-            
-            let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
-            let attributedOptions : [String: AnyObject] = [
+        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
+        let attributedOptions: [String: AnyObject] =
+            [
                 NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
                 NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
-            ]
+        ]
+        
+        do {
             
-            do {
-                
-                let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
-                
-                return attributedString.string
-                
-            } catch _ {
-                
-                return self
-                
-            }
+            let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
             
-        #elseif os(OSX)
+            return attributedString.string
             
-            return CFXMLCreateStringByUnescapingEntities(nil, self, nil) as String
+        } catch _ {
             
-        #endif
+            return self
+            
+        }
         
     }
     

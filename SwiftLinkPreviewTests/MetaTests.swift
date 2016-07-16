@@ -51,12 +51,12 @@ class MetaTests: XCTestCase {
         
         twitterTemplate = twitterTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        slp.resetResult()
-        slp.crawlMetaTags(twitterTemplate)
+        self.slp.resetResult()
+        self.slp.crawlMetaTags(twitterTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), twitterData[Constants.twitterTitle]!.decoded)
-        XCTAssertEqual((slp.result["description"] as! String), twitterData[Constants.twitterDescription]!.decoded)
-        XCTAssertEqual((slp.result["image"] as! String), twitterData[Constants.twitterImageSrc])
+        XCTAssertEqual((self.slp.result["title"] as! String), twitterData[Constants.twitterTitle]!.decoded)
+        XCTAssertEqual((self.slp.result["description"] as! String), twitterData[Constants.twitterDescription]!.decoded)
+        XCTAssertEqual((self.slp.result["image"] as! String), twitterData[Constants.twitterImageSrc])
         
     }
     
@@ -92,12 +92,12 @@ class MetaTests: XCTestCase {
         
         facebookTemplate = facebookTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        slp.resetResult()
-        slp.crawlMetaTags(facebookTemplate)
+        self.slp.resetResult()
+        self.slp.crawlMetaTags(facebookTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), facebookData[Constants.facebookTitle]!.decoded)
-        XCTAssertEqual((slp.result["description"] as! String), facebookData[Constants.facebookDescription]!.decoded)
-        XCTAssertEqual((slp.result["image"] as! String), facebookData[Constants.facebookImage])
+        XCTAssertEqual((self.slp.result["title"] as! String), facebookData[Constants.facebookTitle]!.decoded)
+        XCTAssertEqual((self.slp.result["description"] as! String), facebookData[Constants.facebookDescription]!.decoded)
+        XCTAssertEqual((self.slp.result["image"] as! String), facebookData[Constants.facebookImage])
         
     }
     
@@ -133,12 +133,12 @@ class MetaTests: XCTestCase {
         
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        slp.resetResult()
-        slp.crawlMetaTags(metaTemplate)
+        self.slp.resetResult()
+        self.slp.crawlMetaTags(metaTemplate)
         
-        XCTAssertEqual((slp.result["title"] as! String), metaData[Constants.title]!.decoded)
-        XCTAssertEqual((slp.result["description"] as! String), metaData[Constants.description]!.decoded)
-        XCTAssertEqual((slp.result["image"] as! String), metaData[Constants.image])
+        XCTAssertEqual((self.slp.result["title"] as! String), metaData[Constants.title]!.decoded)
+        XCTAssertEqual((self.slp.result["description"] as! String), metaData[Constants.description]!.decoded)
+        XCTAssertEqual((self.slp.result["image"] as! String), metaData[Constants.image])
         
     }
     
