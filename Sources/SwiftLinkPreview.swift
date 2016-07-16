@@ -11,10 +11,10 @@ public class SwiftLinkPreview {
     
     // MARK: - Vars
     static let minimumRelevant: Int = 120
-    private var text: String!
     private var url: NSURL!
     private var task: NSURLSessionDataTask?
     private let session = NSURLSession.sharedSession()
+    internal var text: String!
     internal var result: [String: AnyObject] = [:]
     
     // MARK: - Constructor
@@ -97,17 +97,17 @@ public class SwiftLinkPreview {
 extension SwiftLinkPreview {
     
     // Extract first URL from text
-    private func extractURL() -> NSURL? {
+    internal func extractURL() -> NSURL? {
         
         let explosion = self.text.characters.split{$0 == " "}.map(String.init)
         
         for var piece in explosion {
             
             piece = piece.trim
-            
-            if let url = NSURL(string: piece.trim) {
+
+            if piece.isValidURL() {
                 
-                if url.absoluteString.isValidURL() {
+                if let url = NSURL(string: piece.trim) {
                     
                     return url
                     
@@ -274,7 +274,7 @@ extension SwiftLinkPreview {
             
             if title.isEmpty {
                 
-                if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.tittlePattern, index: 2) {
+                if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
                     
                     if let fromBody: String = self.crawlCode(htmlCode) {
                         
@@ -283,7 +283,7 @@ extension SwiftLinkPreview {
                         if !fromBody.isEmpty {
                             
                             return htmlCode.replace(fromBody, with: "")
-                        
+                            
                         }
                         
                         
