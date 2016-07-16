@@ -41,7 +41,7 @@ extension String {
         
         var string = ""
         for _ in 0..<length {
-            string += charactersArray[GKRandomSource.sharedRandom().nextIntWithUpperBound(charactersArray.count)]
+            string += charactersArray[Int.random(upper: charactersArray.count)]
         }
         
         return string
@@ -51,14 +51,14 @@ extension String {
     // Random Text
     static func randomText() -> String {
         
-        return loremIpsum[GKRandomSource.sharedRandom().nextIntWithUpperBound(loremIpsum.count)]
+        return loremIpsum[Int.random(upper: loremIpsum.count)]
         
     }
     
     // Random Tag
     static func randomTag() -> String {
         
-        let tag = tagType[GKRandomSource.sharedRandom().nextIntWithUpperBound(tagType.count)]
+        let tag = tagType[Int.random(upper: tagType.count)]
         return "<\(tag)>\(randomText())</\(tag)>"
         
     }
@@ -72,21 +72,21 @@ extension String {
             "<img src=\"\(randomImage())\" >"
         ]
         
-        return options[GKRandomSource.sharedRandom().nextIntWithUpperBound(options.count)]
+        return options[Int.random(upper: options.count)]
         
     }
     
     // Random URL
     static func randomUrl() -> String {
         
-        var rand = GKRandomSource.sharedRandom().nextIntWithUpperBound(30) + 5
+        var rand = Int.random(upper: 30) + 5
         let base = String.randomString(rand)
         
-        rand = GKRandomSource.sharedRandom().nextIntWithUpperBound(3) + 2
+        rand = Int.random(upper: 3) + 2
         rand = rand.hashValue > 3 ? 3 : rand
         let end = String.randomString(rand)
         
-        let prtcl = self.protocolType[GKRandomSource.sharedRandom().nextIntWithUpperBound(protocolType.count)]
+        let prtcl = self.protocolType[Int.random(upper: protocolType.count)]
         let url = "\(prtcl)\(base).\(end.lowercaseString)"
         
         return url
@@ -96,7 +96,7 @@ extension String {
     // Random Image
     static func randomImage() -> String {
         
-        return "\(randomUrl())/\(String.randomString(GKRandomSource.sharedRandom().nextIntWithUpperBound(15) + 5)).\(imageType[GKRandomSource.sharedRandom().nextIntWithUpperBound(imageType.count)])"
+        return "\(randomUrl())/\(String.randomString(Int.random(upper: 15) + 5)).\(imageType[Int.random(upper: imageType.count)])"
         
     }
     

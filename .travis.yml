@@ -1,15 +1,18 @@
 language: objective-c
-osx_image: xcode7.3
 env:
   global:
   - LC_CTYPE=en_US.UTF-8
   - LANG=en_US.UTF-8
-  - PROJECT=SwiftLinkPreview.xcproject
-  - SCHEME="SwiftLinkPreviewTests"
-  - IOS_SDK=iphonesimulator9.3
+  - PROJECT=SwiftLinkPreview.xcodeproj
   matrix:
-    - DESTINATION="OS=9.3,name=iPhone 6S"          SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" BUILD_EXAMPLE="YES" POD_LINT="NO"
+    - DESTINATION="OS=9.3,name=iPhone 6S"           SCHEME="SwiftLinkPreview"          SDK="iphonesimulator9.3"
+    - DESTINATION="OS=2.2,name=Apple Watch - 42mm"  SCHEME="SwiftLinkPreviewWatchOS"   SDK="watchsimulator2.2"
+    - DESTINATION="OS=9.2,name=Apple TV 1080p"      SCHEME="SwiftLinkPreviewTvOS"      SDK="appletvsimulator9.2"
+    - DESTINATION="arch=x86_64"                     SCHEME="SwiftLinkPreviewMacOS"     SDK="macosx10.11"
 script:
+  - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" | xcpretty -c;
 
-  - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty -c;
-    
+# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreview         -destination "OS=9.3,name=iPhone 6S"          -sdk "iphonesimulator9.3"   RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
+# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreviewWatchOS  -destination "OS=2.2,name=Apple Watch - 42mm" -sdk "watchsimulator2.2"    RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
+# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreviewTvOS     -destination "OS=9.2,name=Apple TV 1080p"     -sdk "appletvsimulator9.2"  RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test
+# xcodebuild -project SwiftLinkPreview.xcodeproj -scheme SwiftLinkPreviewMacOS    -destination "arch=x86_64"                    -sdk "macosx10.11"          RUN_TESTS="YES" BUILD_EXAMPLE="NO" POD_LINT="NO" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test

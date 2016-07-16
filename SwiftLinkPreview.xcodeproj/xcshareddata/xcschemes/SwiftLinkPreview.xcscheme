@@ -20,6 +20,20 @@
                ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "98DC53371D1D73DB001134E3"
+               BuildableName = "SwiftLinkPreviewTests.xctest"
+               BlueprintName = "SwiftLinkPreviewTests"
+               ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,7 +42,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "98DC53371D1D73DB001134E3"
+               BuildableName = "SwiftLinkPreviewTests.xctest"
+               BlueprintName = "SwiftLinkPreviewTests"
+               ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "98846C951D09AA6E00846726"
+            BuildableName = "SwiftLinkPreview.framework"
+            BlueprintName = "SwiftLinkPreview"
+            ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
