@@ -72,40 +72,10 @@ extension String {
         
     }
     
-    // Delete HTML comments
-    func deleteHtmlComments() -> String {
-        
-        return self.deleteTagByPattern(Regex.htmlCommentPattern)
-        
-    }
-    
-    
-    // Delete CDATA
-    func deleteCData() -> String {
-        
-        return self.deleteTagByPattern(Regex.cDataPattern)
-        
-    }
-    
-    // Delete inputs
-    func deleteInputs() -> String {
-        
-        return self.deleteTagByPattern(Regex.inputPattern).deleteTagByPattern(Regex.textareaPattern)
-        
-    }
-    
     // Delete tab by pattern
     func deleteTagByPattern(pattern: String) -> String {
         
         return self.stringByReplacingOccurrencesOfString(pattern, withString: "", options: .RegularExpressionSearch, range: nil)
-        
-    }
-    
-    // Delete HTML tags
-    func deleteHTMLTag(tag: String) -> String {
-        
-        return
-            self.stringByReplacingOccurrencesOfString("<\(tag)([^>]*)/>" , withString: "", options: .RegularExpressionSearch, range: nil).stringByReplacingOccurrencesOfString("<\(tag)([^>]*)>(.*?)</\(tag)>", withString: "", options: .RegularExpressionSearch, range: nil).stringByReplacingOccurrencesOfString("(?i)</?\(tag)\\b[^<]*>", withString: "", options: .RegularExpressionSearch, range: nil)
         
     }
     
@@ -143,7 +113,6 @@ extension String {
     func isValidURL() -> Bool {
         
         return Regex.test(self, regex: Regex.rawUrlPattern)
-        // && UIApplication.sharedApplication().canOpenURL(NSURL(string: self)!)
         
     }
     
