@@ -175,20 +175,18 @@ extension SwiftLinkPreview {
                 
             } else {
                 
+                let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : NSURL(string: "http://\(url)")
+                
                 do {
                     
-                    var htmlCode = try String(contentsOfURL: url).extendedTrim
-                    
-                    self.crawlMetaTags(htmlCode)
-                    htmlCode = self.crawlTitle(htmlCode)
-                    htmlCode = self.crawlDescription(htmlCode)
-                    self.crawlImages(htmlCode)
+                    // Try to get the page with its default enconding
+                    self.performPageCrawling(try String(contentsOfURL: sourceUrl!).extendedTrim)
                     
                     completion()
                     
                 } catch _ as NSError {
                     
-                    onError(PreviewError(type: .ParseError, url: url.absoluteString))
+                    self.tryAnotherEnconding(sourceUrl!, encodingArray: String.availableStringEncodings(), completion: completion, onError: onError)
                     
                 }
                 
@@ -202,6 +200,46 @@ extension SwiftLinkPreview {
         }
         
     }
+    
+    // Try to get the page using another available encoding instead the page's own encoding
+    private func tryAnotherEnconding(sourceUrl: NSURL, encodingArray: [NSStringEncoding], completion: () -> (), onError: (PreviewError) -> ()) {
+        
+        if encodingArray.isEmpty {
+            
+            onError(PreviewError(type: .ParseError, url: url.absoluteString))
+            
+        } else {
+            
+            do {
+                
+                self.performPageCrawling(try String(contentsOfURL: sourceUrl, encoding: encodingArray[0]).extendedTrim)
+                
+                completion()
+                
+            } catch _ as NSError {
+                
+                let availablEncodingArray = encodingArray.filter() { $0 != encodingArray[0] }
+                self.tryAnotherEnconding(sourceUrl, encodingArray: availablEncodingArray, completion: completion, onError: onError)
+                
+            }
+            
+        }
+        
+    }
+    
+    
+    // Perform the page crawiling
+    private func performPageCrawling(htmlCode: String) {
+        
+        var htmlCode = htmlCode
+        
+        self.crawlMetaTags(htmlCode)
+        htmlCode = self.crawlTitle(htmlCode)
+        htmlCode = self.crawlDescription(htmlCode)
+        self.crawlImages(htmlCode)
+        
+    }
+    
     
     // Extract canonical URL
     internal func extractCanonicalURL() {
