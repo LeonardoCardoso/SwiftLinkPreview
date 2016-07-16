@@ -25,7 +25,7 @@ class TitleTests: XCTestCase {
         
     }
     
-    // MARK: - Single
+    // MARK: - Title
     func setUpTitle() {
         
         var metaData =
