@@ -12,19 +12,12 @@ class Regex {
     
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
     static let imageTagPattern = "<img(.+?)src=\"([^\"]+)\"(.+?)[/]?>"
-    static let tittlePattern = "<title(.*?)>(.*?)</title>"
-    static let scriptPattern = "<script(.*?)>(.*?)</script>"
+    static let titlePattern = "<title(.*?)>(.*?)</title>"
     static let metatagPattern = "<meta(.*?)>"
     static let metatagContentPattern = "content=(\"(.*?)\")|('(.*?)')"
-    static let urlPattern = "<\\b(http[s]?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]>"
-    static let rawUrlPattern = "((http[s]?)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
-    static let cannonicalUrlPattern = "http[s]?://(.*)[/]?"
+    static let cannonicalUrlPattern = "([^\\+&#@%\\?=~_\\|!:,;]+)"
+    static let rawUrlPattern = "((http[s]?|ftp|file)://)?((([-a-zA-Z0-9]+\\.)|\\.)+[-a-zA-Z0-9]+)[-a-zA-Z0-9+&@#/%?=~_|!:,\\.;]*"
     static let rawTagPattern = "<[^>]+>"
-    static let htmlCommentPattern = "(?=<!--)([\\s\\S]*?-->)"
-    static let cDataPattern = "(?=(//)?<!\\[CDATA)([\\s\\S]*?\\]\\]>)"
-    static let inputPattern = "<input(.*?[^>])>"
-    static let textareaPattern = "<textarea(.*?[^>])>(.*)</textarea>"
-    static let aPattern = "<(/)?a(.*?[^>])?>"
     
     
     // Test regular expression

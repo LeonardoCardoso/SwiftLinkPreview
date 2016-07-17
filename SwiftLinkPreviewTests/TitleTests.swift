@@ -25,7 +25,7 @@ class TitleTests: XCTestCase {
         
     }
     
-    // MARK: - Single
+    // MARK: - Title
     func setUpTitle() {
         
         var metaData =
@@ -43,10 +43,10 @@ class TitleTests: XCTestCase {
         
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: metaData[Constants.bodyRandom]!).extendedTrim
         
-        slp.resetResult()
-        slp.crawlTitle(metaTemplate)
+        self.slp.resetResult()
+        self.slp.crawlTitle(metaTemplate)
         
-        let comparable = (slp.result["title"] as! String)
+        let comparable = (self.slp.result["title"] as! String)
         let comparison = comparable == metaData[Constants.title]!.decoded.extendedTrim ||
             comparable == metaData[Constants.headRandom]!.decoded.extendedTrim ||
             comparable == metaData[Constants.bodyRandom]!.decoded.extendedTrim

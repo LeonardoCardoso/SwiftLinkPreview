@@ -6,7 +6,7 @@
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
 
-@import Foundation
+@import Foundation;
 
 //! Project version number for SwiftLinkPreview.
 FOUNDATION_EXPORT double SwiftLinkPreviewVersionNumber;

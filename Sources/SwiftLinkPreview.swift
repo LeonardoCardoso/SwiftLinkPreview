@@ -11,10 +11,10 @@ public class SwiftLinkPreview {
     
     // MARK: - Vars
     static let minimumRelevant: Int = 120
-    private var text: String!
     private var url: NSURL!
     private var task: NSURLSessionDataTask?
     private let session = NSURLSession.sharedSession()
+    internal var text: String!
     internal var result: [String: AnyObject] = [:]
     
     // MARK: - Constructor
@@ -97,7 +97,7 @@ public class SwiftLinkPreview {
 extension SwiftLinkPreview {
     
     // Extract first URL from text
-    private func extractURL() -> NSURL? {
+    internal func extractURL() -> NSURL? {
         
         let explosion = self.text.characters.split{$0 == " "}.map(String.init)
         
@@ -105,9 +105,9 @@ extension SwiftLinkPreview {
             
             piece = piece.trim
             
-            if let url = NSURL(string: piece.trim) {
+            if piece.isValidURL() {
                 
-                if url.absoluteString.isValidURL() {
+                if let url = NSURL(string: piece.trim) {
                     
                     return url
                     
@@ -175,20 +175,18 @@ extension SwiftLinkPreview {
                 
             } else {
                 
+                let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : NSURL(string: "http://\(url)")
+                
                 do {
                     
-                    var htmlCode = try String(contentsOfURL: url).extendedTrim
-                    
-                    self.crawlMetaTags(htmlCode)
-                    htmlCode = self.crawlTitle(htmlCode)
-                    htmlCode = self.crawlDescription(htmlCode)
-                    self.crawlImages(htmlCode)
+                    // Try to get the page with its default enconding
+                    self.performPageCrawling(try String(contentsOfURL: sourceUrl!).extendedTrim)
                     
                     completion()
                     
                 } catch _ as NSError {
                     
-                    onError(PreviewError(type: .ParseError, url: url.absoluteString))
+                    self.tryAnotherEnconding(sourceUrl!, encodingArray: String.availableStringEncodings(), completion: completion, onError: onError)
                     
                 }
                 
@@ -203,27 +201,100 @@ extension SwiftLinkPreview {
         
     }
     
-    // Extract get canonical URL
-    private func extractCanonicalURL() {
+    // Try to get the page using another available encoding instead the page's own encoding
+    private func tryAnotherEnconding(sourceUrl: NSURL, encodingArray: [NSStringEncoding], completion: () -> (), onError: (PreviewError) -> ()) {
         
-        if var canonicalUrl = Regex.pregMatchFirst((self.result["finalUrl"] as! NSURL).absoluteString, regex: Regex.cannonicalUrlPattern, index: 1) {
+        if encodingArray.isEmpty {
             
-            canonicalUrl = canonicalUrl.replace("http://", with: "").replace("https://", with: "")
-            
-            if let slash = canonicalUrl.rangeOfString("/") {
-                
-                let endIndex = canonicalUrl.startIndex.distanceTo(slash.endIndex)
-                canonicalUrl = canonicalUrl.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
-                
-            }
-            
-            self.result["canonicalUrl"] = canonicalUrl
+            onError(PreviewError(type: .ParseError, url: url.absoluteString))
             
         } else {
             
-            self.result["canonicalUrl"] = self.result["url"]
+            do {
+                
+                self.performPageCrawling(try String(contentsOfURL: sourceUrl, encoding: encodingArray[0]).extendedTrim)
+                
+                completion()
+                
+            } catch _ as NSError {
+                
+                let availablEncodingArray = encodingArray.filter() { $0 != encodingArray[0] }
+                self.tryAnotherEnconding(sourceUrl, encodingArray: availablEncodingArray, completion: completion, onError: onError)
+                
+            }
             
         }
+        
+    }
+    
+    
+    // Perform the page crawiling
+    private func performPageCrawling(htmlCode: String) {
+        
+        var htmlCode = htmlCode
+        
+        self.crawlMetaTags(htmlCode)
+        htmlCode = self.crawlTitle(htmlCode)
+        htmlCode = self.crawlDescription(htmlCode)
+        self.crawlImages(htmlCode)
+        
+    }
+    
+    
+    // Extract canonical URL
+    internal func extractCanonicalURL() {
+        
+        if let finalUrl: NSURL = self.result["finalUrl"] as? NSURL {
+            
+            let preUrl: String = finalUrl.absoluteString
+            let url = preUrl
+                .replace("http://", with: "")
+                .replace("https://", with: "")
+                .replace("file://", with: "")
+                .replace("ftp://", with: "")
+            
+            if preUrl != url {
+                
+                if let canonicalUrl = Regex.pregMatchFirst(url, regex: Regex.cannonicalUrlPattern, index: 1) {
+                    
+                    if(!canonicalUrl.isEmpty) {
+                        
+                        self.result["canonicalUrl"] = self.extractBaseUrl(canonicalUrl)
+                        
+                    } else {
+                        
+                        self.result["canonicalUrl"] = self.extractBaseUrl(url)
+                        
+                    }
+                    
+                } else {
+                    
+                    self.result["canonicalUrl"] = self.extractBaseUrl(url)
+                    
+                }
+                
+            } else {
+                
+                self.result["canonicalUrl"] = self.extractBaseUrl(preUrl)
+                
+            }
+            
+        }
+        
+    }
+    
+    // Extract base URL
+    private func extractBaseUrl(url: String) -> String {
+        
+        var url = url
+        if let slash = url.rangeOfString("/") {
+            
+            let endIndex = url.startIndex.distanceTo(slash.endIndex)
+            url = url.substring(0, end: endIndex > 1 ? endIndex - 1 : 0)
+            
+        }
+        
+        return url
         
     }
     
@@ -274,7 +345,7 @@ extension SwiftLinkPreview {
             
             if title.isEmpty {
                 
-                if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.tittlePattern, index: 2) {
+                if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
                     
                     if let fromBody: String = self.crawlCode(htmlCode) {
                         
@@ -283,7 +354,7 @@ extension SwiftLinkPreview {
                         if !fromBody.isEmpty {
                             
                             return htmlCode.replace(fromBody, with: "")
-                        
+                            
                         }
                         
                         
