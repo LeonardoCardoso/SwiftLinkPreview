@@ -326,8 +326,14 @@ extension SwiftLinkPreview {
                             
                             if !value.extendedTrim.isEmpty && !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
                                 
-                                value = (value.hasPrefix("//") ? "http:" : (self.result["finalUrl"] as! NSURL).absoluteString) + value
-                                
+                                if let host = (self.result["finalUrl"] as! NSURL).host as String! {
+                                    if value.hasPrefix("//") {
+                                        value = (self.result["finalUrl"] as! NSURL).scheme + ":" + value
+                                    }
+                                    else {
+                                        value = (self.result["finalUrl"] as! NSURL).scheme + "://" + host + value
+                                    }
+                                }
                             }
                             
                             imgs.append(value)
