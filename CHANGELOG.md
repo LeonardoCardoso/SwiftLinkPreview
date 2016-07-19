@@ -17,6 +17,11 @@ Released on 2016-07-16.
 - Tests for other platforms.
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
+#### Fixed
+- Image url uses finalUrl host component rather than its full path
+	- Fixed by [Fraser](https://github.com/fraserscottmorrison)
+
+
 ## [0.1.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.2)
 Released on 2016-07-13.
 
