@@ -1,10 +1,21 @@
 # Change Log
 
 #### 0.x Releases
-- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013)  
+- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013) | [0.1.4](#014)  
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [0.1.4](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.4)
+Released on 2016-07-19.
+
+#### Added
+- Improved crawling. `itemprop` is now a supported meta property.
+	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
+- More tests.
+	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
+- Removing unnecessary data from the code such as `style`, `link`, `comments` and `script` for faster analysis. Additionally I've put it inside a `dispatch_async`. [#19](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/19)
+	- Fixed by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [0.1.3](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.3)
 Released on 2016-07-16.
