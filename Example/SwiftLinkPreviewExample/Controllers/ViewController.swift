@@ -32,6 +32,7 @@ class ViewController: UIViewController {
         
         "www.youtube.com",
         "www.google.com",
+        "facebook.com",
         
         "http://ios.leocardz.com/swift-link-preview/",
         "NASA! 🖖🏽 http://www.nasa.gov/",
