@@ -36,12 +36,13 @@ class RegexTests: XCTestCase {
         
         for url in URLs.bunch {
             
-            self.slp.result["finalUrl"] = NSURL(string: url[1])
-            self.slp.extractCanonicalURL()
+            let finalUrl = NSURL(string: url[1])
+            self.slp.result["finalUrl"] = finalUrl
+            let canonical = self.slp.extractCanonicalURL(finalUrl)
             
-            // print(self.slp.result["canonicalUrl"], url[2])
+            // print(canonical, url[2])
             
-            XCTAssertEqual((self.slp.result["canonicalUrl"] as! String), url[2])
+            XCTAssertEqual(canonical, url[2])
             
         }
         
