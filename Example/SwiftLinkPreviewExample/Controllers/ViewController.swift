@@ -30,6 +30,7 @@ class ViewController: UIViewController {
     // MARK: - Vars
     private var randomTexts: [String] = [
         
+        "www.youtube.com",
         "www.google.com",
         
         "http://ios.leocardz.com/swift-link-preview/",
