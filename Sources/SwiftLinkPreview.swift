@@ -11,7 +11,7 @@ public class SwiftLinkPreview {
     
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
-    static let decriptionMinimumRelevant: Int = 60
+    static let decriptionMinimumRelevant: Int = 100
     private var url: NSURL!
     private var task: NSURLSessionDataTask?
     private let session = NSURLSession.sharedSession()
@@ -468,39 +468,21 @@ extension SwiftLinkPreview {
         
         var image = image
         
-        var absoluteString = ""
-        
-        if let finalUrl: NSURL = self.result["finalUrl"] as? NSURL {
+        if let canonicalUrl: String = self.result["canonicalUrl"] as? String {
             
-            if let host = finalUrl.host as String! {
+            if image.hasPrefix("//") {
                 
-                if image.hasPrefix("//") {
-                    
-                    image = finalUrl.scheme + ":" + image
-                    
-                } else {
-                    
-                    image = finalUrl.scheme + "://" + host + image
-                    
-                }
+                image = "http:" + image
+                
+            } else if image.hasPrefix("/") {
+                
+                image = "http://" + canonicalUrl + image
                 
             }
             
-            absoluteString = !finalUrl.absoluteString.hasPrefix("http://")
-                || !finalUrl.absoluteString.hasPrefix("https://") || !finalUrl.absoluteString.hasPrefix("ftp://")
-                ? "http://" + finalUrl.absoluteString : finalUrl.absoluteString
-            
         }
         
-        if(absoluteString.isEmpty) {
-            
-            return image.hasPrefix("//") ? "http:" + image : image
-            
-        } else {
-            
-            return image.hasPrefix("//") ? "http:" + image : (image.hasPrefix("/") ? absoluteString + image : image)
-            
-        }
+        return image
         
     }
     
@@ -508,7 +490,7 @@ extension SwiftLinkPreview {
     internal func crawlCode(content: String, minimum: Int) -> String {
         
         let resultFirstSearch = self.getTagContent("p", content: content, minimum: minimum)
-
+        
         if (!resultFirstSearch.isEmpty) {
             
             return resultFirstSearch
