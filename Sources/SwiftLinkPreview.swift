@@ -10,7 +10,8 @@ import Foundation
 public class SwiftLinkPreview {
     
     // MARK: - Vars
-    static let minimumRelevant: Int = 120
+    static let titleMinimumRelevant: Int = 15
+    static let decriptionMinimumRelevant: Int = 60
     private var url: NSURL!
     private var task: NSURLSessionDataTask?
     private let session = NSURLSession.sharedSession()
@@ -100,20 +101,12 @@ extension SwiftLinkPreview {
     internal func extractURL() -> NSURL? {
         
         let explosion = self.text.characters.split{$0 == " "}.map(String.init)
+        let pieces = explosion.filter({ $0.trim.isValidURL() })
+        let piece = pieces[0]
         
-        for var piece in explosion {
+        if let url = NSURL(string: piece) {
             
-            piece = piece.trim
-            
-            if piece.isValidURL() {
-                
-                if let url = NSURL(string: piece.trim) {
-                    
-                    return url
-                    
-                }
-                
-            }
+            return url
             
         }
         
@@ -244,7 +237,7 @@ extension SwiftLinkPreview {
     }
     
     // Removing unnecessary data from the source
-    public func cleanSource(source: String) -> String {
+    private func cleanSource(source: String) -> String {
         
         var source = source
         source = source.deleteTagByPattern(Regex.inlineStylePattern)
@@ -378,7 +371,7 @@ extension SwiftLinkPreview {
                     
                     if value.isEmpty {
                         
-                        if let fromBody: String = self.crawlCode(htmlCode) {
+                        if let fromBody: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant) {
                             
                             if !fromBody.isEmpty {
                                 
@@ -413,7 +406,7 @@ extension SwiftLinkPreview {
             
             if description.isEmpty {
                 
-                if let value: String = self.crawlCode(htmlCode) {
+                if let value: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant) {
                     
                     self.result["description"] = value.decoded.extendedTrim
                     
@@ -512,53 +505,69 @@ extension SwiftLinkPreview {
     }
     
     // Crawl the entire code
-    internal func crawlCode(content: String) -> String {
+    internal func crawlCode(content: String, minimum: Int) -> String {
         
-        let resultSpan = self.getTagContent("span", content: content)
-        let resultParagraph = self.getTagContent("p", content: content)
-        let resultDiv = self.getTagContent("div", content: content)
-        var result = resultSpan
-        
-        if (resultParagraph.characters.count >= result.characters.count) {
+        let resultFirstSearch = self.getTagContent("p", content: content, minimum: minimum)
+
+        if (!resultFirstSearch.isEmpty) {
             
-            if (resultParagraph.characters.count >= resultDiv.characters.count) {
+            return resultFirstSearch
+            
+        } else {
+            
+            let resultSecondSearch = self.getTagContent("div", content: content, minimum: minimum)
+            
+            if (!resultSecondSearch.isEmpty) {
                 
-                result = resultParagraph
+                return resultSecondSearch
                 
             } else {
                 
-                result = resultDiv
+                let resultThirdSearch = self.getTagContent("span", content: content, minimum: minimum)
+                
+                if (!resultThirdSearch.isEmpty) {
+                    
+                    return resultThirdSearch
+                    
+                } else {
+                    
+                    if (resultThirdSearch.characters.count >= resultFirstSearch.characters.count) {
+                        
+                        if (resultThirdSearch.characters.count >= resultThirdSearch.characters.count) {
+                            
+                            return resultThirdSearch
+                            
+                        } else {
+                            
+                            return resultThirdSearch
+                            
+                        }
+                        
+                    } else {
+                        
+                        return resultFirstSearch
+                        
+                    }
+                    
+                }
+                
                 
             }
             
         }
-        
-        return result
         
     }
     
     // Get tag content
-    private func getTagContent(tag: String, content: String) -> String {
+    private func getTagContent(tag: String, content: String, minimum: Int) -> String {
         
         let pattern = Regex.tagPattern(tag)
-        var result = ""
-        var currentMatch = ""
         
         let index = 2
-        let matches = Regex.pregMatchAll(content, regex: pattern, index: index)
+        let rawMatches = Regex.pregMatchAll(content, regex: pattern, index: index)
         
-        for match in matches {
-            
-            currentMatch = match.extendedTrim.tagsStripped
-            
-            if (currentMatch.characters.count >= SwiftLinkPreview.minimumRelevant) {
-                
-                result = match
-                break
-                
-            }
-            
-        }
+        let matches = rawMatches.filter({ $0.extendedTrim.tagsStripped.characters.count >= minimum })
+        var result = matches.count > 0 ? matches[0] : ""
         
         if result.isEmpty {
             

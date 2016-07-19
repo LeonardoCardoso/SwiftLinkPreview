@@ -10,6 +10,7 @@ import Foundation
 
 struct Constants {
     
+    static let huge = "huge"
     static let bodyTitle = "body-text-span"
     static let bodyTextSpan = "body-text-span"
     static let bodyTextP = "body-text-p"
