@@ -39,7 +39,7 @@ public class SwiftLinkPreview {
                 
                 self.result["finalUrl"] = unshortened
                 
-                self.extractCanonicalURL()
+                self.result["canonicalUrl"] = self.extractCanonicalURL(unshortened)
                 
                 self.extractInfo({
                     
@@ -242,42 +242,38 @@ extension SwiftLinkPreview {
     
     
     // Extract canonical URL
-    internal func extractCanonicalURL() {
+    internal func extractCanonicalURL(finalUrl: NSURL!) -> String {
         
-        if let finalUrl: NSURL = self.result["finalUrl"] as? NSURL {
+        let preUrl: String = finalUrl.absoluteString
+        let url = preUrl
+            .replace("http://", with: "")
+            .replace("https://", with: "")
+            .replace("file://", with: "")
+            .replace("ftp://", with: "")
+        
+        if preUrl != url {
             
-            let preUrl: String = finalUrl.absoluteString
-            let url = preUrl
-                .replace("http://", with: "")
-                .replace("https://", with: "")
-                .replace("file://", with: "")
-                .replace("ftp://", with: "")
-            
-            if preUrl != url {
+            if let canonicalUrl = Regex.pregMatchFirst(url, regex: Regex.cannonicalUrlPattern, index: 1) {
                 
-                if let canonicalUrl = Regex.pregMatchFirst(url, regex: Regex.cannonicalUrlPattern, index: 1) {
+                if(!canonicalUrl.isEmpty) {
                     
-                    if(!canonicalUrl.isEmpty) {
-                        
-                        self.result["canonicalUrl"] = self.extractBaseUrl(canonicalUrl)
-                        
-                    } else {
-                        
-                        self.result["canonicalUrl"] = self.extractBaseUrl(url)
-                        
-                    }
+                    return self.extractBaseUrl(canonicalUrl)
                     
                 } else {
                     
-                    self.result["canonicalUrl"] = self.extractBaseUrl(url)
+                    return self.extractBaseUrl(url)
                     
                 }
                 
             } else {
                 
-                self.result["canonicalUrl"] = self.extractBaseUrl(preUrl)
+                return self.extractBaseUrl(url)
                 
             }
+            
+        } else {
+            
+            return self.extractBaseUrl(preUrl)
             
         }
         
@@ -318,13 +314,16 @@ extension SwiftLinkPreview {
                     metatag.rangeOfString("name=\"twitter:\(tag)") != nil ||
                     metatag.rangeOfString("name='twitter:\(tag)") != nil ||
                     metatag.rangeOfString("name=\"\(tag)") != nil ||
-                    metatag.rangeOfString("name='\(tag)") != nil) {
+                    metatag.rangeOfString("name='\(tag)") != nil ||
+                    metatag.rangeOfString("itemprop=\"\(tag)") != nil ||
+                    metatag.rangeOfString("itemprop='\(tag)") != nil) {
                     
                     if((self.result[tag] as! String).isEmpty) {
                         
                         if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                             
-                            self.result[tag] = value.decoded.extendedTrim
+                            let value = value.decoded.extendedTrim
+                            self.result[tag] = tag == "image" ? self.addImagePrefixIfNeeded(value) : value
                             
                         }
                         
@@ -347,16 +346,19 @@ extension SwiftLinkPreview {
                 
                 if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
                     
-                    if let fromBody: String = self.crawlCode(htmlCode) {
+                    if value.isEmpty {
                         
-                        self.result["title"] = fromBody.decoded.extendedTrim
-                        
-                        if !fromBody.isEmpty {
+                        if let fromBody: String = self.crawlCode(htmlCode) {
                             
-                            return htmlCode.replace(fromBody, with: "")
+                            if !fromBody.isEmpty {
+                                
+                                self.result["title"] = fromBody.decoded.extendedTrim
+                                
+                                return htmlCode.replace(fromBody, with: "")
+                                
+                            }
                             
                         }
-                        
                         
                     } else {
                         
@@ -412,26 +414,11 @@ extension SwiftLinkPreview {
                         
                         for value in values {
                             
-                            var value = value
-                            
-                            if !value.extendedTrim.isEmpty && !value.hasPrefix("https://") && !value.hasPrefix("http://") && !value.hasPrefix("ftp://") {
-                                
-                                if let host = (self.result["finalUrl"] as! NSURL).host as String! {
-                                    if value.hasPrefix("//") {
-                                        value = (self.result["finalUrl"] as! NSURL).scheme + ":" + value
-                                    }
-                                    else {
-                                        value = (self.result["finalUrl"] as! NSURL).scheme + "://" + host + value
-                                    }
-                                }
-                            }
-                            
-                            imgs.append(value)
+                            imgs.append(self.addImagePrefixIfNeeded(value))
                             
                         }
                         
                         self.result["images"] = imgs
-                        
                         
                         if imgs.count > 0 {
                             
@@ -447,8 +434,49 @@ extension SwiftLinkPreview {
             
         } else {
             
-            self.result["images"] = [mainImage]
+            self.result["images"] = [self.addImagePrefixIfNeeded(mainImage)]
             
+        }
+        
+    }
+    
+    // Add prefix image if needed
+    private func addImagePrefixIfNeeded(image: String) -> String {
+        
+        var image = image
+        
+        var absoluteString = ""
+        
+        if let finalUrl: NSURL = self.result["finalUrl"] as? NSURL {
+            
+            if let host = finalUrl.host as String! {
+                
+                if image.hasPrefix("//") {
+                    
+                    image = finalUrl.scheme + ":" + image
+                    
+                } else {
+                    
+                    image = finalUrl.scheme + "://" + host + image
+                    
+                }
+                
+            }
+            
+            absoluteString = !finalUrl.absoluteString.hasPrefix("http://")
+                || !finalUrl.absoluteString.hasPrefix("https://") || !finalUrl.absoluteString.hasPrefix("ftp://")
+                ? "http://" + finalUrl.absoluteString : finalUrl.absoluteString
+            
+        }
+        
+        if(absoluteString.isEmpty) {
+        
+            return image.hasPrefix("//") ? "http:" + image : image
+        
+        } else {
+            
+            return image.hasPrefix("//") ? "http:" + image : (image.hasPrefix("/") ? absoluteString + image : image)
+        
         }
         
     }

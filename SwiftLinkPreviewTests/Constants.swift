@@ -18,6 +18,7 @@ struct Constants {
     static let bodyImageGallery = "body-image-gallery"
     static let headMetaTwitter = "head-meta-twitter"
     static let headMetaMeta = "head-meta-meta"
+    static let headMetaItemprop = "head-meta-itemprop"
     static let headMetaFacebook = "head-meta-facebook"
     static let headTitle = "head-title"
     

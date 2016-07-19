@@ -15,6 +15,7 @@ class MetaTests: XCTestCase {
     // MARK: - Vars
     var twitterTemplate = ""
     var facebookTemplate = ""
+    var itempropTemplate = ""
     var metaTemplate = ""
     let slp = SwiftLinkPreview()
     
@@ -25,6 +26,7 @@ class MetaTests: XCTestCase {
         
         self.twitterTemplate = File.toString(Constants.headMetaTwitter)
         self.facebookTemplate = File.toString(Constants.headMetaFacebook)
+        self.itempropTemplate = File.toString(Constants.headMetaItemprop)
         self.metaTemplate = File.toString(Constants.headMetaMeta)
         
     }
@@ -106,6 +108,47 @@ class MetaTests: XCTestCase {
         for _ in 0 ..< 100 {
             
             self.setUpFacebookAndRun()
+            
+        }
+        
+    }
+    
+    // MARK: - Facebook
+    func setUpItempropAndRun() {
+        
+        var itempropData =
+            [
+                Constants.title: String.randomText(),
+                Constants.site: String.randomUrl(),
+                Constants.description: String.randomText(),
+                Constants.image: String.randomImage()
+        ]
+        
+        var itempropTemplate = self.itempropTemplate
+        itempropTemplate = itempropTemplate.replace(Constants.headRandomPre, with: String.randomTag())
+        itempropTemplate = itempropTemplate.replace(Constants.headRandomPos, with: String.randomTag())
+        
+        itempropTemplate = itempropTemplate.replace(Constants.title, with: itempropData[Constants.title]!)
+        itempropTemplate = itempropTemplate.replace(Constants.site, with: itempropData[Constants.site]!)
+        itempropTemplate = itempropTemplate.replace(Constants.description, with: itempropData[Constants.description]!)
+        itempropTemplate = itempropTemplate.replace(Constants.image, with: itempropData[Constants.image]!)
+        
+        itempropTemplate = itempropTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
+        
+        self.slp.resetResult()
+        self.slp.crawlMetaTags(itempropTemplate)
+        
+        XCTAssertEqual((self.slp.result["title"] as! String), itempropData[Constants.title]!.decoded)
+        XCTAssertEqual((self.slp.result["description"] as! String), itempropData[Constants.description]!.decoded)
+        XCTAssertEqual((self.slp.result["image"] as! String), itempropData[Constants.image])
+        
+    }
+    
+    func testItemprop() {
+        
+        for _ in 0 ..< 100 {
+            
+            self.setUpItempropAndRun()
             
         }
         
