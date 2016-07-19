@@ -130,7 +130,7 @@ extension SwiftLinkPreview {
                 
                 if(finalResult.absoluteString == url.absoluteString) {
                     
-                    dispatch_async(dispatch_get_main_queue()){
+                    dispatch_async(dispatch_get_main_queue()) {
                         
                         completion(url)
                         
@@ -145,7 +145,7 @@ extension SwiftLinkPreview {
                 
             } else {
                 
-                dispatch_async(dispatch_get_main_queue()){
+                dispatch_async(dispatch_get_main_queue()) {
                     
                     completion(url)
                     
@@ -180,9 +180,17 @@ extension SwiftLinkPreview {
                 do {
                     
                     // Try to get the page with its default enconding
-                    self.performPageCrawling(try String(contentsOfURL: sourceUrl!).extendedTrim)
+                    var source = try String(contentsOfURL: sourceUrl!).extendedTrim
                     
-                    completion()
+                    dispatch_async(dispatch_get_main_queue()) {
+                        
+                        source = self.cleanSource(source)
+                        
+                        self.performPageCrawling(source)
+                        
+                        completion()
+                        
+                    }
                     
                 } catch _ as NSError {
                     
@@ -212,9 +220,17 @@ extension SwiftLinkPreview {
             
             do {
                 
-                self.performPageCrawling(try String(contentsOfURL: sourceUrl, encoding: encodingArray[0]).extendedTrim)
+                var source = try String(contentsOfURL: sourceUrl, encoding: encodingArray[0]).extendedTrim
                 
-                completion()
+                dispatch_async(dispatch_get_main_queue()) {
+                    
+                    source = self.cleanSource(source)
+                    
+                    self.performPageCrawling(source)
+                    
+                    completion()
+                    
+                }
                 
             } catch _ as NSError {
                 
@@ -224,6 +240,20 @@ extension SwiftLinkPreview {
             }
             
         }
+        
+    }
+    
+    // Removing unnecessary data from the source
+    public func cleanSource(source: String) -> String {
+        
+        var source = source
+        source = source.deleteTagByPattern(Regex.inlineStylePattern)
+        source = source.deleteTagByPattern(Regex.inlineScriptPattern)
+        source = source.deleteTagByPattern(Regex.linkPattern)
+        source = source.deleteTagByPattern(Regex.scriptPattern)
+        source = source.deleteTagByPattern(Regex.commentPattern)
+        
+        return source
         
     }
     
@@ -470,13 +500,13 @@ extension SwiftLinkPreview {
         }
         
         if(absoluteString.isEmpty) {
-        
+            
             return image.hasPrefix("//") ? "http:" + image : image
-        
+            
         } else {
             
             return image.hasPrefix("//") ? "http:" + image : (image.hasPrefix("/") ? absoluteString + image : image)
-        
+            
         }
         
     }

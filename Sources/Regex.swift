@@ -18,7 +18,11 @@ class Regex {
     static let cannonicalUrlPattern = "([^\\+&#@%\\?=~_\\|!:,;]+)"
     static let rawUrlPattern = "((http[s]?|ftp|file)://)?((([-a-zA-Z0-9]+\\.)|\\.)+[-a-zA-Z0-9]+)[-a-zA-Z0-9+&@#/%?=~_|!:,\\.;]*"
     static let rawTagPattern = "<[^>]+>"
-    
+    static let inlineStylePattern = "<style(.*?)>(.*?)</style>"
+    static let inlineScriptPattern = "<script(.*?)>(.*?)</script>"
+    static let linkPattern = "<link(.*?)>"
+    static let scriptPattern = "<script(.*?)>"
+    static let commentPattern = "<!--(.*?)-->"
     
     // Test regular expression
     static func test(string: String!, regex: String!) -> Bool {
