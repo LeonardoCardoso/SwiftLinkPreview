@@ -11,10 +11,10 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 <p>
 
 <p align="center">
-	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.1-blue.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
+	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.4-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
-	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 	[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
 <p>
 <p>
@@ -70,7 +70,7 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 0.1.1'
+	  	pod 'SwiftLinkPreview', '~> 0.1.4'
 	  	// ...
 	end
 ```
@@ -81,7 +81,7 @@ To use **SwiftLinkPreview** as a Carthage module package just add the following 
 
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.1.1
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.1.4
   	// ...
 ```
 
@@ -167,12 +167,16 @@ If you don't want to use the option above and you are using ```SwiftLinkPreview`
 
 ![app security](http://i.imgur.com/INEp6q5.png)
 
-## TIPS
+## Tips
 
 Not all websites will have their info brought, you can treat the info that your implementation gets as you like. But here are two tips about posting a preview:
 
 * If some info is missing, you can offer the user to enter it. Take for example the description.
 * If more than one image is fetched, you can offer the user the feature of picking one image.
+
+## Tests
+
+Feel free to fork this repo and add URLs on [SwiftLinkPreviewTests/URLs.swift](SwiftLinkPreviewTests/URLs.swift) to test URLs and help improving this lib. The more URLs the better the reliability.
 
 ## Information and Contact
 

@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98846C951D09AA6E00846726"
+               BlueprintIdentifier = "98F76D2E1D3B1C3100E9B10E"
                BuildableName = "SwiftLinkPreview.framework"
-               BlueprintName = "SwiftLinkPreview"
-               ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98DC53371D1D73DB001134E3"
-               BuildableName = "SwiftLinkPreviewTests.xctest"
-               BlueprintName = "SwiftLinkPreviewTests"
+               BlueprintName = "SwiftLinkPreviewWatchOS"
                ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,23 +28,13 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98DC53371D1D73DB001134E3"
-               BuildableName = "SwiftLinkPreviewTests.xctest"
-               BlueprintName = "SwiftLinkPreviewTests"
-               ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98846C951D09AA6E00846726"
+            BlueprintIdentifier = "98F76D2E1D3B1C3100E9B10E"
             BuildableName = "SwiftLinkPreview.framework"
-            BlueprintName = "SwiftLinkPreview"
+            BlueprintName = "SwiftLinkPreviewWatchOS"
             ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -78,9 +54,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98846C951D09AA6E00846726"
+            BlueprintIdentifier = "98F76D2E1D3B1C3100E9B10E"
             BuildableName = "SwiftLinkPreview.framework"
-            BlueprintName = "SwiftLinkPreview"
+            BlueprintName = "SwiftLinkPreviewWatchOS"
             ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,9 +72,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98846C951D09AA6E00846726"
+            BlueprintIdentifier = "98F76D2E1D3B1C3100E9B10E"
             BuildableName = "SwiftLinkPreview.framework"
-            BlueprintName = "SwiftLinkPreview"
+            BlueprintName = "SwiftLinkPreviewWatchOS"
             ReferencedContainer = "container:SwiftLinkPreview.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

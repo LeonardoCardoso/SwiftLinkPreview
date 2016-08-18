@@ -41,10 +41,10 @@ class ImageTests: XCTestCase {
         
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        slp.resetResult()
-        slp.crawlImages(singleImageTemplate)
+        self.slp.resetResult()
+        self.slp.crawlImages(singleImageTemplate)
         
-        XCTAssertEqual((slp.result["image"] as! String), data[Constants.image])
+        XCTAssertEqual((self.slp.result["image"] as! String), data[Constants.image])
         
     }
     
@@ -78,12 +78,12 @@ class ImageTests: XCTestCase {
         
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        slp.resetResult()
-        slp.crawlImages(galleryImageTemplate)
+        self.slp.resetResult()
+        self.slp.crawlImages(galleryImageTemplate)
         
-        XCTAssertEqual((slp.result["images"] as! [String])[0], data[Constants.image1])
-        XCTAssertEqual((slp.result["images"] as! [String])[1], data[Constants.image2])
-        XCTAssertEqual((slp.result["images"] as! [String])[2], data[Constants.image3])
+        XCTAssertEqual((self.slp.result["images"] as! [String])[0], data[Constants.image1])
+        XCTAssertEqual((self.slp.result["images"] as! [String])[1], data[Constants.image2])
+        XCTAssertEqual((self.slp.result["images"] as! [String])[2], data[Constants.image3])
         
     }
     
