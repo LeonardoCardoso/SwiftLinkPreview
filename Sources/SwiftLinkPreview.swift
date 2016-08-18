@@ -17,6 +17,7 @@ public class SwiftLinkPreview {
     private let session = NSURLSession.sharedSession()
     internal var text: String!
     internal var result: [String: AnyObject] = [:]
+    internal var wasOnMainThread = true
     
     // MARK: - Constructor
     public init() {
@@ -28,6 +29,7 @@ public class SwiftLinkPreview {
     public func preview(text: String!, onSuccess: ([String: AnyObject]) -> (), onError: (PreviewError) -> ()) {
         
         self.resetResult()
+        self.wasOnMainThread = NSThread.isMainThread()
         
         self.text = text
         
@@ -123,10 +125,15 @@ extension SwiftLinkPreview {
                 
                 if(finalResult.absoluteString == url.absoluteString) {
                     
-                    dispatch_async(dispatch_get_main_queue()) {
+                    if self.wasOnMainThread {
                         
+                        dispatch_async(dispatch_get_main_queue()) {
+                            
+                            completion(url)
+                        }
+                    }
+                    else {
                         completion(url)
-                        
                     }
                     
                 } else {
@@ -138,12 +145,16 @@ extension SwiftLinkPreview {
                 
             } else {
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                if self.wasOnMainThread {
                     
-                    completion(url)
-                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        
+                        completion(url)
+                    }
                 }
-                
+                else {
+                    completion(url)
+                }
             }
             
         }
@@ -175,14 +186,23 @@ extension SwiftLinkPreview {
                     // Try to get the page with its default enconding
                     var source = try String(contentsOfURL: sourceUrl!).extendedTrim
                     
-                    dispatch_async(dispatch_get_main_queue()) {
+                    if self.wasOnMainThread {
                         
+                        dispatch_async(dispatch_get_main_queue()) {
+                            
+                            source = self.cleanSource(source)
+                            
+                            self.performPageCrawling(source)
+                            
+                            completion()
+                        }
+                    }
+                    else {
                         source = self.cleanSource(source)
                         
                         self.performPageCrawling(source)
                         
                         completion()
-                        
                     }
                     
                 } catch _ as NSError {
@@ -215,14 +235,23 @@ extension SwiftLinkPreview {
                 
                 var source = try String(contentsOfURL: sourceUrl, encoding: encodingArray[0]).extendedTrim
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                if self.wasOnMainThread {
                     
+                    dispatch_async(dispatch_get_main_queue()) {
+                        
+                        source = self.cleanSource(source)
+                        
+                        self.performPageCrawling(source)
+                        
+                        completion()
+                    }
+                }
+                else {
                     source = self.cleanSource(source)
                     
                     self.performPageCrawling(source)
                     
                     completion()
-                    
                 }
                 
             } catch _ as NSError {
