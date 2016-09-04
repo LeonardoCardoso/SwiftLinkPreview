@@ -1,10 +1,17 @@
 # Change Log
 
 #### 0.x Releases
-- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013) | [0.1.4](#014) | [0.1.5](#015)  
+- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013) | [0.1.4](#014) | [0.1.5](#015) | [0.1.6](#016)  
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [0.1.6](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.6)
+Released on 2016-09-04.
+
+#### Fixed
+- PreviewError conformance to ErrorType.
+	- Fixed by [Daniel Rhodes](https://github.com/danielrhodes).
 
 ## [0.1.5](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.5)
 Released on 2016-07-19.
