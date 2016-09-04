@@ -267,7 +267,7 @@ class ViewController: UIViewController {
                 print(error)
                 self.endCrawling()
                 
-                Drop.down(error.message!, state: .Error)
+                Drop.down(error.description, state: .Error)
                 
             }
         )
