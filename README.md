@@ -96,7 +96,7 @@ let package = Package(
   name: "Your Target Name",
   dependencies: [
   	// ...
-    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", version: 1.0.0)
+    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "1.0.0")
   	// ...
   ]
 )
