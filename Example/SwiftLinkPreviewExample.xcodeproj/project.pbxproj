@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		984816501D89968600CD6350 /* AlamofireSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9848164F1D89968600CD6350 /* AlamofireSource.swift */; };
 		98846C7B1D09AA1C00846726 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98846C7A1D09AA1C00846726 /* AppDelegate.swift */; };
 		98846C7D1D09AA1C00846726 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98846C7C1D09AA1C00846726 /* ViewController.swift */; };
 		98846C801D09AA1C00846726 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98846C7E1D09AA1C00846726 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		68A24484655DB6B1981C776C /* Pods_SwiftLinkPreviewExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftLinkPreviewExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9848164F1D89968600CD6350 /* AlamofireSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireSource.swift; sourceTree = "<group>"; };
 		98846C771D09AA1B00846726 /* SwiftLinkPreviewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftLinkPreviewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C7A1D09AA1C00846726 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98846C7C1D09AA1C00846726 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 			path = "Builder Interface";
 			sourceTree = "<group>";
 		};
+		9848164E1D89967300CD6350 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				9848164F1D89968600CD6350 /* AlamofireSource.swift */,
+			);
+			name = ThirdParty;
+			sourceTree = "<group>";
+		};
 		98846C6E1D09AA1B00846726 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +120,7 @@
 		98846C791D09AA1B00846726 /* SwiftLinkPreviewExample */ = {
 			isa = PBXGroup;
 			children = (
+				9848164E1D89967300CD6350 /* ThirdParty */,
 				98348AB71D09B50C003FA2B3 /* Builder Interface */,
 				98348AB51D09B4E8003FA2B3 /* Controllers */,
 				98348AB41D09B4E2003FA2B3 /* Delegates */,
@@ -150,11 +161,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = leocardz.com;
 				TargetAttributes = {
 					98846C761D09AA1B00846726 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = T99T2WGRY2;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -244,6 +257,7 @@
 			files = (
 				98846C7D1D09AA1C00846726 /* ViewController.swift in Sources */,
 				98846C7B1D09AA1C00846726 /* AppDelegate.swift in Sources */,
+				984816501D89968600CD6350 /* AlamofireSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,8 +299,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -308,11 +324,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -331,8 +348,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -348,9 +367,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -360,12 +381,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F9B1124CC518583F00C46360 /* Pods-SwiftLinkPreviewExample.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = T99T2WGRY2;
 				INFOPLIST_FILE = SwiftLinkPreviewExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -373,12 +397,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6A43798BC54B9888EBE2981 /* Pods-SwiftLinkPreviewExample.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = T99T2WGRY2;
 				INFOPLIST_FILE = SwiftLinkPreviewExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

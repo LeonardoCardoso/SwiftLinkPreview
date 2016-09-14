@@ -52,7 +52,7 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
         
         self.slp.resetResult()
-        self.slp.crawlDescription(template)
+        _ = self.slp.crawlDescription(template)
         
         let comparable = (self.slp.result["description"] as! String)
         
@@ -93,7 +93,7 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
         
         self.slp.resetResult()
-        self.slp.crawlDescription(template)
+        _ = self.slp.crawlDescription(template)
         
         let comparable = (self.slp.result["description"] as! String)
         
@@ -134,7 +134,7 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
         
         self.slp.resetResult()
-        self.slp.crawlDescription(template)
+        _ = self.slp.crawlDescription(template)
         
         let comparable = (self.slp.result["description"] as! String)
         

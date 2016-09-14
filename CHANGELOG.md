@@ -1,10 +1,20 @@
 # Change Log
 
+#### 1.x Releases
+- `1.0.x` Releases - [1.0.0](#100)
+
 #### 0.x Releases
 - `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013) | [0.1.4](#014) | [0.1.5](#015) | [0.1.6](#016)  
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [1.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/1.0.0)
+Released on 2016-09-14.
+
+#### Added
+- Major Version 1.0.0 with Swift 3.0.
+	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [0.1.6](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.6)
 Released on 2016-09-04.

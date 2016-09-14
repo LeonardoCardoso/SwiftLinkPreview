@@ -34,7 +34,7 @@ extension String {
     static let imageType = ["gif", "jpg", "jpeg", "png", "bmp"]
     
     // Random String
-    static func randomString(length: Int) -> String {
+    static func randomString(_ length: Int) -> String {
         
         let charactersString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let charactersArray = charactersString.characters.map { String($0) }
@@ -87,7 +87,7 @@ extension String {
         let end = String.randomString(rand)
         
         let prtcl = self.protocolType[Int.random(upper: protocolType.count)]
-        let url = "\(prtcl)\(base).\(end.lowercaseString)"
+        let url = "\(prtcl)\(base).\(end.lowercased())"
         
         return url
         

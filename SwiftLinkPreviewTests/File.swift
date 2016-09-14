@@ -11,10 +11,10 @@ import Foundation
 class File {
     
     // Read local html files
-    static func toString(file: String) -> String {
+    static func toString(_ file: String) -> String {
         
-        let path = NSBundle(forClass: object_getClass(self)).pathForResource(file, ofType: "html")
-        let fileHtml = try! NSString(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+        let path = Bundle(for: object_getClass(self)).path(forResource: file, ofType: "html")
+        let fileHtml = try! NSString(contentsOfFile: path!, encoding: String.Encoding.utf8.rawValue)
         return String(fileHtml)
         
     }

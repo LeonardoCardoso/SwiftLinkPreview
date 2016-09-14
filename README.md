@@ -12,7 +12,7 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 
 <p align="center">
 	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-	[![CocoaPods](https://img.shields.io/badge/pod-v0.1.6-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+	[![CocoaPods](https://img.shields.io/badge/pod-v1.0.0-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 	[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
@@ -53,9 +53,9 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 
 ## Requirements and Details
 
-* iOS 8.0+ / macOS 10.9+ / tvOS 9.0+ / watchOS 2.0+
-* Xcode 7.3+
-* Built with Swift 2.2
+* iOS 9.0+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
+* Xcode 8.0+
+* Built with Swift 3.0
 
 ## Installation
 
@@ -65,12 +65,12 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 
 ```ruby
 	source 'https://github.com/CocoaPods/Specs.git'
-	platform :ios, '8.0'
+	platform :ios, '9.0'
 	
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 0.1.6'
+	  	pod 'SwiftLinkPreview', '~> 1.0.0'
 	  	// ...
 	end
 ```
@@ -81,7 +81,7 @@ To use **SwiftLinkPreview** as a Carthage module package just add the following 
 
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 0.1.6
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 1.0.0
   	// ...
 ```
 
@@ -96,7 +96,7 @@ let package = Package(
   name: "Your Target Name",
   dependencies: [
   	// ...
-    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", majorVersion: 0)
+    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "1.0.0")
   	// ...
   ]
 )
