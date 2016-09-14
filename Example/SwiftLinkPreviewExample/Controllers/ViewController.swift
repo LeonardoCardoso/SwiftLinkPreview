@@ -27,27 +27,28 @@ class ViewController: UIViewController {
     @IBOutlet var previewDescription: UILabel!
     @IBOutlet var detailedView: UIView!
     
+    
     // MARK: - Vars
     private var randomTexts: [String] = [
         
         "www.youtube.com",
         "www.google.com",
         "facebook.com",
-        
-        "http://ios.leocardz.com/swift-link-preview/",
+
+        "https://leocardz.com/swift-link-preview-5a9860c7756f",
         "NASA! 🖖🏽 http://www.nasa.gov/",
         "http://www.theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
         "Shorten URL http://bit.ly/14SD1eR",
         "Tweet! https://twitter.com",
-        
+
         "A Gallery https://www.nationalgallery.org.uk",
-        
+
         "A Brazilian website http://globo.com",
         "Another Brazilian website http://uol.com.br",
         "Some Vietnamese chars http://vnexpress.net/",
         "Japan!!! http://www3.nhk.or.jp/",
         "A Russian website >> http://habrahabr.ru",
-        
+
         "Youtube?! It does! http://www.youtube.com/watch?v=cv2mjAgFTaI",
         "Also Vimeo http://vimeo.com/67992157",
         
@@ -66,9 +67,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.showHideAll(true)
+        self.showHideAll(hide: true)
         self.setUpSlideshow()
-
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,34 +87,34 @@ class ViewController: UIViewController {
     
     private func startCrawling() {
         
-        self.updateUI(false)
-        self.showHideAll(true)
+        self.updateUI(enabled: false)
+        self.showHideAll(hide: true)
         self.textField.resignFirstResponder()
         
     }
     
     private func endCrawling() {
         
-        self.updateUI(true)
+        self.updateUI(enabled: true)
         
     }
     
     // Update UI
     private func showHideAll(hide: Bool) {
         
-        self.slideshow.hidden = hide
-        self.detailedView.hidden = hide
-        self.openWithButton.hidden = hide
-        self.previewAreaLabel.hidden = !hide
+        self.slideshow.isHidden = hide
+        self.detailedView.isHidden = hide
+        self.openWithButton.isHidden = hide
+        self.previewAreaLabel.isHidden = !hide
         
     }
     
     private func updateUI(enabled: Bool) {
         
-        self.indicator.hidden = enabled
-        self.textField.enabled = enabled
-        self.randomTextButton.enabled = enabled
-        self.submitButton.enabled = enabled
+        self.indicator.isHidden = enabled
+        self.textField.isEnabled = enabled
+        self.randomTextButton.isEnabled = enabled
+        self.submitButton.isEnabled = enabled
         
     }
     
@@ -126,7 +127,7 @@ class ViewController: UIViewController {
                 var images: [InputSource] = []
                 for image in value {
                     
-                    if let source: AlamofireSource = AlamofireSource(urlString: image) {
+                    if let source = AlamofireSource(urlString: image) {
                         
                         images.append(source)
                         
@@ -134,18 +135,18 @@ class ViewController: UIViewController {
                     
                 }
                 
-                self.setImage(images)
+                self.setImage(images: images)
                 
                 
             } else {
                 
-                self.setImage(self.result["image"] as? String)
+                self.setImage(image: self.result["image"] as? String)
                 
             }
             
         } else {
             
-            self.setImage(self.result["image"] as? String)
+            self.setImage(image: self.result["image"] as? String)
             
         }
         
@@ -175,7 +176,7 @@ class ViewController: UIViewController {
             
         }
         
-        self.showHideAll(false)
+        self.showHideAll(hide: false)
         self.endCrawling()
         
     }
@@ -186,9 +187,9 @@ class ViewController: UIViewController {
             
             if !image.isEmpty {
                 
-                if let source: AlamofireSource = AlamofireSource(urlString: image) {
+                if let source = AlamofireSource(urlString: image) {
                     
-                    self.setImage([source])
+                    self.setImage(images: [source])
                     
                 } else {
                     
@@ -227,26 +228,25 @@ class ViewController: UIViewController {
     
     private func setUpSlideshow() {
         
-        self.slideshow.backgroundColor = UIColor.whiteColor()
+        self.slideshow.backgroundColor = UIColor.white
         self.slideshow.slideshowInterval = 7.0
-        self.slideshow.pageControlPosition = PageControlPosition.Hidden
-        self.slideshow.contentScaleMode = .ScaleAspectFill
+        self.slideshow.pageControlPosition = PageControlPosition.hidden
+        self.slideshow.contentScaleMode = .scaleAspectFill
         
     }
     
     // MARK: - Actions
-    @IBAction func randomTextAction(sender: AnyObject) {
+    @IBAction func randomTextAction(_ sender: AnyObject) {
         
         textField.text = getRandomText()
         
     }
     
-    @IBAction func submitAction(sender: AnyObject) {
-        
+    @IBAction func submitAction(_ sender: AnyObject) {
         
         guard !(textField.text?.isEmpty)! else {
             
-            Drop.down("Please, enter a text", state: .Warning)
+            Drop.down("Please, enter a text", state: .warning)
             return
             
         }
@@ -267,7 +267,7 @@ class ViewController: UIViewController {
                 print(error)
                 self.endCrawling()
                 
-                Drop.down(error.description, state: .Error)
+                Drop.down(error.description, state: .error)
                 
             }
         )
@@ -278,7 +278,7 @@ class ViewController: UIViewController {
         
         if let url: NSURL = self.result["finalUrl"] as? NSURL {
             
-            UIApplication.sharedApplication().openURL(url)
+            UIApplication.shared.openURL(url as URL)
             
         }
         
@@ -290,7 +290,7 @@ class ViewController: UIViewController {
 // MARK: - UITextFieldDelegate
 extension ViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         self.submitAction(textField)
         self.textField.resignFirstResponder()

@@ -7,18 +7,18 @@
 //
 import Foundation
 
-public enum PreviewError: ErrorType, CustomStringConvertible {
-  case NoURLHasBeenFound(String?)
-  case InvalidURL(String?)
-  case CannotBeOpened(String?)
-  case ParseError(String?)
+public enum PreviewError: Error, CustomStringConvertible {
+  case noURLHasBeenFound(String?)
+  case invalidURL(String?)
+  case cannotBeOpened(String?)
+  case parseError(String?)
   
   public var description: String {
     switch(self) {
-      case .NoURLHasBeenFound: return NSLocalizedString("No URL has been found", comment: "")
-      case .InvalidURL: return NSLocalizedString("This data is not valid URL", comment: "")
-      case .CannotBeOpened: return NSLocalizedString("This URL cannot be opened", comment: "")
-      case .ParseError: return NSLocalizedString("An error occurred when parsing the HTML", comment: "")
+      case .noURLHasBeenFound: return NSLocalizedString("No URL has been found", comment: "")
+      case .invalidURL: return NSLocalizedString("This data is not valid URL", comment: "")
+      case .cannotBeOpened: return NSLocalizedString("This URL cannot be opened", comment: "")
+      case .parseError: return NSLocalizedString("An error occurred when parsing the HTML", comment: "")
     }
   }
 }
