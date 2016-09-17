@@ -7,7 +7,7 @@
 //
 import Foundation
 
-open class SwiftLinkPreview {
+open class SwiftLinkPreview: NSObject {
     
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
@@ -20,8 +20,8 @@ open class SwiftLinkPreview {
     fileprivate let session = URLSession.shared
     
     // MARK: - Constructor
-    public init() {
-        
+    public override init() {
+        super.init()
     }
     
     // MARK: - Functions
