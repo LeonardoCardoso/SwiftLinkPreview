@@ -39,8 +39,6 @@
 		98B5ED4D1D3E7E0600AEBD54 /* HugeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */; };
 		98B5ED4E1D3E7E0700AEBD54 /* HugeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */; };
 		98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98846C961D09AA6E00846726 /* SwiftLinkPreview.framework */; };
-		98E7C30E1D3B23AD009E5F6D /* Info-macOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98E7C30D1D3B23AD009E5F6D /* Info-macOS.plist */; };
-		98E7C3101D3B23E1009E5F6D /* Info-watchOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98E7C30F1D3B23E1009E5F6D /* Info-watchOS.plist */; };
 		98E7C3131D3B247D009E5F6D /* PreviewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC11D09FC58003FA2B3 /* PreviewError.swift */; };
 		98E7C3141D3B247D009E5F6D /* SwiftLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348ABC1D09B794003FA2B3 /* SwiftLinkPreview.swift */; };
 		98E7C3151D3B247D009E5F6D /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC71D0A00DF003FA2B3 /* Regex.swift */; };
@@ -103,7 +101,6 @@
 		98F76D1F1D3AF87100E9B10E /* head-meta-twitter.html in Resources */ = {isa = PBXBuildFile; fileRef = 985DCEB11D2BFD3400B40D76 /* head-meta-twitter.html */; };
 		98F76D201D3AF87100E9B10E /* head-meta-meta.html in Resources */ = {isa = PBXBuildFile; fileRef = 985DCEB21D2BFD3400B40D76 /* head-meta-meta.html */; };
 		98F76D211D3AF87100E9B10E /* head-meta-facebook.html in Resources */ = {isa = PBXBuildFile; fileRef = 985DCEB31D2BFD3400B40D76 /* head-meta-facebook.html */; };
-		98F76D291D3AFCA200E9B10E /* Info-tvOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98F76D281D3AFCA200E9B10E /* Info-tvOS.plist */; };
 		98F76D371D3B1C8100E9B10E /* SwiftLinkPreview.h in Headers */ = {isa = PBXBuildFile; fileRef = 98C545951D2B30AD0003A74E /* SwiftLinkPreview.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98F76D381D3B1C9F00E9B10E /* NSURLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9851A6941D11B83000B39FCD /* NSURLSessionExtension.swift */; };
 		98F76D391D3B1C9F00E9B10E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC41D09FFED003FA2B3 /* StringExtension.swift */; };
@@ -158,7 +155,6 @@
 		985DCEBB1D2BFFAF00B40D76 /* body-text-span.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "body-text-span.html"; sourceTree = "<group>"; };
 		985DCEBC1D2BFFAF00B40D76 /* body-text-p.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "body-text-p.html"; sourceTree = "<group>"; };
 		985DCEBD1D2BFFAF00B40D76 /* body-text-div.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "body-text-div.html"; sourceTree = "<group>"; };
-		985DCEC31D2C022E00B40D76 /* SwiftLinkPreviewTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftLinkPreviewTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		985DCEC41D2C022E00B40D76 /* MetaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetaTests.swift; sourceTree = "<group>"; };
 		985DCEC61D2C026000B40D76 /* ImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTests.swift; sourceTree = "<group>"; };
 		985DCEC81D2C029700B40D76 /* BodyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyTests.swift; sourceTree = "<group>"; };
@@ -288,7 +284,6 @@
 			children = (
 				98E7C3111D3B23E7009E5F6D /* Info */,
 				98C545961D2B32870003A74E /* Classes */,
-				98C545971D2B32940003A74E /* Constants */,
 				98C545981D2B32990003A74E /* Extensions */,
 			);
 			path = Sources;
@@ -331,13 +326,6 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		98C545971D2B32940003A74E /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Constants;
-			sourceTree = "<group>";
-		};
 		98C545981D2B32990003A74E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,7 +339,6 @@
 			isa = PBXGroup;
 			children = (
 				98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */,
-				985DCEC31D2C022E00B40D76 /* SwiftLinkPreviewTests-Bridging-Header.h */,
 				985DCEC81D2C029700B40D76 /* BodyTests.swift */,
 				985DCEC61D2C026000B40D76 /* ImageTests.swift */,
 				985DCEC41D2C022E00B40D76 /* MetaTests.swift */,
@@ -623,15 +610,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				98B5ED431D3E5F5C00AEBD54 /* head-meta-itemprop.html in Resources */,
-				98F76D291D3AFCA200E9B10E /* Info-tvOS.plist in Resources */,
 				985DCEBA1D2BFE4100B40D76 /* body-image-gallery.html in Resources */,
 				985DCEB41D2BFD3400B40D76 /* head-meta-twitter.html in Resources */,
 				985DCEB51D2BFD3400B40D76 /* head-meta-meta.html in Resources */,
 				985DCEBF1D2BFFAF00B40D76 /* body-text-span.html in Resources */,
 				985DCEC01D2BFFAF00B40D76 /* body-text-p.html in Resources */,
-				98E7C3101D3B23E1009E5F6D /* Info-watchOS.plist in Resources */,
 				985DCEC11D2BFFAF00B40D76 /* body-text-div.html in Resources */,
-				98E7C30E1D3B23AD009E5F6D /* Info-macOS.plist in Resources */,
 				985DCEB91D2BFE4100B40D76 /* body-image-single.html in Resources */,
 				985DCEB61D2BFD3400B40D76 /* head-meta-facebook.html in Resources */,
 				986D5BE71D33E0FD0025555F /* head-title.html in Resources */,
@@ -877,12 +861,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 arm64 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -930,7 +914,7 @@
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 arm64 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -954,11 +938,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 arm64 armv7s";
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
@@ -981,10 +965,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 arm64 armv7s";
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
