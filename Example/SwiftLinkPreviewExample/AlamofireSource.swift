@@ -11,6 +11,7 @@ import AlamofireImage
 import ImageSlideshow
 
 public class AlamofireSource: NSObject, InputSource {
+    
     var url: NSURL!
     
     public init(url: NSURL) {
@@ -28,12 +29,14 @@ public class AlamofireSource: NSObject, InputSource {
         }
     }
     
-    public func setToImageView(_ imageView: UIImageView) {
-        Alamofire.request(self.url.absoluteString!)
-            .responseImage { response in
-                if let image = response.result.value {
-                    imageView.image = image
-                }
+    public func load(to imageView: UIImageView, with callback: @escaping (UIImage) -> ()) {
+        
+        imageView.af_setImage(withURL: self.url as URL, placeholderImage: nil, filter: nil, progress: nil) { (response) in
+        
+            imageView.image = response.result.value
+            
+            if let value = response.result.value { callback(value) }
+        
         }
     }
     

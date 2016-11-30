@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftLinkPreview
 import SwiftyDrop
 import ImageSlideshow
 

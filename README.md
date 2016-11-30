@@ -104,7 +104,7 @@ let package = Package(
 
 ### Manually
 
-You just need to drop SwiftLinkPreview folder into Xcode project (make sure to enable "Copy items if needed" and "Create groups").
+You just need to drop all contents in `Sources` folder, **but .plist files**, into Xcode project (make sure to enable "Copy items if needed" and "Create groups").
 
 
 ## Usage
