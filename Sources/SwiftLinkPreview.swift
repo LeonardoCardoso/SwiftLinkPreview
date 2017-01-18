@@ -17,6 +17,14 @@ public enum SwiftLinkResponseKey : String {
     case images
 }
 
+open class Cancellable {
+    public private(set) var isCancelled : Bool = false
+    
+    open func cancel() {
+        isCancelled = true
+    }
+}
+
 open class SwiftLinkPreview {
     
     public typealias Response = [SwiftLinkResponseKey: Any]
@@ -43,7 +51,7 @@ open class SwiftLinkPreview {
     
     // MARK: - Functions
     // Make preview
-    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancel {
+    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
         
         let cancellable = Cancellable()
         
@@ -102,7 +110,7 @@ open class SwiftLinkPreview {
             }
         }
         
-        return { cancellable.isCancelled = true }
+        return cancellable
     }
 }
 
@@ -504,8 +512,4 @@ extension SwiftLinkPreview {
         
     }
     
-}
-
-fileprivate class Cancellable {
-    var isCancelled : Bool = false
 }
