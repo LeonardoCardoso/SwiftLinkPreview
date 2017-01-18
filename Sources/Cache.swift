@@ -47,9 +47,9 @@ public class InMemoryCache: Cache {
         self.cleanupTimer.resume()
     }
     
-    public func cleanup() {
+    open func cleanup() {
         for (url, data) in cache {
-            if data.date.timeIntervalSinceNow > invalidationTimeout {
+            if data.date.timeIntervalSinceNow >= invalidationTimeout {
                 cache[url] = nil
             }
         }
