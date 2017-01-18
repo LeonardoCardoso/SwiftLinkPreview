@@ -28,7 +28,6 @@ open class Cancellable {
 open class SwiftLinkPreview {
     
     public typealias Response = [SwiftLinkResponseKey: Any]
-    public typealias Cancel = () -> Void
     
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
