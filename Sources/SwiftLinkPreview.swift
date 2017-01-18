@@ -141,6 +141,7 @@ extension SwiftLinkPreview {
                         onError(PreviewError.cannotBeOpened(url.absoluteString))
                     }
                 }
+                task = nil
             } else {
                 if let finalResult = response?.url {
                     if (finalResult.absoluteString == url.absoluteString) {
@@ -149,6 +150,7 @@ extension SwiftLinkPreview {
                                 completion(url)
                             }
                         }
+                        task = nil
                     } else {
                         task!.cancel()
                         task = nil
@@ -160,6 +162,7 @@ extension SwiftLinkPreview {
                             completion(url)
                         }
                     }
+                    task = nil
                 }
             }
         }) 
