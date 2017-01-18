@@ -33,11 +33,11 @@ public class InMemoryCache: Cache {
     //High priority queue for quick responses
     private static let cacheQueue = DispatchQueue(label: "SwiftLinkPreviewInMemoryCacheQueue", qos: .userInitiated, target: DispatchQueue.global(qos: .userInitiated))
     
-    public init(invalidationTimeout: TimeInterval = 300.0) {
+    public init(invalidationTimeout: TimeInterval = 300.0, cleanupInterval: TimeInterval = 10.0) {
         self.invalidationTimeout = invalidationTimeout
         
         self.cleanupTimer = DispatchSource.makeTimerSource(queue: type(of:self).cacheQueue) as! DispatchSource
-        self.cleanupTimer.scheduleRepeating(deadline: .now() + invalidationTimeout / 3, interval: invalidationTimeout / 3)
+        self.cleanupTimer.scheduleRepeating(deadline: .now() + cleanupInterval, interval: cleanupInterval)
         
         self.cleanupTimer.setEventHandler { [weak self] in
             guard let sself = self else {return}
