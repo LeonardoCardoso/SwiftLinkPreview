@@ -555,7 +555,6 @@
 					};
 					98DC53371D1D73DB001134E3 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = T99T2WGRY2;
 						LastSwiftMigration = 0800;
 					};
 					98E7C2F31D3B2300009E5F6D = {
@@ -569,7 +568,6 @@
 					};
 					98F76CEA1D3AF6DB00E9B10E = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = T99T2WGRY2;
 					};
 					98F76D2E1D3B1C3100E9B10E = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -969,7 +967,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = T99T2WGRY2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SwiftLinkPreviewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -984,7 +982,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = T99T2WGRY2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SwiftLinkPreviewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -1107,7 +1105,7 @@
 		98F76CF71D3AF6DB00E9B10E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = T99T2WGRY2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "SwiftLinkPreviewTests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -1120,7 +1118,7 @@
 		98F76CF81D3AF6DB00E9B10E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = T99T2WGRY2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "SwiftLinkPreviewTests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;

@@ -48,7 +48,7 @@ class MemoryLeaks: XCTestCase {
     
     func testObjectDestroy() {
         let e = expectation(description: "Object")
-        let requestCount = 10
+        let requestCount = 3
         let counter = Counter(requestCount)
         
         for _ in 0..<requestCount {
