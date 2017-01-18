@@ -32,7 +32,7 @@ public class InMemoryCache: Cache {
     
     public init(invalidationTimeout: TimeInterval = 300.0) {
         self.invalidationTimeout = invalidationTimeout
-        self.cleanupTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .background)) as! DispatchSource
+        self.cleanupTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.main) as! DispatchSource
         self.cleanupTimer.scheduleRepeating(deadline: .now() + invalidationTimeout / 3, interval: invalidationTimeout / 3)
         
         self.cleanupTimer.setEventHandler { [weak self] in
@@ -44,9 +44,11 @@ public class InMemoryCache: Cache {
     }
     
     public func cleanup() {
-        for (url, data) in cache {
-            if data.date.timeIntervalSinceNow > invalidationTimeout {
-                cache[url] = nil
+        SwiftLinkPreview.defaultWorkQueue.async {
+            for (url, data) in self.cache {
+                if data.date.timeIntervalSinceNow > self.invalidationTimeout {
+                    self.cache[url] = nil
+                }
             }
         }
     }

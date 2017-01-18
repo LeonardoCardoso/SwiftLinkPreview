@@ -33,10 +33,10 @@ open class SwiftLinkPreview {
     static let titleMinimumRelevant: Int = 15
     static let decriptionMinimumRelevant: Int = 100
     
-    fileprivate let session: URLSession
-    fileprivate let workQueue: DispatchQueue
-    fileprivate let responseQueue: DispatchQueue
-    fileprivate let cache: Cache
+    public let session: URLSession
+    public let workQueue: DispatchQueue
+    public let responseQueue: DispatchQueue
+    public let cache: Cache
     
     public static let defaultWorkQueue = DispatchQueue.global()
     
