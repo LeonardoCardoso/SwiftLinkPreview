@@ -195,12 +195,17 @@ extension SwiftLinkPreview {
             let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : URL(string: "http://\(url)")
             do {
                 let data = try Data(contentsOf: sourceUrl!)
-                if let source = String(data: data, encoding: .utf8) {
+                var source: NSString? = nil
+                NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &source, usedLossyConversion: nil)
+                
+                if let source = source {
                     if !cancellable.isCancelled {
-                        self.parseHtmlString(source, canonicalUrl: canonicalUrl, completion: completion)
+                        self.parseHtmlString(source as String, canonicalUrl: canonicalUrl, completion: completion)
                     }
                 } else {
-                    self.tryAnotherEnconding(sourceUrl!, canonicalUrl: canonicalUrl, data: data, encodingArray: String.availableStringEncodings, completion: completion, onError: onError)
+                    if !cancellable.isCancelled {
+                        onError(.parseError(sourceUrl!.absoluteString))
+                    }
                 }
             } catch {
                 if !cancellable.isCancelled {
@@ -213,22 +218,6 @@ extension SwiftLinkPreview {
     
     private func parseHtmlString(_ htmlString: String, canonicalUrl: String?, completion: @escaping (Response) -> Void) {
             completion(self.performPageCrawling(self.cleanSource(htmlString), canonicalUrl: canonicalUrl))
-    }
-    
-    // Try to get the page using another available encoding instead the page's own encoding
-    private func tryAnotherEnconding(_ url: URL, canonicalUrl: String?, data: Data, encodingArray: [String.Encoding], completion: @escaping (Response) -> (), onError: (PreviewError) -> ()) {
-        
-        var encodingArray = encodingArray
-        
-        if let encoding = encodingArray.popLast() {
-            if let source = String(data: data, encoding: encoding) {
-                self.parseHtmlString(source, canonicalUrl: canonicalUrl, completion: completion)
-            } else {
-                self.tryAnotherEnconding(url, canonicalUrl: canonicalUrl, data: data, encodingArray: encodingArray, completion: completion, onError: onError)
-            }
-        } else {
-            onError(PreviewError.parseError(url.absoluteString))
-        }
     }
     
     // Removing unnecessary data from the source
