@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftLinkPreview
+@testable import SwiftLinkPreview
 
 // This class tests URLs
 class RegexTests: XCTestCase {
@@ -21,8 +21,7 @@ class RegexTests: XCTestCase {
         
         for url in URLs.bunch {
             
-            self.slp.text = url[0]
-            let extracted = slp.extractURL()
+            let extracted = slp.extractURL(text: url[0])
             
             // print(extracted?.absoluteString, url[1])
             
@@ -37,7 +36,7 @@ class RegexTests: XCTestCase {
         for url in URLs.bunch {
             
             let finalUrl = URL(string: url[1])
-            self.slp.result["finalUrl"] = finalUrl as AnyObject?
+    
             let canonical = self.slp.extractCanonicalURL(finalUrl)
             
             // print(canonical, url[2])

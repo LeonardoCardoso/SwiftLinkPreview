@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftLinkPreview
+@testable import SwiftLinkPreview
 
 // This class tests body images
 class ImageTests: XCTestCase {
@@ -41,10 +41,10 @@ class ImageTests: XCTestCase {
         
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        self.slp.resetResult()
-        self.slp.crawlImages(singleImageTemplate)
         
-        XCTAssertEqual((self.slp.result["image"] as! String), data[Constants.image])
+        let result = self.slp.crawlImages(singleImageTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        
+        XCTAssertEqual((result[.image] as! String), data[Constants.image])
         
     }
     
@@ -78,12 +78,11 @@ class ImageTests: XCTestCase {
         
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        self.slp.resetResult()
-        self.slp.crawlImages(galleryImageTemplate)
+        let result = self.slp.crawlImages(galleryImageTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
         
-        XCTAssertEqual((self.slp.result["images"] as! [String])[0], data[Constants.image1])
-        XCTAssertEqual((self.slp.result["images"] as! [String])[1], data[Constants.image2])
-        XCTAssertEqual((self.slp.result["images"] as! [String])[2], data[Constants.image3])
+        XCTAssertEqual((result[.images] as! [String])[0], data[Constants.image1])
+        XCTAssertEqual((result[.images] as! [String])[1], data[Constants.image2])
+        XCTAssertEqual((result[.images] as! [String])[2], data[Constants.image3])
         
     }
     

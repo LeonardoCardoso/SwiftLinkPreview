@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftLinkPreview
+@testable import SwiftLinkPreview
 
 // This class tests head meta info
 class HugeTests: XCTestCase {

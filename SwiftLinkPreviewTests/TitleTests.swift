@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftLinkPreview
+@testable import SwiftLinkPreview
 
 // This class tests head title
 class TitleTests: XCTestCase {
@@ -43,10 +43,10 @@ class TitleTests: XCTestCase {
         
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: metaData[Constants.bodyRandom]!).extendedTrim
         
-        self.slp.resetResult()
-        _ = self.slp.crawlTitle(metaTemplate)
         
-        let comparable = (self.slp.result["title"] as! String)
+        let response = self.slp.crawlTitle(metaTemplate, result: SwiftLinkPreview.Response())
+        
+        let comparable = (response.result[.title] as! String)
         let comparison = comparable == metaData[Constants.title]!.decoded.extendedTrim ||
             comparable == metaData[Constants.headRandom]!.decoded.extendedTrim ||
             comparable == metaData[Constants.bodyRandom]!.decoded.extendedTrim

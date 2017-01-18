@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftLinkPreview
+@testable import SwiftLinkPreview
 
 // This class tests body texts
 class BodyTests: XCTestCase {
@@ -51,10 +51,9 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
         
-        self.slp.resetResult()
-        _ = self.slp.crawlDescription(template)
+        let response = self.slp.crawlDescription(template, result: SwiftLinkPreview.Response())
         
-        let comparable = (self.slp.result["description"] as! String)
+        let comparable = (response.result[.description] as! String)
         
         XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
         
@@ -92,10 +91,9 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
         
-        self.slp.resetResult()
-        _ = self.slp.crawlDescription(template)
+        let response = self.slp.crawlDescription(template, result: SwiftLinkPreview.Response())
         
-        let comparable = (self.slp.result["description"] as! String)
+        let comparable = (response.result[.description] as! String)
         
         XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
         
@@ -133,10 +131,9 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
         
-        self.slp.resetResult()
-        _ = self.slp.crawlDescription(template)
+        let response = self.slp.crawlDescription(template, result: SwiftLinkPreview.Response())
         
-        let comparable = (self.slp.result["description"] as! String)
+        let comparable = (response.result[.description] as! String)
         
         XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
         
