@@ -25,7 +25,7 @@ public class DisabledCache: Cache {
 }
 
 
-public class InMemoryCache: Cache {
+open class InMemoryCache: Cache {
     private var cache = Dictionary<String, (response: SwiftLinkPreview.Response, date: Date)>()
     private let invalidationTimeout: TimeInterval
     private let cleanupTimer: DispatchSource
@@ -57,7 +57,7 @@ public class InMemoryCache: Cache {
         }
     }
     
-    public func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response? {
+    open func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response? {
         return type(of: self).cacheQueue.sync {
             guard let response = cache[url] else { return nil }
             
@@ -69,7 +69,7 @@ public class InMemoryCache: Cache {
         }
     }
     
-    public func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?) {
+    open func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?) {
         type(of: self).cacheQueue.sync {
             if let response = response {
                 cache[url] = (response, Date())
