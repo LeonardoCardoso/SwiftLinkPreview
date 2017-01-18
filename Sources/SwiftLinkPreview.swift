@@ -24,19 +24,13 @@ open class SwiftLinkPreview {
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
     static let decriptionMinimumRelevant: Int = 100
-//    internal var url: URL!
-//    internal var text: String!
-//    internal var result: Response = [:]
-//    
-//    
-//    fileprivate var task: URLSessionDataTask?
     
     fileprivate let session: URLSession
     fileprivate let workQueue: DispatchQueue
     fileprivate let responseQueue: DispatchQueue
     fileprivate let cache: Cache
     
-    public static let defaultWorkQueue = DispatchQueue.global() //DispatchQueue(label: "SwiftLinkPrefiewDefaultWorkQueue", target: DispatchQueue.global())
+    public static let defaultWorkQueue = DispatchQueue.global()
     
     // MARK: - Constructor
     public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
@@ -48,32 +42,45 @@ open class SwiftLinkPreview {
     
     // MARK: - Functions
     // Make preview
-    open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) {
+    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> () -> Void {
+        
+        let cancellable = Cancellable()
+        
         let successResponseQueue = { (response: Response) in
+            if !cancellable.isCancelled {
             self.responseQueue.async {
-                onSuccess(response)
+                if !cancellable.isCancelled {
+                    onSuccess(response)
+                }
+            }
             }
         }
         
         let errorResponseQueue = { (error: PreviewError) in
+            if !cancellable.isCancelled {
             self.responseQueue.async {
+                if !cancellable.isCancelled {
                 onError(error)
+                }
+            }
             }
         }
         
         workQueue.async {
+            if cancellable.isCancelled {return}
+            
             if let url = self.extractURL(text: text) {
                 if let result = self.cache.slp_getCachedResponse(url: url.absoluteString) {
                     successResponseQueue(result)
                 } else {
-                    self.unshortenURL(url, completion: { unshortened in
+                    self.unshortenURL(url, cancellable: cancellable, completion: { unshortened in
                         if let result = self.cache.slp_getCachedResponse(url: unshortened.absoluteString) {
                             successResponseQueue(result)
                         } else {
                             
                             let canonicalUrl = self.extractCanonicalURL(unshortened)
                             
-                            self.extractInfo(unshortened, canonicalUrl: canonicalUrl, completion: { result in
+                            self.extractInfo(unshortened, cancellable: cancellable, canonicalUrl: canonicalUrl, completion: { result in
                                 
                                 var result = result
                                 
@@ -93,6 +100,8 @@ open class SwiftLinkPreview {
                 onError(PreviewError.noURLHasBeenFound(text))
             }
         }
+        
+        return { cancellable.isCancelled = true }
     }
 }
 
@@ -109,7 +118,10 @@ extension SwiftLinkPreview {
     }
     
     // Unshorten URL by following redirections
-    fileprivate func unshortenURL(_ url: URL, completion: @escaping (URL) -> Void, onError: @escaping (PreviewError) -> Void) {
+    fileprivate func unshortenURL(_ url: URL, cancellable: Cancellable, completion: @escaping (URL) -> Void, onError: @escaping (PreviewError) -> Void) {
+        
+        if cancellable.isCancelled {return}
+        
         var task: URLSessionDataTask? = nil
         var request = URLRequest(url: url)
         request.httpMethod = "HEAD"
@@ -117,22 +129,28 @@ extension SwiftLinkPreview {
         task = session.dataTask(with: request, completionHandler: { data, response, error in
             if let _ = error {
                 self.workQueue.async {
-                    onError(PreviewError.cannotBeOpened(url.absoluteString))
+                    if !cancellable.isCancelled {
+                        onError(PreviewError.cannotBeOpened(url.absoluteString))
+                    }
                 }
             } else {
                 if let finalResult = response?.url {
                     if (finalResult.absoluteString == url.absoluteString) {
                         self.workQueue.async {
-                            completion(url)
+                            if !cancellable.isCancelled {
+                                completion(url)
+                            }
                         }
                     } else {
                         task!.cancel()
                         task = nil
-                        self.unshortenURL(finalResult, completion: completion, onError: onError)
+                        self.unshortenURL(finalResult, cancellable: cancellable, completion: completion, onError: onError)
                     }
                 } else {
                     self.workQueue.async {
-                        completion(url)
+                        if !cancellable.isCancelled {
+                            completion(url)
+                        }
                     }
                 }
             }
@@ -142,13 +160,17 @@ extension SwiftLinkPreview {
             task.resume()
         } else {
             self.workQueue.async {
-                onError(PreviewError.cannotBeOpened(url.absoluteString))
+                if !cancellable.isCancelled {
+                    onError(PreviewError.cannotBeOpened(url.absoluteString))
+                }
             }
         }
     }
     
     // Extract HTML code and the information contained on it
-    fileprivate func extractInfo(_ url: URL, canonicalUrl: String?, completion: @escaping (Response) -> Void, onError: (PreviewError) -> ()) {
+    fileprivate func extractInfo(_ url: URL, cancellable: Cancellable, canonicalUrl: String?, completion: @escaping (Response) -> Void, onError: (PreviewError) -> ()) {
+        if cancellable.isCancelled {return}
+        
         if(url.absoluteString.isImage()) {
             var result = Response()
             
@@ -163,12 +185,16 @@ extension SwiftLinkPreview {
             do {
                 let data = try Data(contentsOf: sourceUrl!)
                 if let source = String(data: data, encoding: .utf8) {
-                    self.parseHtmlString(source, canonicalUrl: canonicalUrl, completion: completion)
+                    if !cancellable.isCancelled {
+                        self.parseHtmlString(source, canonicalUrl: canonicalUrl, completion: completion)
+                    }
                 } else {
                     self.tryAnotherEnconding(sourceUrl!, canonicalUrl: canonicalUrl, data: data, encodingArray: String.availableStringEncodings, completion: completion, onError: onError)
                 }
             } catch {
-                onError(.cannotBeOpened(sourceUrl!.absoluteString))
+                if !cancellable.isCancelled {
+                    onError(.cannotBeOpened(sourceUrl!.absoluteString))
+                }
             }
         }
     }
@@ -477,4 +503,8 @@ extension SwiftLinkPreview {
         
     }
     
+}
+
+fileprivate class Cancellable {
+    var isCancelled : Bool = false
 }
