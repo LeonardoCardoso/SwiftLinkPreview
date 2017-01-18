@@ -28,9 +28,27 @@ public class DisabledCache: Cache {
 public class InMemoryCache: Cache {
     private var cache = Dictionary<String, (response: SwiftLinkPreview.Response, date: Date)>()
     private let invalidationTimeout: TimeInterval
+    private let cleanupTimer: DispatchSource
     
     public init(invalidationTimeout: TimeInterval = 300.0) {
         self.invalidationTimeout = invalidationTimeout
+        self.cleanupTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .background)) as! DispatchSource
+        self.cleanupTimer.scheduleRepeating(deadline: .now() + invalidationTimeout / 3, interval: invalidationTimeout / 3)
+        
+        self.cleanupTimer.setEventHandler { [weak self] in
+            guard let sself = self else {return}
+            sself.cleanup()
+        }
+        
+        self.cleanupTimer.resume()
+    }
+    
+    public func cleanup() {
+        for (url, data) in cache {
+            if data.date.timeIntervalSinceNow > invalidationTimeout {
+                cache[url] = nil
+            }
+        }
     }
     
     public func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response? {
@@ -49,5 +67,9 @@ public class InMemoryCache: Cache {
         } else {
             cache[url] = nil
         }
+    }
+    
+    deinit {
+        self.cleanupTimer.cancel()
     }
 }
