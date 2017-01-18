@@ -20,6 +20,7 @@ public enum SwiftLinkResponseKey : String {
 open class SwiftLinkPreview {
     
     public typealias Response = [SwiftLinkResponseKey: Any]
+    public typealias Cancel = () -> Void
     
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
@@ -42,7 +43,7 @@ open class SwiftLinkPreview {
     
     // MARK: - Functions
     // Make preview
-    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> () -> Void {
+    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancel {
         
         let cancellable = Cancellable()
         
