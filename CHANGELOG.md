@@ -1,5 +1,8 @@
 # Change Log
 
+#### 2.x Releases
+- `2.0.x` Releases - [2.0.0](#200)
+
 #### 1.x Releases
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
 
@@ -8,6 +11,26 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.0)
+Released on 2017-01-19.
+
+#### Changed
+- Fully asynchronous (DispatchQueue).
+- Removed global state
+- Better response dictionary subscription via Enum
+- Configurable via constructor (URLSession, Work Queue, Response Queue)
+	- Changed by [Yehor Popovych](https://github.com/ypopovych).
+
+#### Added
+- Caching support (InMemoryCache, but can be extended to other types)	
+	- Added by [Yehor Popovych](https://github.com/ypopovych).
+
+#### API breaking changes
+- Subscriptions via Enum require changes in current code	
+- `preview` method returns a Cancellable object with cancel method. This allows reusing of single configured SLP instance for multiple requests. cancel method removed from SwiftLinkPreview class.
+
+<br /><hr ><br />
 
 ## [1.0.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/1.0.1)
 Released on 2016-09-17.
@@ -48,7 +71,6 @@ Released on 2016-07-19.
 
 #### Added
 - Improved crawling. `itemprop` is now a supported meta property.
-	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - More tests.
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
@@ -61,9 +83,7 @@ Released on 2016-07-16.
 
 #### Added
 - Improved URL parsing. No need to add `http://` or `https://` in the start of an URL anymore. [#17](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/17)
-	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - URL parsing tests.
-	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - Tests for other platforms.
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
@@ -88,7 +108,6 @@ Released on 2016-07-11.
 
 #### Added
 - Tests. [#1](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/1)
-	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - CI. [#5](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/5)
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
@@ -101,7 +120,6 @@ Released on 2016-07-04.
 
 #### Added
 - Support for Swift Package Manager. [#3](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/3) [#8](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/8)
-	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - Support for macOS, watchOS, tvOS. [#9](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/9)
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
@@ -110,7 +128,6 @@ Released on 2016-06-25.
 
 #### Added
 - Support for Carthage. [#3](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/3) [#7](https://github.com/LeonardoCardoso/Swift-Link-Preview/issues/7)
-	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 - GitHub configs
 	- Added by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
