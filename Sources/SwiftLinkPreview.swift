@@ -7,258 +7,217 @@
 //
 import Foundation
 
-open class SwiftLinkPreview: NSObject {
+public enum SwiftLinkResponseKey : String {
+    case url
+    case finalUrl
+    case canonicalUrl
+    case title
+    case description
+    case image
+    case images
+}
+
+open class Cancellable {
+    public private(set) var isCancelled : Bool = false
+    
+    open func cancel() {
+        isCancelled = true
+    }
+}
+
+open class SwiftLinkPreview {
+    
+    public typealias Response = [SwiftLinkResponseKey: Any]
     
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
     static let decriptionMinimumRelevant: Int = 100
-    internal var url: URL!
-    internal var text: String!
-    internal var result: [String: AnyObject] = [:]
-    fileprivate var wasOnMainThread = true
-    fileprivate var task: URLSessionDataTask?
-    fileprivate let session = URLSession.shared
+    
+    public let session: URLSession
+    public let workQueue: DispatchQueue
+    public let responseQueue: DispatchQueue
+    public let cache: Cache
+    
+    public static let defaultWorkQueue = DispatchQueue.global()
     
     // MARK: - Constructor
-    public override init() {
-        super.init()
+    public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
+        self.workQueue = workQueue
+        self.responseQueue = responseQueue
+        self.cache = cache
+        self.session = session
     }
     
     // MARK: - Functions
     // Make preview
-    open func preview(_ text: String!, onSuccess: @escaping ([String: AnyObject]) -> (), onError: @escaping (PreviewError) -> ()) {
+    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
         
-        self.resetResult()
-        self.wasOnMainThread = Thread.isMainThread
+        let cancellable = Cancellable()
         
-        self.text = text
-        
-        if let url = self.extractURL() {
-            
-            self.url = url
-            self.result["url"] = self.url.absoluteString as AnyObject?
-            
-            self.unshortenURL(url, completion: { unshortened in
-                
-                self.result["finalUrl"] = unshortened as AnyObject?
-                
-                self.result["canonicalUrl"] = self.extractCanonicalURL(unshortened) as AnyObject?
-                
-                self.extractInfo({
-                    
-                    onSuccess(self.result)
-                    
-                    }, onError: onError)
-                
-            })
-            
-        } else {
-            onError(PreviewError.noURLHasBeenFound(self.text))
+        let successResponseQueue = { (response: Response) in
+            if !cancellable.isCancelled {
+            self.responseQueue.async {
+                if !cancellable.isCancelled {
+                    onSuccess(response)
+                }
+            }
+            }
         }
         
-    }
-    
-    // Reset data on result
-    internal func resetResult() {
-        
-        self.result = ["url": "" as AnyObject,
-                       "finalUrl": "" as AnyObject,
-                       "canonicalUrl": "" as AnyObject,
-                       "title": "" as AnyObject,
-                       "description": "" as AnyObject,
-                       "images": [] as AnyObject,
-                       "image": "" as AnyObject]
-        
-    }
-    
-    // Fill remaining info about the crawling
-    fileprivate func fillRemainingInfo(_ title: String, description: String, images: [String], image: String) {
-        
-        self.result["title"] = title as AnyObject?
-        self.result["description"] = description as AnyObject?
-        self.result["images"] = images as AnyObject?
-        self.result["image"] = image as AnyObject?
-        
-    }
-    
-    // Cancel request
-    open func cancel() {
-        
-        if let _ = self.task {
-            
-            self.task!.cancel()
-            
+        let errorResponseQueue = { (error: PreviewError) in
+            if !cancellable.isCancelled {
+            self.responseQueue.async {
+                if !cancellable.isCancelled {
+                onError(error)
+                }
+            }
+            }
         }
         
+        workQueue.async {
+            if cancellable.isCancelled {return}
+            
+            if let url = self.extractURL(text: text) {
+                if let result = self.cache.slp_getCachedResponse(url: url.absoluteString) {
+                    successResponseQueue(result)
+                } else {
+                    self.unshortenURL(url, cancellable: cancellable, completion: { unshortened in
+                        if let result = self.cache.slp_getCachedResponse(url: unshortened.absoluteString) {
+                            successResponseQueue(result)
+                        } else {
+                            
+                            let canonicalUrl = self.extractCanonicalURL(unshortened)
+                            
+                            self.extractInfo(unshortened, cancellable: cancellable, canonicalUrl: canonicalUrl, completion: { result in
+                                
+                                var result = result
+                                
+                                result[.url] = url
+                                result[.finalUrl] = unshortened
+                                result[.canonicalUrl] = canonicalUrl
+                                
+                                self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
+                                self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
+                                
+                                successResponseQueue(result)
+                            }, onError: errorResponseQueue)
+                        }
+                    }, onError: errorResponseQueue)
+                }
+            } else {
+                onError(PreviewError.noURLHasBeenFound(text))
+            }
+        }
+        
+        return cancellable
     }
-    
 }
 
 // Extraction functions
 extension SwiftLinkPreview {
     
     // Extract first URL from text
-    internal func extractURL() -> URL? {
-        
-        let explosion = self.text.characters.split{$0 == " "}.map(String.init)
-        let pieces = explosion.filter({ $0.trim.isValidURL() })
-        let piece = pieces[0]
-        
-        if let url = URL(string: piece) {
-            
+    internal func extractURL(text: String) -> URL? {
+        let pieces = text.components(separatedBy: " ").filter { $0.trim.isValidURL() }
+        if let url = URL(string: pieces[0]) {
             return url
-            
         }
-        
         return nil
-        
     }
     
     // Unshorten URL by following redirections
-    fileprivate func unshortenURL(_ url: URL, completion: @escaping (URL) -> ()) {
+    fileprivate func unshortenURL(_ url: URL, cancellable: Cancellable, completion: @escaping (URL) -> Void, onError: @escaping (PreviewError) -> Void) {
         
-        self.task = session.dataTask(with: url, completionHandler: { data, response, error in
-            
-            if let finalResult = response?.url {
-                
-                if(finalResult.absoluteString == url.absoluteString) {
-                    
-                    if self.wasOnMainThread {
-                        
-                        DispatchQueue.main.async {
-                            
+        if cancellable.isCancelled {return}
+        
+        var task: URLSessionDataTask? = nil
+        var request = URLRequest(url: url)
+        request.httpMethod = "HEAD"
+        
+        task = session.dataTask(with: request, completionHandler: { data, response, error in
+            if let _ = error {
+                self.workQueue.async {
+                    if !cancellable.isCancelled {
+                        onError(PreviewError.cannotBeOpened(url.absoluteString))
+                    }
+                }
+                task = nil
+            } else {
+                if let finalResult = response?.url {
+                    if (finalResult.absoluteString == url.absoluteString) {
+                        self.workQueue.async {
+                            if !cancellable.isCancelled {
+                                completion(url)
+                            }
+                        }
+                        task = nil
+                    } else {
+                        task!.cancel()
+                        task = nil
+                        self.unshortenURL(finalResult, cancellable: cancellable, completion: completion, onError: onError)
+                    }
+                } else {
+                    self.workQueue.async {
+                        if !cancellable.isCancelled {
                             completion(url)
                         }
                     }
-                    else {
-                        completion(url)
-                    }
-                    
-                } else {
-                    
-                    self.task!.cancel()
-                    self.unshortenURL(finalResult, completion: completion)
-                    
-                }
-                
-            } else {
-                
-                if self.wasOnMainThread {
-                    
-                    DispatchQueue.main.async {
-                        
-                        completion(url)
-                    }
-                }
-                else {
-                    completion(url)
+                    task = nil
                 }
             }
-            
         }) 
         
-        if let _ = self.task {
-            
-            self.task!.resume()
-            
+        if let task = task {
+            task.resume()
+        } else {
+            self.workQueue.async {
+                if !cancellable.isCancelled {
+                    onError(PreviewError.cannotBeOpened(url.absoluteString))
+                }
+            }
         }
-        
     }
     
     // Extract HTML code and the information contained on it
-    fileprivate func extractInfo(_ completion: @escaping () -> (), onError: (PreviewError) -> ()) {
+    fileprivate func extractInfo(_ url: URL, cancellable: Cancellable, canonicalUrl: String?, completion: @escaping (Response) -> Void, onError: (PreviewError) -> ()) {
+        if cancellable.isCancelled {return}
         
-        if let url: URL = self.result["finalUrl"] as? URL {
+        if(url.absoluteString.isImage()) {
+            var result = Response()
             
-            if(url.absoluteString.isImage()) {
-                
-                self.fillRemainingInfo("", description: "", images: [url.absoluteString], image: url.absoluteString)
-                completion()
-                
-            } else {
-                
-                let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : URL(string: "http://\(url)")
-                
-                do {
-                    
-                    // Try to get the page with its default enconding
-                    var source = try String(contentsOf: sourceUrl!).extendedTrim
-                    
-                    if self.wasOnMainThread {
-                        
-                        DispatchQueue.main.async {
-                            
-                            source = self.cleanSource(source)
-                            
-                            self.performPageCrawling(source)
-                            
-                            completion()
-                        }
-                    }
-                    else {
-                        source = self.cleanSource(source)
-                        
-                        self.performPageCrawling(source)
-                        
-                        completion()
-                    }
-                    
-                } catch _ as NSError {
-                    
-                    self.tryAnotherEnconding(sourceUrl!, encodingArray: String.availableStringEncodings, completion: completion, onError: onError)
-                    
-                }
-                
-            }
+            result[.title] = ""
+            result[.description] = ""
+            result[.images] = [url.absoluteString]
+            result[.image] = [url.absoluteString]
             
+            completion(result)
         } else {
-            
-            self.fillRemainingInfo("", description: "", images: [], image: "")
-            completion()
-            
+            let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : URL(string: "http://\(url)")
+            do {
+                let data = try Data(contentsOf: sourceUrl!)
+                var source: NSString? = nil
+                NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &source, usedLossyConversion: nil)
+                
+                if let source = source {
+                    if !cancellable.isCancelled {
+                        self.parseHtmlString(source as String, canonicalUrl: canonicalUrl, completion: completion)
+                    }
+                } else {
+                    if !cancellable.isCancelled {
+                        onError(.parseError(sourceUrl!.absoluteString))
+                    }
+                }
+            } catch {
+                if !cancellable.isCancelled {
+                    onError(.cannotBeOpened(sourceUrl!.absoluteString))
+                }
+            }
         }
-        
     }
     
-    // Try to get the page using another available encoding instead the page's own encoding
-    private func tryAnotherEnconding(_ sourceUrl: URL, encodingArray: [String.Encoding], completion: @escaping () -> (), onError: (PreviewError) -> ()) {
-        
-        if encodingArray.isEmpty {
-            onError(PreviewError.parseError(url.absoluteString))
-        } else {
-            
-            do {
-                
-                var source = try String(contentsOf: sourceUrl, encoding: encodingArray[0]).extendedTrim
-                
-                if self.wasOnMainThread {
-                    
-                    DispatchQueue.main.async {
-                        
-                        source = self.cleanSource(source)
-                        
-                        self.performPageCrawling(source)
-                        
-                        completion()
-                    }
-                }
-                else {
-                    source = self.cleanSource(source)
-                    
-                    self.performPageCrawling(source)
-                    
-                    completion()
-                }
-                
-            } catch _ as NSError {
-                
-                let availablEncodingArray = encodingArray.filter() { $0 != encodingArray[0] }
-                self.tryAnotherEnconding(sourceUrl, encodingArray: availablEncodingArray, completion: completion, onError: onError)
-                
-            }
-            
-        }
-        
+    
+    private func parseHtmlString(_ htmlString: String, canonicalUrl: String?, completion: @escaping (Response) -> Void) {
+            completion(self.performPageCrawling(self.cleanSource(htmlString), canonicalUrl: canonicalUrl))
     }
     
     // Removing unnecessary data from the source
@@ -277,15 +236,14 @@ extension SwiftLinkPreview {
     
     
     // Perform the page crawiling
-    private func performPageCrawling(_ htmlCode: String) {
+    private func performPageCrawling(_ htmlCode: String, canonicalUrl: String?) -> Response {
+        let result = self.crawlMetaTags(htmlCode, canonicalUrl: canonicalUrl, result: Response())
         
-        var htmlCode = htmlCode
+        var response = self.crawlTitle(htmlCode, result: result)
         
-        self.crawlMetaTags(htmlCode)
-        htmlCode = self.crawlTitle(htmlCode)
-        htmlCode = self.crawlDescription(htmlCode)
-        self.crawlImages(htmlCode)
+        response = self.crawlDescription(response.htmlCode, result: response.result)
         
+        return self.crawlImages(response.htmlCode, canonicalUrl: canonicalUrl, result: response.result)
     }
     
     
@@ -348,15 +306,20 @@ extension SwiftLinkPreview {
 extension SwiftLinkPreview {
     
     // Search for meta tags
-    internal func crawlMetaTags(_ htmlCode: String) {
+    internal func crawlMetaTags(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
         
-        let possibleTags = ["title", "description", "image"]
+        var result = result
+        
+        let possibleTags: [String] = [
+            SwiftLinkResponseKey.title.rawValue,
+            SwiftLinkResponseKey.description.rawValue,
+            SwiftLinkResponseKey.image.rawValue
+        ]
+        
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
         
         for metatag in metatags {
-            
             for tag in possibleTags {
-                
                 if (metatag.range(of: "property=\"og:\(tag)") != nil ||
                     metatag.range(of: "property='og:\(tag)") != nil ||
                     metatag.range(of: "name=\"twitter:\(tag)") != nil ||
@@ -366,148 +329,95 @@ extension SwiftLinkPreview {
                     metatag.range(of: "itemprop=\"\(tag)") != nil ||
                     metatag.range(of: "itemprop='\(tag)") != nil) {
                     
-                    if((self.result[tag] as! String).isEmpty) {
-                        
-                        if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
-                            
-                            let value = value.decoded.extendedTrim
-                            
-                            self.result[tag] = (tag == "image" ? self.addImagePrefixIfNeeded(value) : value) as AnyObject
-                            
-                        }
-                        
-                    }
+                    let key = SwiftLinkResponseKey(rawValue: tag)!
                     
+                    if (result[key] == nil) {
+                        if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
+                            let value = value.decoded.extendedTrim
+                            result[key] = (tag == "image" ? self.addImagePrefixIfNeeded(value, canonicalUrl: canonicalUrl) : value)
+                        }
+                    }
                 }
-                
             }
-            
         }
         
+        return result
     }
     
     // Crawl for title if needed
-    internal func crawlTitle(_ htmlCode: String) -> String {
+    internal func crawlTitle(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
+        var result = result
+        let title = result[.title] as? String
         
-        if let title: String = self.result["title"] as? String {
-            
-            if title.isEmpty {
-                
-                if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
-                    
-                    if value.isEmpty {
-                        
-                        let fromBody: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant)
-                        
-                        if !fromBody.isEmpty {
-                                
-                                self.result["title"] = fromBody.decoded.extendedTrim as AnyObject?
-                                
-                                return htmlCode.replace(fromBody, with: "")
-                                
-                            }
-                        
-                    } else {
-                        
-                        self.result["title"] = value.decoded.extendedTrim as AnyObject?
-                        
+        if title == nil || title?.isEmpty ?? true {
+            if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
+                if value.isEmpty {
+                    let fromBody: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant)
+                    if !fromBody.isEmpty {
+                        result[.title] = fromBody.decoded.extendedTrim
+                        return (htmlCode.replace(fromBody, with: ""), result)
                     }
-                    
+                } else {
+                    result[.title] = value.decoded.extendedTrim
                 }
-                
             }
-            
         }
         
-        return htmlCode
-        
+        return (htmlCode, result)
     }
     
     // Crawl for description if needed
-    internal func crawlDescription(_ htmlCode: String) -> String {
+    internal func crawlDescription(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
+        var result = result
+        let description = result[.description] as? String
         
-        if let description: String = self.result["description"] as? String {
-            
-            if description.isEmpty {
-                
-                let value: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
-                
-                if !value.isEmpty {
-                    
-                    self.result["description"] = value.decoded.extendedTrim as AnyObject?
-                    
-                }
-                
+        if description == nil || description?.isEmpty ?? true {
+            let value: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
+            if !value.isEmpty {
+                result[.description] = value.decoded.extendedTrim
             }
-            
         }
         
-        return htmlCode
-        
+        return (htmlCode, result)
     }
     
     // Crawl for images
-    internal func crawlImages(_ htmlCode: String) {
+    internal func crawlImages(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
         
-        let mainImage: String = self.result["image"] as! String
+        var result = result
         
-        if mainImage.isEmpty {
+        let mainImage = result[.image] as? String
+        
+        if mainImage == nil || mainImage?.isEmpty ?? true {
             
-            if let images: [String] = self.result["images"] as? [String] {
-                
-                if images.isEmpty {
-                    
-                    let values: [String] = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
-                    
-                    if !values.isEmpty {
+            let images = result[.images] as? [String]
+            
+            if images == nil || images?.isEmpty ?? true {
+                let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
+                if !values.isEmpty {
+                    var imgs = values.map { self.addImagePrefixIfNeeded($0, canonicalUrl: canonicalUrl) }
                         
-                        var imgs: [String] = []
-                        
-                        for value in values {
-                            
-                            imgs.append(self.addImagePrefixIfNeeded(value))
-                            
-                        }
-                        
-                        self.result["images"] = imgs as AnyObject?
-                        
-                        if imgs.count > 0 {
-                            
-                            self.result["image"] = imgs[0] as AnyObject?
-                            
-                        }
-                        
-                    }
-                    
+                    result[.images] = imgs
+                    result[.image] = imgs[0]
                 }
-                
             }
-            
         } else {
-            
-            self.result["images"] = [self.addImagePrefixIfNeeded(mainImage)] as AnyObject
-            
+            result[.images] = [self.addImagePrefixIfNeeded(mainImage!, canonicalUrl: canonicalUrl)]
         }
-        
+        return result
     }
     
     // Add prefix image if needed
-    fileprivate func addImagePrefixIfNeeded(_ image: String) -> String {
+    fileprivate func addImagePrefixIfNeeded(_ image: String, canonicalUrl: String?) -> String {
         
         var image = image
         
-        if let canonicalUrl: String = self.result["canonicalUrl"] as? String {
-            
+        if let canonicalUrl = canonicalUrl {
             if image.hasPrefix("//") {
-                
                 image = "http:" + image
-                
             } else if image.hasPrefix("/") {
-                
                 image = "http://" + canonicalUrl + image
-                
             }
-            
         }
         
         return image

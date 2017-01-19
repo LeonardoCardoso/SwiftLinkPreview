@@ -7,10 +7,10 @@
 //
 import Foundation
 
-extension URLSession {
+public extension URLSession {
     
     // Synchronous request to get the real URL
-    func synchronousDataTaskWithURL(_ url: URL) -> (Data?, URLResponse?, NSError?) {
+    public func synchronousDataTaskWithURL(_ url: URL) -> (Data?, URLResponse?, NSError?) {
         
         var data: Data?, response: URLResponse?, error: NSError?
         let semaphore = DispatchSemaphore(value: 0)

@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         "Well, it's a gif! http://goo.gl/jKCPgp"
         
     ]
-    private var result: [String: AnyObject] = [:]
+    private var result = SwiftLinkPreview.Response()
     private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
     
     private let slp = SwiftLinkPreview()
@@ -119,7 +119,7 @@ class ViewController: UIViewController {
     
     private func setData() {
         
-        if let value: [String] = self.result["images"] as? [String] {
+        if let value: [String] = self.result[.images] as? [String] {
             
             if !value.isEmpty {
                 
@@ -139,17 +139,17 @@ class ViewController: UIViewController {
                 
             } else {
                 
-                self.setImage(image: self.result["image"] as? String)
+                self.setImage(image: self.result[.image] as? String)
                 
             }
             
         } else {
             
-            self.setImage(image: self.result["image"] as? String)
+            self.setImage(image: self.result[.image] as? String)
             
         }
         
-        if let value: String = self.result["title"] as? String {
+        if let value: String = self.result[.title] as? String {
             
             self.previewTitle.text = value.isEmpty ? "No title" : value
             
@@ -159,13 +159,13 @@ class ViewController: UIViewController {
             
         }
         
-        if let value: String = self.result["canonicalUrl"] as? String {
+        if let value: String = self.result[.canonicalUrl] as? String {
             
             self.previewCanonicalUrl.text = value
             
         }
         
-        if let value: String = self.result["description"] as? String {
+        if let value: String = self.result[.description] as? String {
             
             self.previewDescription.text = value.isEmpty ? "No description" : value
             
@@ -275,7 +275,7 @@ class ViewController: UIViewController {
     
     @IBAction func openWithAction(sender: UIButton) {
         
-        if let url: NSURL = self.result["finalUrl"] as? NSURL {
+        if let url: NSURL = self.result[.finalUrl] as? NSURL {
             
             UIApplication.shared.openURL(url as URL)
             
