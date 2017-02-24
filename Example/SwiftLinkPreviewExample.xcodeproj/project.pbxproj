@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		170A2F4F6754D3FAE951F298 /* Pods_SwiftLinkPreviewExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E327B385B3E28C43B51BBE1E /* Pods_SwiftLinkPreviewExample.framework */; };
+		983EC41B1E603F7C00C72BCD /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983EC41A1E603F7C00C72BCD /* Cache.swift */; };
 		984816501D89968600CD6350 /* AlamofireSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9848164F1D89968600CD6350 /* AlamofireSource.swift */; };
 		98846C7B1D09AA1C00846726 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98846C7A1D09AA1C00846726 /* AppDelegate.swift */; };
 		98846C7D1D09AA1C00846726 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98846C7C1D09AA1C00846726 /* ViewController.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		48B492EDFA7555D33CBAB72B /* Pods-SwiftLinkPreviewExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreviewExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreviewExample/Pods-SwiftLinkPreviewExample.debug.xcconfig"; sourceTree = "<group>"; };
 		89CBFBE76C6F020B205D38BB /* Pods-SwiftLinkPreviewExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftLinkPreviewExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftLinkPreviewExample/Pods-SwiftLinkPreviewExample.release.xcconfig"; sourceTree = "<group>"; };
+		983EC41A1E603F7C00C72BCD /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		9848164F1D89968600CD6350 /* AlamofireSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireSource.swift; sourceTree = "<group>"; };
 		98846C771D09AA1B00846726 /* SwiftLinkPreviewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftLinkPreviewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98846C7A1D09AA1C00846726 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		98CC36BA1DEE68B900D4C8CA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				983EC41A1E603F7C00C72BCD /* Cache.swift */,
 				98CC36BF1DEE68B900D4C8CA /* NSURLSessionExtension.swift */,
 				98CC36C01DEE68B900D4C8CA /* PreviewError.swift */,
 				98CC36C11DEE68B900D4C8CA /* Regex.swift */,
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98CC36C91DEE68B900D4C8CA /* PreviewError.swift in Sources */,
+				983EC41B1E603F7C00C72BCD /* Cache.swift in Sources */,
 				98CC36CB1DEE68B900D4C8CA /* StringExtension.swift in Sources */,
 				98846C7D1D09AA1C00846726 /* ViewController.swift in Sources */,
 				98846C7B1D09AA1C00846726 /* AppDelegate.swift in Sources */,
@@ -418,7 +422,7 @@
 				INFOPLIST_FILE = SwiftLinkPreviewExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SLPExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -435,7 +439,7 @@
 				INFOPLIST_FILE = SwiftLinkPreviewExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SLPExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

@@ -19,6 +19,7 @@ target 'SwiftLinkPreviewExample' do
 
   # Pods for SwiftLinkPreviewExample
 
+  pod 'SwiftLinkPreview', :path => '../'
   pod 'Alamofire'
   pod 'SwiftyDrop'
   pod 'ImageSlideshow', '~> 1.0.0-beta.1'
@@ -26,5 +27,3 @@ target 'SwiftLinkPreviewExample' do
 
 end
 ```
-
-**Note**: I'm using SLP as an added group on this example
