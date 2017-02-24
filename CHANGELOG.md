@@ -1,7 +1,7 @@
 # Change Log
 
 #### 2.x Releases
-- `2.0.x` Releases - [2.0.0](#200)
+- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201)
 
 #### 1.x Releases
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
@@ -11,6 +11,18 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.0.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.1)
+Released on 2017-02-24.
+
+#### Changed
+- Local analysis out of threads.
+- iOS8 backport compatibility
+    - Changed by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
+
+#### Fixed
+- Crash when no URL was sent to SLP.	
+	- Fixed by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [2.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.0)
 Released on 2017-01-19.

@@ -18,11 +18,9 @@ target 'SwiftLinkPreviewExample' do
   use_frameworks!
 
   # Pods for SwiftLinkPreviewExample
-
-  pod 'SwiftLinkPreview', :path => '../'
   pod 'Alamofire'
   pod 'SwiftyDrop'
-  pod 'ImageSlideshow', '~> 1.0.0-beta.1'
+  pod 'ImageSlideshow'
   pod 'ImageSlideshow/Alamofire'
 
 end

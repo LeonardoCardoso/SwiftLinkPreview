@@ -12,7 +12,7 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 
 <p align="center">
 	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-	[![CocoaPods](https://img.shields.io/badge/pod-v2.0.0-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+	[![CocoaPods](https://img.shields.io/badge/pod-v2.0.1-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 	[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
@@ -53,9 +53,9 @@ It makes a preview from an URL, grabbing all the information such as title, rele
 
 ## Requirements and Details
 
-* iOS 9.0+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
+* iOS 8.0+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
 * Xcode 8.0+
-* Built with Swift 3.0
+* Built with Swift 3
 
 ## Installation
 
@@ -70,7 +70,7 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 2.0.0'
+	  	pod 'SwiftLinkPreview', '~> 2.0.1'
 	  	// ...
 	end
 ```
@@ -81,7 +81,7 @@ To use **SwiftLinkPreview** as a Carthage module package just add the following 
 
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 2.0.0
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 2.0.1
   	// ...
 ```
 
@@ -96,7 +96,7 @@ let package = Package(
   name: "Your Target Name",
   dependencies: [
   	// ...
-    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "2.0.0")
+    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "2.0.1")
   	// ...
   ]
 )
