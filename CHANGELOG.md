@@ -1,7 +1,7 @@
 # Change Log
 
 #### 2.x Releases
-- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201)
+- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202)
 
 #### 1.x Releases
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
@@ -11,6 +11,19 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.0.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.2)
+Released on 2017-03-09.
+
+#### Added
+- Objective-C init method with no parameters, defaults to the same options as the Swift default parameters.
+- Objective-C init method which allows user to set parameters - passing nil will default the parameters. InMemoryCache is a BOOL parameter to use or not use a cache.
+- Objective-C preview method which returns a dictionary of values on success, and an NSError object on failure which contains a localized error description.
+	- Added by [David Gifford](https://github.com/giffnyc).
+
+#### Changed
+- Referenced objects are now derived from NSObject to make them Objective-C compatible.
+	- Changed by [David Gifford](https://github.com/giffnyc).
 
 ## [2.0.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.1)
 Released on 2017-02-24.
