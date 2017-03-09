@@ -17,7 +17,7 @@ public enum SwiftLinkResponseKey : String {
     case images
 }
 
-open class Cancellable {
+open class Cancellable : NSObject {
     public private(set) var isCancelled : Bool = false
 
     open func cancel() {
@@ -25,8 +25,8 @@ open class Cancellable {
     }
 }
 
-open class SwiftLinkPreview {
-
+open class SwiftLinkPreview : NSObject {
+    
     public typealias Response = [SwiftLinkResponseKey: Any]
 
     // MARK: - Vars
@@ -41,19 +41,50 @@ open class SwiftLinkPreview {
     public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
 
     // MARK: - Constructor
-    public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
+    
+    //Swift-only init with default parameters
+    @nonobjc public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
         self.workQueue = workQueue
         self.responseQueue = responseQueue
         self.cache = cache
         self.session = session
     }
+    
+    //Objective-C init with default parameters
+    @objc public override init() {
+        let _session = URLSession.shared
+        let _workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue
+        let _responseQueue: DispatchQueue = DispatchQueue.main
+        let _cache : Cache  = DisabledCache.instance
+        
+        self.workQueue = _workQueue
+        self.responseQueue = _responseQueue
+        self.cache = _cache
+        self.session = _session
+    }
 
+    //Objective-C init with paramaters.  nil objects will default.  Timeout values are ignored if InMemoryCache is disabled.
+    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue? , disableInMemoryCache : Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval) {
+        
+        let _session = session ?? URLSession.shared
+        let _workQueue = workQueue ?? SwiftLinkPreview.defaultWorkQueue
+        let _responseQueue = responseQueue ?? DispatchQueue.main
+        let _cache : Cache  = disableInMemoryCache ? DisabledCache.instance : InMemoryCache(invalidationTimeout: cacheInvalidationTimeout, cleanupInterval: cacheCleanupInterval)
+    
+        self.workQueue = _workQueue
+        self.responseQueue = _responseQueue
+        self.cache = _cache
+        self.session = _session
+    }
+    
+    
     // MARK: - Functions
     // Make preview
-    @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
-
+    //Swift-only preview function using Swift specific closure types
+    @nonobjc @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
+        
         let cancellable = Cancellable()
-
+        
         let successResponseQueue = { (response: Response) in
             if !cancellable.isCancelled {
                 self.responseQueue.async {
@@ -111,6 +142,51 @@ open class SwiftLinkPreview {
         }
 
         return cancellable
+    }
+    
+    //Objective-C wrapper for preview method.  Core incompataility is use of Swift specific enum types in closures.
+    //Returns a dictionary of rsults rather than enum for success, and an NSError object on error that encodes the local error description on error
+    /*
+     Keys for the dictionary are derived from the enum names above.  That enum def is canonical, below is a convenience comment
+      url
+      finalUrl
+      canonicalUrl
+      title
+      description
+      image
+      images
+     
+     */
+    @objc @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
+        
+        func success (_ result : Response) -> Void {
+            var ResponseData = [String : Any]()
+            for item in result {
+                ResponseData.updateValue(item.value, forKey: item.key.rawValue)
+            }
+            onSuccess(ResponseData)
+        }
+        
+        
+        func failure (_ theError : PreviewError) -> Void  {
+            var ErrorCode : Int
+            ErrorCode = 1
+            
+            switch theError {
+            case .noURLHasBeenFound:
+                ErrorCode = 1
+            case .invalidURL:
+                ErrorCode = 2
+            case .cannotBeOpened:
+                ErrorCode = 3
+            case .parseError:
+                ErrorCode = 4
+            }
+            
+            onError( NSError(domain: "SwiftLinkPreviewDomain", code: ErrorCode, userInfo: [NSLocalizedDescriptionKey : theError.description]))
+        }
+        
+        return self.preview(text, onSuccess: success, onError: failure)
     }
 }
 
