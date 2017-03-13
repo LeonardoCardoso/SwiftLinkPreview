@@ -1,7 +1,7 @@
 # Change Log
 
 #### 2.x Releases
-- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202)
+- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203)
 
 #### 1.x Releases
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
@@ -11,6 +11,14 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.0.3](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.3)
+Released on 2017-03-13.
+
+#### Changed
+
+- Renamed the Objective-C compatible wrapper fro the preview method to previewLink. This resolves ambiguous method errors in Swift builds - issue [#41](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/41).
+    - Changed by [David Gifford](https://github.com/giffnyc).
 
 ## [2.0.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.2)
 Released on 2017-03-09.
