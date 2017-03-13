@@ -157,7 +157,7 @@ open class SwiftLinkPreview : NSObject {
       images
      
      */
-    @objc @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
+    @objc @discardableResult open func previewLink(_ text: String!, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
         
         func success (_ result : Response) -> Void {
             var ResponseData = [String : Any]()
