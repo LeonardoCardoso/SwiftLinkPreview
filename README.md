@@ -1,25 +1,14 @@
-<p align="center">
 ![Swift Link Preview](Images/badge.png)
-<p>
 
-<p align="center">
 **Link Previewer** for **iOS**, **macOS**, **watchOS** and **tvOS**
-<p>
 
-<p align="center">
-It makes a preview from an URL, grabbing all the information such as title, relevant texts and images.
-<p>
+> It makes a preview from an URL, grabbing all the information such as title, relevant texts and images.
 
-<p align="center">
-	[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-	[![CocoaPods](https://img.shields.io/badge/pod-v2.0.3-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
-	[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
-	[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
-	[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
-<p>
-<p>
-
-<hr />
+[![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
+[![CocoaPods](https://img.shields.io/badge/pod-v2.0.3-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
+[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
+[![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
 
 #### Index 
 
