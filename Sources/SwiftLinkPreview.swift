@@ -195,7 +195,7 @@ extension SwiftLinkPreview {
 
     // Extract first URL from text
     internal func extractURL(text: String) -> URL? {
-        let pieces: [String] = text.components(separatedBy: " ").filter { $0.trim.isValidURL() }
+        let pieces: [String] = text.components(separatedBy: .whitespacesAndNewlines).filter { $0.trim.isValidURL() }
         if pieces.count > 0, let url = URL(string: pieces[0]) {
             return url
         }
