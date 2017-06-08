@@ -96,13 +96,6 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		98348AB71D09B50C003FA2B3 /* Builder Interface */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Builder Interface";
-			sourceTree = "<group>";
-		};
 		9848164E1D89967300CD6350 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,7 +127,6 @@
 			children = (
 				98CC36BA1DEE68B900D4C8CA /* Sources */,
 				9848164E1D89967300CD6350 /* ThirdParty */,
-				98348AB71D09B50C003FA2B3 /* Builder Interface */,
 				98348AB51D09B4E8003FA2B3 /* Controllers */,
 				98348AB41D09B4E2003FA2B3 /* Delegates */,
 				98348AB61D09B4EF003FA2B3 /* Storyboards */,
@@ -258,7 +250,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E7541FE4E6A19220BD9B9CDA /* [CP] Embed Pods Frameworks */ = {

@@ -1,7 +1,7 @@
 # Change Log
 
 #### 2.x Releases
-- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203) | [2.0.4](#204)
+- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203) | [2.0.4](#204) | [2.0.5](#205)
 
 #### 1.x Releases
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
@@ -11,6 +11,14 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.0.5](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.5)
+Released on 2017-06-08.
+
+#### Changed
+
+- `extractURL` made public - issue [#52](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/52).
+    - Changed by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [2.0.4](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.4)
 Released on 2017-04-15.
