@@ -195,11 +195,15 @@ extension SwiftLinkPreview {
 
     // Extract first URL from text
     open func extractURL(text: String) -> URL? {
-        let pieces: [String] = text.components(separatedBy: .whitespacesAndNewlines).filter { $0.trim.isValidURL() }
-        if pieces.count > 0, let url = URL(string: pieces[0]) {
-            return url
+        do {
+            let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+            let range = NSRange(location: 0, length: text.characters.count)
+            let matches = detector.matches(in: text, options: [], range: range)
+
+            return matches.flatMap { $0.url }.first
+        } catch {
+            return nil
         }
-        return nil
     }
 
     // Unshorten URL by following redirections
