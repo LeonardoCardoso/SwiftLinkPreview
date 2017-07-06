@@ -1,7 +1,7 @@
 # Change Log
 
 #### 2.x Releases
-- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203) | [2.0.4](#204) | [2.0.5](#205)
+- `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203) | [2.0.4](#204) | [2.0.5](#205) | [2.0.6](#206)
 
 #### 1.x Releases
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
@@ -11,6 +11,14 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.0.6](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.6)
+Released on 2017-07-06.
+
+#### Changed
+
+- `NSDataDetector` - pr [#56](https://github.com/LeonardoCardoso/SwiftLinkPreview/pull/56).
+    - Changed by [Vincent Toms](https://github.com/vinnyt).
 
 ## [2.0.5](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.5)
 Released on 2017-06-08.
