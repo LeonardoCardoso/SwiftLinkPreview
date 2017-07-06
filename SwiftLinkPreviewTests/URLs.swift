@@ -16,7 +16,7 @@ struct URLs {
     static let bunch = [
         [
             "aaa www.google.com aaa",
-            "www.google.com",
+            "http://www.google.com",
             "www.google.com"
         ],
         [
@@ -36,12 +36,12 @@ struct URLs {
         ],
         [
             "ddd ios.leocardz.com/swift-link-preview/ ddd",
-            "ios.leocardz.com/swift-link-preview/",
+            "http://ios.leocardz.com/swift-link-preview/",
             "ios.leocardz.com"
         ],
         [
             "ddd ios.leocardz.com ddd",
-            "ios.leocardz.com",
+            "http://ios.leocardz.com",
             "ios.leocardz.com"
         ],
         [
@@ -51,7 +51,7 @@ struct URLs {
         ],
         [
             "fff theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy fff",
-            "theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
+            "http://theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
             "theverge.com"
         ],
         [
@@ -71,7 +71,7 @@ struct URLs {
         ],
         [
             "hhh twitter.com hhh",
-            "twitter.com",
+            "http://twitter.com",
             "twitter.com"
         ],
         [
