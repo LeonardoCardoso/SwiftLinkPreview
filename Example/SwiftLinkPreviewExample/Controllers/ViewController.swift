@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet var previewCanonicalUrl: UILabel!
     @IBOutlet var previewDescription: UILabel!
     @IBOutlet var detailedView: UIView!
+    @IBOutlet weak var favicon: UIImageView!
     
     
     // MARK: - Vars
@@ -173,6 +174,10 @@ class ViewController: UIViewController {
             
             self.previewTitle.text = "No description"
             
+        }
+
+        if let value: String = self.result[.icon] as? String, let url = URL(string: value) {
+            self.favicon.af_setImage(withURL: url)
         }
         
         self.showHideAll(hide: false)

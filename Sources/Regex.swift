@@ -23,6 +23,7 @@ class Regex {
     static let linkPattern = "<link(.*?)>"
     static let scriptPattern = "<script(.*?)>"
     static let commentPattern = "<!--(.*?)-->"
+    static let hrefPattern = ".*href=\"(.*?)\".*"
     
     // Test regular expression
     static func test(_ string: String!, regex: String!) -> Bool {
