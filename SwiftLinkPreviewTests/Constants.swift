@@ -17,12 +17,12 @@ struct Constants {
     static let bodyTextDiv = "body-text-div"
     static let bodyImageSingle = "body-image-single"
     static let bodyImageGallery = "body-image-gallery"
+    static let bodyIcon = "head-meta-icon"
     static let headMetaTwitter = "head-meta-twitter"
     static let headMetaMeta = "head-meta-meta"
     static let headMetaItemprop = "head-meta-itemprop"
     static let headMetaFacebook = "head-meta-facebook"
     static let headTitle = "head-title"
-    
     
     static let headRandom = "[:head-random]"
     static let headRandomPre = "[:head-random-pre]"
@@ -59,5 +59,8 @@ struct Constants {
     static let tag1 = "[:tag-1]"
     static let tag2 = "[:tag-2]"
     static let tag3 = "[:tag-3]"
+
+    static let href = "[:href]"
+    static let rel = "[:rel]"
     
 }

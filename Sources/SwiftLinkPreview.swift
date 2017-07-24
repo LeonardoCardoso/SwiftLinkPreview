@@ -15,6 +15,7 @@ public enum SwiftLinkResponseKey : String {
     case description
     case image
     case images
+    case icon
 }
 
 open class Cancellable : NSObject {
@@ -155,6 +156,7 @@ open class SwiftLinkPreview : NSObject {
       description
       image
       images
+      icon
      
      */
     @objc @discardableResult open func previewLink(_ text: String!, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
@@ -305,9 +307,9 @@ extension SwiftLinkPreview {
     private func cleanSource(_ source: String) -> String {
 
         var source = source
+        
         source = source.deleteTagByPattern(Regex.inlineStylePattern)
         source = source.deleteTagByPattern(Regex.inlineScriptPattern)
-        source = source.deleteTagByPattern(Regex.linkPattern)
         source = source.deleteTagByPattern(Regex.scriptPattern)
         source = source.deleteTagByPattern(Regex.commentPattern)
 
@@ -318,13 +320,17 @@ extension SwiftLinkPreview {
 
     // Perform the page crawiling
     private func performPageCrawling(_ htmlCode: String, canonicalUrl: String?) -> Response {
-        let result = self.crawlMetaTags(htmlCode, canonicalUrl: canonicalUrl, result: Response())
+        var result = self.crawIcon(htmlCode, canonicalUrl: canonicalUrl, result: Response())
 
-        var response = self.crawlTitle(htmlCode, result: result)
+        let sanitizedHtmlCode = htmlCode.deleteTagByPattern(Regex.linkPattern)
 
-        response = self.crawlDescription(response.htmlCode, result: response.result)
+        result = self.crawlMetaTags(sanitizedHtmlCode, canonicalUrl: canonicalUrl, result: result)
 
-        return self.crawlImages(response.htmlCode, canonicalUrl: canonicalUrl, result: response.result)
+        var otherResponse = self.crawlTitle(sanitizedHtmlCode, result: result)
+
+        otherResponse = self.crawlDescription(otherResponse.htmlCode, result: otherResponse.result)
+
+        return self.crawlImages(otherResponse.htmlCode, canonicalUrl: canonicalUrl, result: otherResponse.result)
     }
 
 
@@ -385,6 +391,31 @@ extension SwiftLinkPreview {
 
 // Tag functions
 extension SwiftLinkPreview {
+
+    // searc for favicn
+    internal func crawIcon(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
+        var result = result
+
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.linkPattern, index: 1)
+
+        let filters = [
+            { (link: String) -> Bool in link.range(of: "apple-touch") != nil },
+            { (link: String) -> Bool in link.range(of: "shortcut") != nil },
+            { (link: String) -> Bool in link.range(of: "icon") != nil }
+        ]
+
+        for filter in filters {
+            if let first = metatags.filter(filter).first {
+                let matches = Regex.pregMatchAll(first, regex: Regex.hrefPattern, index: 1)
+                if let val = matches.first {
+                    result[SwiftLinkResponseKey.icon] = self.addImagePrefixIfNeeded(val.replace("\"", with: ""), canonicalUrl: canonicalUrl)
+                    return result
+                }
+            }
+        }
+
+        return result
+    }
 
     // Search for meta tags
     internal func crawlMetaTags(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
