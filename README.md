@@ -5,7 +5,7 @@
 > It makes a preview from an URL, grabbing all the information such as title, relevant texts and images.
 
 [![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-[![CocoaPods](https://img.shields.io/badge/pod-v2.0.6-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+[![CocoaPods](https://img.shields.io/badge/pod-v2.0.7-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 [![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
@@ -59,7 +59,7 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 2.0.6'
+	  	pod 'SwiftLinkPreview', '~> 2.0.7'
 	  	// ...
 	end
 ```
@@ -70,7 +70,7 @@ To use **SwiftLinkPreview** as a Carthage module package just add the following 
 
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 2.0.6
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 2.0.7
   	// ...
 ```
 
@@ -85,7 +85,7 @@ let package = Package(
   name: "Your Target Name",
   dependencies: [
   	// ...
-    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "2.0.6")
+    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "2.0.7")
   	// ...
   ]
 )
@@ -127,13 +127,14 @@ slp.preview(
 
 ```swift
 [
-   "url": "original URL", 								// NSURL
-   "finalUrl": "final ~unshortened~ URL.", 				// NSURL
-   "canonicalUrl": "canonical URL", 					// NSURL
-   "title": "title", 									// String
-   "description": "page description or relevant text", 	// String
-   "images": ["array of URLs of the images"], 			// String array
-   "image": "main image" 								// String
+   "url": "original URL", // NSURL
+   "finalUrl": "final ~unshortened~ URL.", // NSURL
+   "canonicalUrl": "canonical URL", // NSURL
+   "title": "title", // String
+   "description": "page description or relevant text", // String
+   "images": ["array of URLs of the images"], // String array
+   "image": "main image", // String
+   "icon": "favicon" // String
 ]
 ```
 
