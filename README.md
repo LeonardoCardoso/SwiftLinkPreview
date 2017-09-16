@@ -109,19 +109,9 @@ let slp = SwiftLinkPreview()
 
 #### Requesting preview
 ```swift
-slp.preview(
-    "Text containing URL",
-    onSuccess: { result in
-    	
-		print("\(result)")
-        
-    },
-    onError: { error in
-       
-		print("\(error)")
-        
-    }
-)
+slp.preview("Text containing URL",
+	    onSuccess: { result in print("\(result)") },
+	    onError: { error in print("\(error)")})
 ```
 **result** is a dictionary ```[String: AnyObject]``` like:
 
@@ -140,7 +130,11 @@ slp.preview(
 
 #### Cancelling a request
 ```swift
-slp.cancel()
+let cancelablePreview = slp.preview(...,
+				    onSuccess: ...,
+				    onError: ...)
+
+cancelablePreview.cancel()
 ```
 
 # FLOW
