@@ -104,7 +104,10 @@ import SwiftLinkPreview
 
 // ...
 
-let slp = SwiftLinkPreview()
+let slp = SwiftLinkPreview(session: URLSession = URLSession.shared, 
+			   workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, 
+			   responseQueue: DispatchQueue = DispatchQueue.main,
+		           cache: Cache = DisabledCache.instance)
 ```
 
 #### Requesting preview
@@ -135,6 +138,36 @@ let cancelablePreview = slp.preview(...,
 				    onError: ...)
 
 cancelablePreview.cancel()
+```
+
+#### Enabling and accessing cache
+
+SLP has a built-in memory cache, so create your object as the following:
+
+```swift
+let slp = SwiftLinkPreview(cache: InMemoryCache())
+```
+
+To get the cached response:
+
+```swift
+if let cached = self.slp.cache.slp_getCachedResponse(url: String) {
+    // Do whatever with the cached response
+} else {
+	// Perform preview otherwise
+	slp.preview(...)
+}
+```
+
+If you want to create your own cache, just implement this protocol and use it on the object initializer.
+
+```swift
+public protocol Cache {
+    
+    func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response?
+    
+    func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?)
+}
 ```
 
 # FLOW

@@ -34,32 +34,32 @@ class ViewController: UIViewController {
         "www.youtube.com",
         "www.google.com",
         "facebook.com",
-
+        
         "https://leocardz.com/swift-link-preview-5a9860c7756f",
-        "NASA! 🖖🏽 http://www.nasa.gov/",
-        "http://www.theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
+        "NASA! 🖖🏽 https://www.nasa.gov/",
+        "https://www.theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
         "Shorten URL http://bit.ly/14SD1eR",
         "Tweet! https://twitter.com",
-
+        
         "A Gallery https://www.nationalgallery.org.uk",
-
+        
         "A Brazilian website http://globo.com",
-        "Another Brazilian website http://uol.com.br",
-        "Some Vietnamese chars http://vnexpress.net/",
-        "Japan!!! http://www3.nhk.or.jp/",
-        "A Russian website >> http://habrahabr.ru",
-
-        "Youtube?! It does! http://www.youtube.com/watch?v=cv2mjAgFTaI",
-        "Also Vimeo http://vimeo.com/67992157",
+        "Another Brazilian website https://uol.com.br",
+        "Some Vietnamese chars https://vnexpress.net/",
+        "Japan!!! https://www3.nhk.or.jp/",
+        "A Russian website >> https://habrahabr.ru",
+        
+        "Youtube?! It does! https://www.youtube.com/watch?v=cv2mjAgFTaI",
+        "Also Vimeo https://vimeo.com/67992157",
         
         "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
-        "Well, it's a gif! http://goo.gl/jKCPgp"
+        "Well, it's a gif! https://goo.gl/jKCPgp"
         
     ]
     private var result = SwiftLinkPreview.Response()
     private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
     
-    private let slp = SwiftLinkPreview()
+    private let slp = SwiftLinkPreview(cache: InMemoryCache())
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -175,7 +175,7 @@ class ViewController: UIViewController {
             self.previewTitle.text = "No description"
             
         }
-
+        
         if let value: String = self.result[.icon] as? String, let url = URL(string: value) {
             self.favicon.af_setImage(withURL: url)
         }
@@ -255,26 +255,34 @@ class ViewController: UIViewController {
             
         }
         
-        
         self.startCrawling()
-        self.slp.preview(
-            textField.text,
-            onSuccess: { result in
-                
-                print(result)
-                self.result = result
-                self.setData()
-                
+        
+        let url = self.slp.extractURL(text: textField.text!)
+        if let cached = self.slp.cache.slp_getCachedResponse(url: url!.absoluteString) {
+            
+            self.result = cached
+            self.setData()
+            
+        } else {
+            self.slp.preview(
+                textField.text,
+                onSuccess: { result in
+                    
+                    print(result)
+                    self.result = result
+                    self.setData()
+                    
             },
-            onError: { error in
-                
-                print(error)
-                self.endCrawling()
-                
-                Drop.down(error.description, state: .error)
-                
+                onError: { error in
+                    
+                    print(error)
+                    self.endCrawling()
+                    
+                    Drop.down(error.description, state: .error)
+                    
             }
-        )
+            )
+        }
         
     }
     
