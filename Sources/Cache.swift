@@ -37,7 +37,7 @@ open class InMemoryCache: Cache {
         self.invalidationTimeout = invalidationTimeout
         
         self.cleanupTimer = DispatchSource.makeTimerSource(queue: type(of:self).cacheQueue) as! DispatchSource
-        self.cleanupTimer.scheduleRepeating(deadline: .now() + cleanupInterval, interval: cleanupInterval)
+        self.cleanupTimer.schedule(deadline: .now() + cleanupInterval, repeating: cleanupInterval)
         
         self.cleanupTimer.setEventHandler { [weak self] in
             guard let sself = self else {return}
