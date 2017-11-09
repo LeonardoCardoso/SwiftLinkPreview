@@ -38,10 +38,10 @@ extension String {
     var decoded: String {
         
         let encodedData = self.data(using: String.Encoding.utf8)!
-        let attributedOptions: [String: AnyObject] =
+        let attributedOptions: [NSAttributedString.DocumentReadingOptionKey: Any] =
             [
-                NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject,
-                NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue as AnyObject
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)
         ]
         
         do {
@@ -84,13 +84,14 @@ extension String {
     // Substring
     func substring(_ start: Int, end: Int) -> String {
         
-        return self.substring(with: Range(self.characters.index(self.startIndex, offsetBy: start) ..< self.characters.index(self.startIndex, offsetBy: end)))
-        
+        return String(self[Range(self.index(self.startIndex, offsetBy: start) ..< self.index(self.startIndex, offsetBy: end))])
+
     }
+
     func substring(_ range: NSRange) -> String {
         
         var end = range.location + range.length
-        end = end > self.characters.count ? self.characters.count - 1 : end
+        end = end > self.count ? self.count - 1 : end
         
         return self.substring(range.location, end: end)
         
