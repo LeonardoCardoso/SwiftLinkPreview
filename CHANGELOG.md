@@ -1,6 +1,7 @@
 # Change Log
 
 #### 2.x Releases
+- `2.1.x` Releases - [2.1.0](#210)
 - `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203) | [2.0.4](#204) | [2.0.5](#205) | [2.0.6](#206) | [2.0.7](#207)
 
 #### 1.x Releases
@@ -11,6 +12,14 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [2.1.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.1.0)
+Released on 2017-11-09.
+
+#### Added
+
+- Swift 4 - pr [#67](https://github.com/LeonardoCardoso/SwiftLinkPreview/pull/67).
+    - Added by [Stephen Hayes](https://github.com/schayes04).
 
 ## [2.0.7](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.7)
 Released on 2017-07-24.
