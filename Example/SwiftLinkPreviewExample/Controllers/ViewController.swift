@@ -286,12 +286,12 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func openWithAction(sender: UIButton) {
+    @IBAction func openWithAction(_ sender: UIButton) {
         
-        if let url: NSURL = self.result[.finalUrl] as? NSURL {
-            
-            UIApplication.shared.openURL(url as URL)
-            
+        if let url = self.result[.finalUrl] as? URL {
+
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+
         }
         
     }
