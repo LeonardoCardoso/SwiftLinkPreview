@@ -16,7 +16,6 @@ class Regex {
     static let metatagPattern = "<meta(.*?)>"
     static let metatagContentPattern = "content=(\"(.*?)\")|('(.*?)')"
     static let cannonicalUrlPattern = "([^\\+&#@%\\?=~_\\|!:,;]+)"
-    static let rawUrlPattern = "((http[s]?|ftp|file)://)?((([-a-zA-Z0-9]+\\.)|\\.)+[-a-zA-Z0-9]+)[-a-zA-Z0-9+&@#/%?=~_|!:,\\.;]*"
     static let rawTagPattern = "<[^>]+>"
     static let inlineStylePattern = "<style(.*?)>(.*?)</style>"
     static let inlineScriptPattern = "<script(.*?)>(.*?)</script>"
@@ -84,8 +83,7 @@ class Regex {
             let range = $0.range(at: index)
             if text.count > range.location + range.length {
                 return (text as NSString).substring(with: range)
-            }
-            else {
+            } else {
                 return ""
             }
         }
