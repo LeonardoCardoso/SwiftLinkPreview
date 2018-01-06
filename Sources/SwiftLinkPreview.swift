@@ -199,7 +199,7 @@ extension SwiftLinkPreview {
     open func extractURL(text: String) -> URL? {
         do {
             let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
-            let range = NSRange(location: 0, length: text.count)
+            let range = NSRange(location: 0, length: text.utf16.count)
             let matches = detector.matches(in: text, options: [], range: range)
 
             return matches.flatMap { $0.url }.first
@@ -218,7 +218,7 @@ extension SwiftLinkPreview {
         request.httpMethod = "HEAD"
 
         task = session.dataTask(with: request, completionHandler: { data, response, error in
-            if let _ = error {
+            if error != nil {
                 self.workQueue.async {
                     if !cancellable.isCancelled {
                         onError(PreviewError.cannotBeOpened(url.absoluteString))
