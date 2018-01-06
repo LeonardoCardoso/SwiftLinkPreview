@@ -34,7 +34,7 @@ open class SwiftLinkPreview : NSObject {
     static let titleMinimumRelevant: Int = 15
     static let decriptionMinimumRelevant: Int = 100
 
-    public let session: URLSession
+    public var session: URLSession
     public let workQueue: DispatchQueue
     public let responseQueue: DispatchQueue
     public let cache: Cache
@@ -85,6 +85,10 @@ open class SwiftLinkPreview : NSObject {
     @nonobjc @discardableResult open func preview(_ text: String, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
         
         let cancellable = Cancellable()
+
+        self.session = URLSession(configuration: self.session.configuration,
+                                  delegate: self,
+                                  delegateQueue: .main)
         
         let successResponseQueue = { (response: Response) in
             if !cancellable.isCancelled {
@@ -612,4 +616,18 @@ extension SwiftLinkPreview {
         
     }
     
+}
+
+extension SwiftLinkPreview: URLSessionDataDelegate {
+
+    public func urlSession(_ session: URLSession,
+                           task: URLSessionTask,
+                           willPerformHTTPRedirection response: HTTPURLResponse,
+                           newRequest request: URLRequest,
+                           completionHandler: @escaping (URLRequest?) -> Void) {
+        var request = request
+        request.httpMethod = "GET"
+        completionHandler(request)
+    }
+
 }
