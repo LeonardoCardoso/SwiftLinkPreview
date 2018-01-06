@@ -26,14 +26,14 @@ class Regex {
     static let hrefPattern = ".*href=\"(.*?)\".*"
     
     // Test regular expression
-    static func test(_ string: String!, regex: String!) -> Bool {
+    static func test(_ string: String, regex: String) -> Bool {
         
         return Regex.pregMatchFirst(string, regex: regex) != nil
         
     }
     
     // Match first occurrency
-    static func pregMatchFirst(_ string: String!, regex: String!, index: Int = 0) -> String? {
+    static func pregMatchFirst(_ string: String, regex: String, index: Int = 0) -> String? {
         
         do{
             
@@ -59,7 +59,7 @@ class Regex {
     }
     
     // Match all occurrencies
-    static func pregMatchAll(_ string: String!, regex: String!, index: Int = 0) -> [String] {
+    static func pregMatchAll(_ string: String, regex: String, index: Int = 0) -> [String] {
         
         do{
             

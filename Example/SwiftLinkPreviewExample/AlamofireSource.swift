@@ -12,7 +12,7 @@ import ImageSlideshow
 
 public class AlamofireSource: NSObject, InputSource {
     
-    var url: NSURL!
+    var url: NSURL?
     
     public init(url: NSURL) {
         self.url = url
@@ -30,8 +30,12 @@ public class AlamofireSource: NSObject, InputSource {
     }
     
     public func load(to imageView: UIImageView, with callback: @escaping (UIImage?) -> Void) {
-        
-        imageView.af_setImage(withURL: self.url as URL, placeholderImage: nil, filter: nil, progress: nil) { (response) in
+
+        guard let url = self.url as URL? else { return }
+        imageView.af_setImage(withURL: url,
+                              placeholderImage: nil,
+                              filter: nil,
+                              progress: nil) { (response) in
             
             imageView.image = response.result.value
             

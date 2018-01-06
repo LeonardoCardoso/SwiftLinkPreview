@@ -28,7 +28,7 @@ public class DisabledCache: Cache {
 open class InMemoryCache: Cache {
     private var cache = Dictionary<String, (response: SwiftLinkPreview.Response, date: Date)>()
     private let invalidationTimeout: TimeInterval
-    private let cleanupTimer: DispatchSource
+    private let cleanupTimer: DispatchSource?
     
     //High priority queue for quick responses
     private static let cacheQueue = DispatchQueue(label: "SwiftLinkPreviewInMemoryCacheQueue", qos: .userInitiated, target: DispatchQueue.global(qos: .userInitiated))
@@ -36,15 +36,15 @@ open class InMemoryCache: Cache {
     public init(invalidationTimeout: TimeInterval = 300.0, cleanupInterval: TimeInterval = 10.0) {
         self.invalidationTimeout = invalidationTimeout
         
-        self.cleanupTimer = DispatchSource.makeTimerSource(queue: type(of:self).cacheQueue) as! DispatchSource
-        self.cleanupTimer.schedule(deadline: .now() + cleanupInterval, repeating: cleanupInterval)
+        self.cleanupTimer = DispatchSource.makeTimerSource(queue: type(of:self).cacheQueue) as? DispatchSource
+        self.cleanupTimer?.schedule(deadline: .now() + cleanupInterval, repeating: cleanupInterval)
         
-        self.cleanupTimer.setEventHandler { [weak self] in
+        self.cleanupTimer?.setEventHandler { [weak self] in
             guard let sself = self else {return}
             sself.cleanup()
         }
         
-        self.cleanupTimer.resume()
+        self.cleanupTimer?.resume()
     }
     
     open func cleanup() {
@@ -80,6 +80,6 @@ open class InMemoryCache: Cache {
     }
     
     deinit {
-        self.cleanupTimer.cancel()
+        self.cleanupTimer?.cancel()
     }
 }

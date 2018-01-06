@@ -13,19 +13,19 @@ import ImageSlideshow
 class ViewController: UIViewController {
     
     // MARK: - Properties
-    @IBOutlet var textField: UITextField!
-    @IBOutlet var randomTextButton: UIButton!
-    @IBOutlet var submitButton: UIButton!
-    @IBOutlet var openWithButton: UIButton!
-    @IBOutlet var indicator: UIActivityIndicatorView!
-    @IBOutlet var previewArea: UIView!
-    @IBOutlet var previewAreaLabel: UILabel!
-    @IBOutlet var slideshow: ImageSlideshow!
-    @IBOutlet var previewTitle: UILabel!
-    @IBOutlet var previewCanonicalUrl: UILabel!
-    @IBOutlet var previewDescription: UILabel!
-    @IBOutlet var detailedView: UIView!
-    @IBOutlet weak var favicon: UIImageView!
+    @IBOutlet private weak var textField: UITextField?
+    @IBOutlet private weak var randomTextButton: UIButton?
+    @IBOutlet private weak var submitButton: UIButton?
+    @IBOutlet private weak var openWithButton: UIButton?
+    @IBOutlet private weak var indicator: UIActivityIndicatorView?
+    @IBOutlet private weak var previewArea: UIView?
+    @IBOutlet private weak var previewAreaLabel: UILabel?
+    @IBOutlet private weak var slideshow: ImageSlideshow?
+    @IBOutlet private weak var previewTitle: UILabel?
+    @IBOutlet private weak var previewCanonicalUrl: UILabel?
+    @IBOutlet private weak var previewDescription: UILabel?
+    @IBOutlet private weak var detailedView: UIView?
+    @IBOutlet private weak var favicon: UIImageView?
     
     
     // MARK: - Vars
@@ -89,7 +89,7 @@ class ViewController: UIViewController {
         
         self.updateUI(enabled: false)
         self.showHideAll(hide: true)
-        self.textField.resignFirstResponder()
+        self.textField?.resignFirstResponder()
         
     }
     
@@ -102,19 +102,19 @@ class ViewController: UIViewController {
     // Update UI
     private func showHideAll(hide: Bool) {
         
-        self.slideshow.isHidden = hide
-        self.detailedView.isHidden = hide
-        self.openWithButton.isHidden = hide
-        self.previewAreaLabel.isHidden = !hide
+        self.slideshow?.isHidden = hide
+        self.detailedView?.isHidden = hide
+        self.openWithButton?.isHidden = hide
+        self.previewAreaLabel?.isHidden = !hide
         
     }
     
     private func updateUI(enabled: Bool) {
         
-        self.indicator.isHidden = enabled
-        self.textField.isEnabled = enabled
-        self.randomTextButton.isEnabled = enabled
-        self.submitButton.isEnabled = enabled
+        self.indicator?.isHidden = enabled
+        self.textField?.isEnabled = enabled
+        self.randomTextButton?.isEnabled = enabled
+        self.submitButton?.isEnabled = enabled
         
     }
     
@@ -152,32 +152,32 @@ class ViewController: UIViewController {
         
         if let value: String = self.result[.title] as? String {
             
-            self.previewTitle.text = value.isEmpty ? "No title" : value
+            self.previewTitle?.text = value.isEmpty ? "No title" : value
             
         } else {
             
-            self.previewTitle.text = "No title"
+            self.previewTitle?.text = "No title"
             
         }
         
         if let value: String = self.result[.canonicalUrl] as? String {
             
-            self.previewCanonicalUrl.text = value
+            self.previewCanonicalUrl?.text = value
             
         }
         
         if let value: String = self.result[.description] as? String {
             
-            self.previewDescription.text = value.isEmpty ? "No description" : value
+            self.previewDescription?.text = value.isEmpty ? "No description" : value
             
         } else {
             
-            self.previewTitle.text = "No description"
+            self.previewTitle?.text = "No description"
             
         }
         
         if let value: String = self.result[.icon] as? String, let url = URL(string: value) {
-            self.favicon.af_setImage(withURL: url)
+            self.favicon?.af_setImage(withURL: url)
         }
         
         self.showHideAll(hide: false)
@@ -197,20 +197,20 @@ class ViewController: UIViewController {
                     
                 } else {
                     
-                    self.slideshow.setImageInputs(placeholderImages)
+                    self.slideshow?.setImageInputs(placeholderImages)
                     
                 }
                 
                 
             } else {
                 
-                self.slideshow.setImageInputs(placeholderImages)
+                self.slideshow?.setImageInputs(placeholderImages)
                 
             }
             
         } else {
             
-            self.slideshow.setImageInputs(placeholderImages)
+            self.slideshow?.setImageInputs(placeholderImages)
             
         }
         
@@ -220,11 +220,11 @@ class ViewController: UIViewController {
         
         if let images = images {
             
-            self.slideshow.setImageInputs(images)
+            self.slideshow?.setImageInputs(images)
             
         } else {
             
-            self.slideshow.setImageInputs(placeholderImages)
+            self.slideshow?.setImageInputs(placeholderImages)
             
         }
         
@@ -232,23 +232,23 @@ class ViewController: UIViewController {
     
     private func setUpSlideshow() {
         
-        self.slideshow.backgroundColor = UIColor.white
-        self.slideshow.slideshowInterval = 7.0
-        self.slideshow.pageControlPosition = PageControlPosition.hidden
-        self.slideshow.contentScaleMode = .scaleAspectFill
+        self.slideshow?.backgroundColor = UIColor.white
+        self.slideshow?.slideshowInterval = 7.0
+        self.slideshow?.pageControlPosition = PageControlPosition.hidden
+        self.slideshow?.contentScaleMode = .scaleAspectFill
         
     }
     
     // MARK: - Actions
     @IBAction func randomTextAction(_ sender: AnyObject) {
         
-        textField.text = getRandomText()
+        textField?.text = getRandomText()
         
     }
     
     @IBAction func submitAction(_ sender: AnyObject) {
         
-        guard !(textField.text?.isEmpty)! else {
+        guard textField?.text?.isEmpty == false else {
             
             Drop.down("Please, enter a text", state: .warning)
             return
@@ -256,16 +256,18 @@ class ViewController: UIViewController {
         }
         
         self.startCrawling()
+
+        let textFieldText = textField?.text ?? String()
         
-        let url = self.slp.extractURL(text: textField.text!)
-        if let cached = self.slp.cache.slp_getCachedResponse(url: url!.absoluteString) {
+        if let url = self.slp.extractURL(text: textFieldText),
+            let cached = self.slp.cache.slp_getCachedResponse(url: url.absoluteString) {
             
             self.result = cached
             self.setData()
             
         } else {
             self.slp.preview(
-                textField.text ?? String(),
+                textFieldText,
                 onSuccess: { result in
                     
                     print(result)
@@ -305,7 +307,7 @@ extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         self.submitAction(textField)
-        self.textField.resignFirstResponder()
+        self.textField?.resignFirstResponder()
         return true
         
     }
