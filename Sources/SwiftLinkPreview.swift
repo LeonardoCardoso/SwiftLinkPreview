@@ -139,7 +139,7 @@ open class SwiftLinkPreview : NSObject {
                 }
             }
         } else {
-            onError(PreviewError.noURLHasBeenFound(text))
+            onError(.noURLHasBeenFound(text))
         }
 
         return cancellable
@@ -170,22 +170,24 @@ open class SwiftLinkPreview : NSObject {
         }
         
         
-        func failure (_ theError : PreviewError) -> Void  {
-            var ErrorCode : Int
-            ErrorCode = 1
+        func failure (_ theError: PreviewError) -> Void  {
+            var errorCode : Int
+            errorCode = 1
             
             switch theError {
             case .noURLHasBeenFound:
-                ErrorCode = 1
+                errorCode = 1
             case .invalidURL:
-                ErrorCode = 2
+                errorCode = 2
             case .cannotBeOpened:
-                ErrorCode = 3
+                errorCode = 3
             case .parseError:
-                ErrorCode = 4
+                errorCode = 4
             }
             
-            onError( NSError(domain: "SwiftLinkPreviewDomain", code: ErrorCode, userInfo: [NSLocalizedDescriptionKey : theError.description]))
+            onError(NSError(domain: "SwiftLinkPreviewDomain",
+                            code: errorCode,
+                            userInfo: [NSLocalizedDescriptionKey : theError.description]))
         }
         
         return self.preview(text, onSuccess: success, onError: failure)
@@ -213,7 +215,7 @@ extension SwiftLinkPreview {
 
         if cancellable.isCancelled {return}
 
-        var task: URLSessionDataTask? = nil
+        var task: URLSessionDataTask?
         var request = URLRequest(url: url)
         request.httpMethod = "HEAD"
 
@@ -221,7 +223,7 @@ extension SwiftLinkPreview {
             if error != nil {
                 self.workQueue.async {
                     if !cancellable.isCancelled {
-                        onError(PreviewError.cannotBeOpened(url.absoluteString))
+                        onError(.cannotBeOpened("\(url.absoluteString): \(error.debugDescription)"))
                     }
                 }
                 task = nil
@@ -255,7 +257,7 @@ extension SwiftLinkPreview {
         } else {
             self.workQueue.async {
                 if !cancellable.isCancelled {
-                    onError(PreviewError.cannotBeOpened(url.absoluteString))
+                    onError(.cannotBeOpened(url.absoluteString))
                 }
             }
         }
@@ -294,9 +296,10 @@ extension SwiftLinkPreview {
                         onError(.parseError(sourceUrl.absoluteString))
                     }
                 }
-            } catch {
+            } catch let error {
                 if !cancellable.isCancelled {
-                    onError(.cannotBeOpened(sourceUrl?.absoluteString))
+                    let details = "\(sourceUrl?.absoluteString ?? String()): \(error.localizedDescription)"
+                    onError(.cannotBeOpened(details))
                 }
             }
         }
