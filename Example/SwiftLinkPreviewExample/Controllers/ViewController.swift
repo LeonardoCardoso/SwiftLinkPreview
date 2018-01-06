@@ -13,6 +13,7 @@ import ImageSlideshow
 class ViewController: UIViewController {
     
     // MARK: - Properties
+    @IBOutlet private weak var centerLoadingActivityIndicatorView: UIActivityIndicatorView?
     @IBOutlet private weak var textField: UITextField?
     @IBOutlet private weak var randomTextButton: UIButton?
     @IBOutlet private weak var submitButton: UIButton?
@@ -30,31 +31,31 @@ class ViewController: UIViewController {
     
     // MARK: - Vars
     private var randomTexts: [String] = [
-        
+        "https://www.linkedin.com/",
         "www.youtube.com",
         "www.google.com",
         "facebook.com",
-        
+
         "https://leocardz.com/swift-link-preview-5a9860c7756f",
         "NASA! 🖖🏽 https://www.nasa.gov/",
         "https://www.theverge.com/2016/6/21/11996280/tesla-offer-solar-city-buy",
         "Shorten URL http://bit.ly/14SD1eR",
         "Tweet! https://twitter.com",
-        
+
         "A Gallery https://www.nationalgallery.org.uk",
-        
+
         "A Brazilian website http://globo.com",
         "Another Brazilian website https://uol.com.br",
         "Some Vietnamese chars https://vnexpress.net/",
         "Japan!!! https://www3.nhk.or.jp/",
         "A Russian website >> https://habrahabr.ru",
-        
+
         "Youtube?! It does! https://www.youtube.com/watch?v=cv2mjAgFTaI",
         "Also Vimeo https://vimeo.com/67992157",
-        
+
         "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
         "Well, it's a gif! https://goo.gl/jKCPgp"
-        
+
     ]
     private var result = SwiftLinkPreview.Response()
     private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
@@ -86,10 +87,12 @@ class ViewController: UIViewController {
     }
     
     private func startCrawling() {
-        
+
+        self.centerLoadingActivityIndicatorView?.startAnimating()
         self.updateUI(enabled: false)
         self.showHideAll(hide: true)
         self.textField?.resignFirstResponder()
+        self.indicator?.isHidden = false
         
     }
     
@@ -101,7 +104,7 @@ class ViewController: UIViewController {
     
     // Update UI
     private func showHideAll(hide: Bool) {
-        
+
         self.slideshow?.isHidden = hide
         self.detailedView?.isHidden = hide
         self.openWithButton?.isHidden = hide
@@ -110,7 +113,7 @@ class ViewController: UIViewController {
     }
     
     private func updateUI(enabled: Bool) {
-        
+
         self.indicator?.isHidden = enabled
         self.textField?.isEnabled = enabled
         self.randomTextButton?.isEnabled = enabled
@@ -214,6 +217,8 @@ class ViewController: UIViewController {
             
         }
         
+        self.centerLoadingActivityIndicatorView?.stopAnimating()
+        
     }
     
     private func setImage(images: [InputSource]?) {
@@ -227,6 +232,8 @@ class ViewController: UIViewController {
             self.slideshow?.setImageInputs(placeholderImages)
             
         }
+
+        self.centerLoadingActivityIndicatorView?.stopAnimating()
         
     }
     
