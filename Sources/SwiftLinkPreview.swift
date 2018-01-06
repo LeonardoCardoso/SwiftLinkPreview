@@ -71,7 +71,7 @@ open class SwiftLinkPreview : NSObject {
         let _workQueue = workQueue ?? SwiftLinkPreview.defaultWorkQueue
         let _responseQueue = responseQueue ?? DispatchQueue.main
         let _cache : Cache  = disableInMemoryCache ? DisabledCache.instance : InMemoryCache(invalidationTimeout: cacheInvalidationTimeout, cleanupInterval: cacheCleanupInterval)
-    
+
         self.workQueue = _workQueue
         self.responseQueue = _responseQueue
         self.cache = _cache
@@ -82,7 +82,7 @@ open class SwiftLinkPreview : NSObject {
     // MARK: - Functions
     // Make preview
     //Swift-only preview function using Swift specific closure types
-    @nonobjc @discardableResult open func preview(_ text: String!, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
+    @nonobjc @discardableResult open func preview(_ text: String, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
         
         let cancellable = Cancellable()
         
@@ -149,17 +149,17 @@ open class SwiftLinkPreview : NSObject {
     //Returns a dictionary of rsults rather than enum for success, and an NSError object on error that encodes the local error description on error
     /*
      Keys for the dictionary are derived from the enum names above.  That enum def is canonical, below is a convenience comment
-      url
-      finalUrl
-      canonicalUrl
-      title
-      description
-      image
-      images
-      icon
+     url
+     finalUrl
+     canonicalUrl
+     title
+     description
+     image
+     images
+     icon
      
      */
-    @objc @discardableResult open func previewLink(_ text: String!, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
+    @objc @discardableResult open func previewLink(_ text: String, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
         
         func success (_ result : Response) -> Void {
             var ResponseData = [String : Any]()
@@ -235,7 +235,7 @@ extension SwiftLinkPreview {
                         }
                         task = nil
                     } else {
-                        task!.cancel()
+                        task?.cancel()
                         task = nil
                         self.unshortenURL(finalResult, cancellable: cancellable, completion: completion, onError: onError)
                     }
@@ -271,13 +271,17 @@ extension SwiftLinkPreview {
             result[.title] = ""
             result[.description] = ""
             result[.images] = [url.absoluteString]
-            result[.image] = [url.absoluteString]
+            result[.image] = url.absoluteString
 
             completion(result)
         } else {
             let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : URL(string: "http://\(url)")
             do {
-                let data = try Data(contentsOf: sourceUrl!)
+                guard let sourceUrl = sourceUrl else {
+                    if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
+                    return
+                }
+                let data = try Data(contentsOf: sourceUrl)
                 var source: NSString? = nil
                 NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &source, usedLossyConversion: nil)
 
@@ -287,12 +291,12 @@ extension SwiftLinkPreview {
                     }
                 } else {
                     if !cancellable.isCancelled {
-                        onError(.parseError(sourceUrl!.absoluteString))
+                        onError(.parseError(sourceUrl.absoluteString))
                     }
                 }
             } catch {
                 if !cancellable.isCancelled {
-                    onError(.cannotBeOpened(sourceUrl!.absoluteString))
+                    onError(.cannotBeOpened(sourceUrl?.absoluteString))
                 }
             }
         }
@@ -335,7 +339,7 @@ extension SwiftLinkPreview {
 
 
     // Extract canonical URL
-    internal func extractCanonicalURL(_ finalUrl: URL!) -> String {
+    internal func extractCanonicalURL(_ finalUrl: URL) -> String {
 
         let preUrl: String = finalUrl.absoluteString
         let url = preUrl
@@ -348,7 +352,7 @@ extension SwiftLinkPreview {
 
             if let canonicalUrl = Regex.pregMatchFirst(url, regex: Regex.cannonicalUrlPattern, index: 1) {
 
-                if(!canonicalUrl.isEmpty) {
+                if !canonicalUrl.isEmpty {
 
                     return self.extractBaseUrl(canonicalUrl)
 
@@ -391,9 +395,9 @@ extension SwiftLinkPreview {
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.linkPattern, index: 1)
 
         let filters = [
-            { (link: String) -> Bool in link.range(of: "apple-touch") != nil },
-            { (link: String) -> Bool in link.range(of: "shortcut") != nil },
-            { (link: String) -> Bool in link.range(of: "icon") != nil }
+        { (link: String) -> Bool in link.range(of: "apple-touch") != nil },
+        { (link: String) -> Bool in link.range(of: "shortcut") != nil },
+        { (link: String) -> Bool in link.range(of: "icon") != nil }
         ]
 
         for filter in filters {
@@ -433,9 +437,7 @@ extension SwiftLinkPreview {
                     metatag.range(of: "itemprop=\"\(tag)") != nil ||
                     metatag.range(of: "itemprop='\(tag)") != nil) {
 
-                    let key = SwiftLinkResponseKey(rawValue: tag)!
-
-                    if (result[key] == nil) {
+                    if let key = SwiftLinkResponseKey(rawValue: tag), result[key] == nil {
                         if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                             let value = value.decoded.extendedTrim
                             result[key] = (tag == "image" ? self.addImagePrefixIfNeeded(value, canonicalUrl: canonicalUrl) : value)
@@ -499,14 +501,14 @@ extension SwiftLinkPreview {
             if images == nil || images?.isEmpty ?? true {
                 let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
                 if !values.isEmpty {
-                    var imgs = values.map { self.addImagePrefixIfNeeded($0, canonicalUrl: canonicalUrl) }
+                    let imgs = values.map { self.addImagePrefixIfNeeded($0, canonicalUrl: canonicalUrl) }
 
                     result[.images] = imgs
-                    result[.image] = imgs[0]
+                    result[.image] = imgs.first
                 }
             }
         } else {
-            result[.images] = [self.addImagePrefixIfNeeded(mainImage!, canonicalUrl: canonicalUrl)]
+            result[.images] = [self.addImagePrefixIfNeeded(mainImage ?? String(), canonicalUrl: canonicalUrl)]
         }
         return result
     }
@@ -533,7 +535,7 @@ extension SwiftLinkPreview {
 
         let resultFirstSearch = self.getTagContent("p", content: content, minimum: minimum)
 
-        if (!resultFirstSearch.isEmpty) {
+        if !resultFirstSearch.isEmpty {
 
             return resultFirstSearch
 
@@ -541,7 +543,7 @@ extension SwiftLinkPreview {
 
             let resultSecondSearch = self.getTagContent("div", content: content, minimum: minimum)
 
-            if (!resultSecondSearch.isEmpty) {
+            if !resultSecondSearch.isEmpty {
 
                 return resultSecondSearch
 
@@ -549,15 +551,15 @@ extension SwiftLinkPreview {
 
                 let resultThirdSearch = self.getTagContent("span", content: content, minimum: minimum)
 
-                if (!resultThirdSearch.isEmpty) {
+                if !resultThirdSearch.isEmpty {
 
                     return resultThirdSearch
 
                 } else {
 
-                    if (resultThirdSearch.count >= resultFirstSearch.count) {
+                    if resultThirdSearch.count >= resultFirstSearch.count {
 
-                        if (resultThirdSearch.count >= resultThirdSearch.count) {
+                        if resultThirdSearch.count >= resultThirdSearch.count {
 
                             return resultThirdSearch
 

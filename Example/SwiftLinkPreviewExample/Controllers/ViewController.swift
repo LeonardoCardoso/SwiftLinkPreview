@@ -265,7 +265,7 @@ class ViewController: UIViewController {
             
         } else {
             self.slp.preview(
-                textField.text,
+                textField.text ?? String(),
                 onSuccess: { result in
                     
                     print(result)
