@@ -87,8 +87,8 @@ open class SwiftLinkPreview : NSObject {
         let cancellable = Cancellable()
 
         self.session = URLSession(configuration: self.session.configuration,
-                                  delegate: self,
-                                  delegateQueue: .main)
+                                  delegate: self, // To handle redirects
+                                  delegateQueue: self.session.delegateQueue)
         
         let successResponseQueue = { (response: Response) in
             if !cancellable.isCancelled {
