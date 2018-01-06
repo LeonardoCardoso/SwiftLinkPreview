@@ -333,7 +333,7 @@ extension SwiftLinkPreview {
     private func performPageCrawling(_ htmlCode: String, canonicalUrl: String?) -> Response {
         var result = self.crawIcon(htmlCode, canonicalUrl: canonicalUrl, result: Response())
 
-        let sanitizedHtmlCode = htmlCode.deleteTagByPattern(Regex.linkPattern)
+        let sanitizedHtmlCode = htmlCode.deleteTagByPattern(Regex.linkPattern).extendedTrim
 
         result = self.crawlMetaTags(sanitizedHtmlCode, canonicalUrl: canonicalUrl, result: result)
 
