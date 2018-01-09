@@ -11,7 +11,7 @@ import Foundation
 class Regex {
     
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
-    static let imageTagPattern = "<img(.+?)src=\"([^\"](.+?)(\\.(gif|jpg|jpeg|png|bmp)))\"(.+?)[/]?>"
+    static let imageTagPattern = "<img(.+?)src=\"([^\"](.+?))\"(.+?)[/]?>"
     static let titlePattern = "<title(.*?)>(.*?)</title>"
     static let metatagPattern = "<meta(.*?)>"
     static let metatagContentPattern = "content=(\"(.*?)\")|('(.*?)')"
