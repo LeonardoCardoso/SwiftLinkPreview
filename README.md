@@ -122,7 +122,7 @@ slp.preview("Text containing URL",
 [
    "url": "original URL", // NSURL
    "finalUrl": "final ~unshortened~ URL.", // NSURL
-   "canonicalUrl": "canonical URL", // NSURL
+   "canonicalUrl": "canonical URL", // String
    "title": "title", // String
    "description": "page description or relevant text", // String
    "images": ["array of URLs of the images"], // String array
