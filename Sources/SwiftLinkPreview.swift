@@ -7,7 +7,7 @@
 //
 import Foundation
 
-public enum SwiftLinkResponseKey : String {
+public enum SwiftLinkResponseKey: String {
     case url
     case finalUrl
     case canonicalUrl
@@ -18,15 +18,15 @@ public enum SwiftLinkResponseKey : String {
     case icon
 }
 
-open class Cancellable : NSObject {
-    public private(set) var isCancelled : Bool = false
+open class Cancellable: NSObject {
+    public private(set) var isCancelled: Bool = false
 
     open func cancel() {
         isCancelled = true
     }
 }
 
-open class SwiftLinkPreview : NSObject {
+open class SwiftLinkPreview: NSObject {
     
     public typealias Response = [SwiftLinkResponseKey: Any]
 
@@ -56,7 +56,7 @@ open class SwiftLinkPreview : NSObject {
         let _session = URLSession.shared
         let _workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue
         let _responseQueue: DispatchQueue = DispatchQueue.main
-        let _cache : Cache  = DisabledCache.instance
+        let _cache: Cache  = DisabledCache.instance
         
         self.workQueue = _workQueue
         self.responseQueue = _responseQueue
@@ -65,12 +65,12 @@ open class SwiftLinkPreview : NSObject {
     }
 
     //Objective-C init with paramaters.  nil objects will default.  Timeout values are ignored if InMemoryCache is disabled.
-    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue? , disableInMemoryCache : Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval) {
+    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue? , disableInMemoryCache: Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval) {
         
         let _session = session ?? URLSession.shared
         let _workQueue = workQueue ?? SwiftLinkPreview.defaultWorkQueue
         let _responseQueue = responseQueue ?? DispatchQueue.main
-        let _cache : Cache  = disableInMemoryCache ? DisabledCache.instance : InMemoryCache(invalidationTimeout: cacheInvalidationTimeout, cleanupInterval: cacheCleanupInterval)
+        let _cache: Cache  = disableInMemoryCache ? DisabledCache.instance : InMemoryCache(invalidationTimeout: cacheInvalidationTimeout, cleanupInterval: cacheCleanupInterval)
 
         self.workQueue = _workQueue
         self.responseQueue = _responseQueue
@@ -88,7 +88,7 @@ open class SwiftLinkPreview : NSObject {
 
         self.session = URLSession(configuration: self.session.configuration,
                                   delegate: self, // To handle redirects
-                                  delegateQueue: self.session.delegateQueue)
+            delegateQueue: self.session.delegateQueue)
         
         let successResponseQueue = { (response: Response) in
             if !cancellable.isCancelled {
@@ -123,15 +123,18 @@ open class SwiftLinkPreview : NSObject {
                             successResponseQueue(result)
                         } else {
 
-                            let canonicalUrl = self.extractCanonicalURL(unshortened)
+                            var result: Response = [:]
+                            result[.url] = url
+                            result[.finalUrl] = unshortened
+                            result[.canonicalUrl] = self.extractCanonicalURL(unshortened)
 
-                            self.extractInfo(unshortened, cancellable: cancellable, canonicalUrl: canonicalUrl, completion: { result in
+                            self.extractInfo(response: result, cancellable: cancellable, completion: {
 
-                                var result = result
-
-                                result[.url] = url
-                                result[.finalUrl] = unshortened
-                                result[.canonicalUrl] = canonicalUrl
+                                result[.title] = $0[.title]
+                                result[.description] = $0[.description]
+                                result[.image] = $0[.image]
+                                result[.images] = $0[.images]
+                                result[.icon] = $0[.icon]
 
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
                                 self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
@@ -165,8 +168,8 @@ open class SwiftLinkPreview : NSObject {
      */
     @objc @discardableResult open func previewLink(_ text: String, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
         
-        func success (_ result : Response) -> Void {
-            var ResponseData = [String : Any]()
+        func success (_ result: Response) -> Void {
+            var ResponseData = [String: Any]()
             for item in result {
                 ResponseData.updateValue(item.value, forKey: item.key.rawValue)
             }
@@ -175,7 +178,7 @@ open class SwiftLinkPreview : NSObject {
         
         
         func failure (_ theError: PreviewError) -> Void  {
-            var errorCode : Int
+            var errorCode: Int
             errorCode = 1
             
             switch theError {
@@ -191,7 +194,7 @@ open class SwiftLinkPreview : NSObject {
             
             onError(NSError(domain: "SwiftLinkPreviewDomain",
                             code: errorCode,
-                            userInfo: [NSLocalizedDescriptionKey : theError.description]))
+                            userInfo: [NSLocalizedDescriptionKey: theError.description]))
         }
         
         return self.preview(text, onSuccess: success, onError: failure)
@@ -268,11 +271,12 @@ extension SwiftLinkPreview {
     }
 
     // Extract HTML code and the information contained on it
-    fileprivate func extractInfo(_ url: URL, cancellable: Cancellable, canonicalUrl: String?, completion: @escaping (Response) -> Void, onError: (PreviewError) -> ()) {
-        if cancellable.isCancelled {return}
+    fileprivate func extractInfo(response: Response, cancellable: Cancellable, completion: @escaping (Response) -> Void, onError: (PreviewError) -> ()) {
 
-        if(url.absoluteString.isImage()) {
-            var result = Response()
+        guard !cancellable.isCancelled, let url = response[.finalUrl] as? URL else { return }
+
+        if url.absoluteString.isImage() {
+            var result = response
 
             result[.title] = ""
             result[.description] = ""
@@ -293,7 +297,7 @@ extension SwiftLinkPreview {
 
                 if let source = source {
                     if !cancellable.isCancelled {
-                        self.parseHtmlString(source as String, canonicalUrl: canonicalUrl, completion: completion)
+                        self.parseHtmlString(source as String, response: response, completion: completion)
                     }
                 } else {
                     if !cancellable.isCancelled {
@@ -310,8 +314,8 @@ extension SwiftLinkPreview {
     }
 
 
-    private func parseHtmlString(_ htmlString: String, canonicalUrl: String?, completion: @escaping (Response) -> Void) {
-        completion(self.performPageCrawling(self.cleanSource(htmlString), canonicalUrl: canonicalUrl))
+    private func parseHtmlString(_ htmlString: String, response: Response, completion: @escaping (Response) -> Void) {
+        completion(self.performPageCrawling(self.cleanSource(htmlString), response: response))
     }
 
     // Removing unnecessary data from the source
@@ -330,18 +334,18 @@ extension SwiftLinkPreview {
 
 
     // Perform the page crawiling
-    private func performPageCrawling(_ htmlCode: String, canonicalUrl: String?) -> Response {
-        var result = self.crawIcon(htmlCode, canonicalUrl: canonicalUrl, result: Response())
+    private func performPageCrawling(_ htmlCode: String, response: Response) -> Response {
+        var result = self.crawIcon(htmlCode, result: response)
 
         let sanitizedHtmlCode = htmlCode.deleteTagByPattern(Regex.linkPattern).extendedTrim
 
-        result = self.crawlMetaTags(sanitizedHtmlCode, canonicalUrl: canonicalUrl, result: result)
+        result = self.crawlMetaTags(sanitizedHtmlCode, result: result)
 
         var otherResponse = self.crawlTitle(sanitizedHtmlCode, result: result)
 
         otherResponse = self.crawlDescription(otherResponse.htmlCode, result: otherResponse.result)
 
-        return self.crawlImages(otherResponse.htmlCode, canonicalUrl: canonicalUrl, result: otherResponse.result)
+        return self.crawlImages(otherResponse.htmlCode, result: otherResponse.result)
     }
 
 
@@ -396,7 +400,7 @@ extension SwiftLinkPreview {
 extension SwiftLinkPreview {
 
     // searc for favicn
-    internal func crawIcon(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
+    internal func crawIcon(_ htmlCode: String, result: Response) -> Response {
         var result = result
 
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.linkPattern, index: 1)
@@ -411,7 +415,7 @@ extension SwiftLinkPreview {
             if let first = metatags.filter(filter).first {
                 let matches = Regex.pregMatchAll(first, regex: Regex.hrefPattern, index: 1)
                 if let val = matches.first {
-                    result[SwiftLinkResponseKey.icon] = self.addImagePrefixIfNeeded(val.replace("\"", with: ""), canonicalUrl: canonicalUrl)
+                    result[SwiftLinkResponseKey.icon] = self.addImagePrefixIfNeeded(val.replace("\"", with: ""), result: result)
                     return result
                 }
             }
@@ -421,7 +425,7 @@ extension SwiftLinkPreview {
     }
 
     // Search for meta tags
-    internal func crawlMetaTags(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
+    internal func crawlMetaTags(_ htmlCode: String, result: Response) -> Response {
 
         var result = result
 
@@ -447,7 +451,12 @@ extension SwiftLinkPreview {
                     if let key = SwiftLinkResponseKey(rawValue: tag), result[key] == nil {
                         if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                             let value = value.decoded.extendedTrim
-                            result[key] = (tag == "image" ? self.addImagePrefixIfNeeded(value, canonicalUrl: canonicalUrl) : value)
+                            if tag == "image" {
+                                let value = addImagePrefixIfNeeded(value, result: result)
+                                if value.isImage() { result[key] = value }
+                            } else {
+                                result[key] = value
+                            }
                         }
                     }
                 }
@@ -495,43 +504,59 @@ extension SwiftLinkPreview {
     }
 
     // Crawl for images
-    internal func crawlImages(_ htmlCode: String, canonicalUrl: String?, result: Response) -> Response {
+    internal func crawlImages(_ htmlCode: String, result: Response) -> Response {
 
         var result = result
 
         let mainImage = result[.image] as? String
 
-        if mainImage == nil || mainImage?.isEmpty ?? true {
+        if mainImage == nil || mainImage?.isEmpty == true {
 
             let images = result[.images] as? [String]
 
             if images == nil || images?.isEmpty ?? true {
                 let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
                 if !values.isEmpty {
-                    let imgs = values.map { self.addImagePrefixIfNeeded($0, canonicalUrl: canonicalUrl) }
+                    let imgs = values.map { self.addImagePrefixIfNeeded($0, result: result) }
 
                     result[.images] = imgs
                     result[.image] = imgs.first
                 }
             }
         } else {
-            result[.images] = [self.addImagePrefixIfNeeded(mainImage ?? String(), canonicalUrl: canonicalUrl)]
+            result[.images] = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
         }
         return result
     }
 
     // Add prefix image if needed
-    fileprivate func addImagePrefixIfNeeded(_ image: String, canonicalUrl: String?) -> String {
+    fileprivate func addImagePrefixIfNeeded(_ image: String, result: Response) -> String {
 
         var image = image
 
-        if let canonicalUrl = canonicalUrl {
-            if image.hasPrefix("//") {
+        if let canonicalUrl = result[.canonicalUrl] as? String, let finalUrl = (result[.finalUrl] as? URL)?.absoluteString {
+            if finalUrl.hasPrefix("https:") {
+                if image.hasPrefix("//") {
+                    image = "https:" + image
+                } else if image.hasPrefix("/") {
+                    image = "https://" + canonicalUrl + image
+                }
+            } else if image.hasPrefix("//") {
                 image = "http:" + image
             } else if image.hasPrefix("/") {
                 image = "http://" + canonicalUrl + image
             }
         }
+
+        return removeSuffixIfNeeded(image)
+
+    }
+
+    private func removeSuffixIfNeeded(_ image: String) -> String {
+
+        var image = image
+
+        if let index = image.index(of: "?") { image = String(image[..<index]) }
 
         return image
 
