@@ -123,9 +123,9 @@ open class SwiftLinkPreview: NSObject {
                             successResponseQueue(result)
                         } else {
 
-                            var result: Response = [:]
+                            var result: [SwiftLinkResponseKey: Any] = [:]
                             result[.url] = url
-                            result[.finalUrl] = unshortened
+                            result[.finalUrl] = self.extractInURLRedirectionIfNeeded(unshortened)
                             result[.canonicalUrl] = self.extractCanonicalURL(unshortened)
 
                             self.extractInfo(response: result, cancellable: cancellable, completion: {
@@ -150,6 +150,34 @@ open class SwiftLinkPreview: NSObject {
         }
 
         return cancellable
+    }
+
+    /*
+     Extract url redirection inside the GET query.
+     Like https://www.dji.com/404?url=http%3A%2F%2Fwww.dji.com%2Fmatrice600-pro%2Finfo#specs -> http://www.dji.com/de/matrice600-pro/info#specs
+     */
+    private func extractInURLRedirectionIfNeeded(_ url: URL) -> URL {
+        var url = url
+        var absoluteString = url.absoluteString + "&id=12"
+
+        if let range = absoluteString.range(of: "url="),
+            let lastChar = absoluteString.last,
+            let lastCharIndex = absoluteString.lastIndex(of: lastChar) {
+            absoluteString = String(absoluteString[range.upperBound ..< lastCharIndex])
+
+            if let range = absoluteString.range(of: "&"),
+                let firstChar = absoluteString.first,
+                let firstCharIndex = absoluteString.firstIndex(of: firstChar) {
+                absoluteString = String(absoluteString[firstCharIndex ..< absoluteString.index(before: range.upperBound)])
+
+                if let decoded = absoluteString.removingPercentEncoding, let newURL = URL(string: decoded) {
+                    url = newURL
+                }
+            }
+
+        }
+
+        return url
     }
     
     //Objective-C wrapper for preview method.  Core incompataility is use of Swift specific enum types in closures.
