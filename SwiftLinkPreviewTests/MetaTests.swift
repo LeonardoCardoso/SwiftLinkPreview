@@ -53,7 +53,7 @@ class MetaTests: XCTestCase {
         
         twitterTemplate = twitterTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
     
-        let result = self.slp.crawlMetaTags(twitterTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(twitterTemplate, result: SwiftLinkPreview.Response())
         
         XCTAssertEqual((result[.title] as! String), twitterData[Constants.twitterTitle]!.decoded)
         XCTAssertEqual((result[.description] as! String), twitterData[Constants.twitterDescription]!.decoded)
@@ -93,7 +93,7 @@ class MetaTests: XCTestCase {
         
         facebookTemplate = facebookTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        let result = self.slp.crawlMetaTags(facebookTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(facebookTemplate, result: SwiftLinkPreview.Response())
         
         XCTAssertEqual((result[.title] as! String), facebookData[Constants.facebookTitle]!.decoded)
         XCTAssertEqual((result[.description] as! String), facebookData[Constants.facebookDescription]!.decoded)
@@ -132,7 +132,7 @@ class MetaTests: XCTestCase {
         
         itempropTemplate = itempropTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        let result = self.slp.crawlMetaTags(itempropTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(itempropTemplate, result: SwiftLinkPreview.Response())
         
         XCTAssertEqual((result[.title] as! String), itempropData[Constants.title]!.decoded)
         XCTAssertEqual((result[.description] as! String), itempropData[Constants.description]!.decoded)
@@ -171,7 +171,7 @@ class MetaTests: XCTestCase {
         
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        let result = self.slp.crawlMetaTags(metaTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(metaTemplate, result: SwiftLinkPreview.Response())
         
         XCTAssertEqual((result[.title] as! String), metaData[Constants.title]!.decoded)
         XCTAssertEqual((result[.description] as! String), metaData[Constants.description]!.decoded)

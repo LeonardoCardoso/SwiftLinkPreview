@@ -162,12 +162,12 @@ open class SwiftLinkPreview: NSObject {
 
         if let range = absoluteString.range(of: "url="),
             let lastChar = absoluteString.last,
-            let lastCharIndex = absoluteString.lastIndex(of: lastChar) {
-            absoluteString = String(absoluteString[range.upperBound ..< lastCharIndex])
+            let lastCharIndex = absoluteString.range(of: String(lastChar), options: .backwards, range: nil, locale: nil) {
+            absoluteString = String(absoluteString[range.upperBound ..< lastCharIndex.upperBound])
 
             if let range = absoluteString.range(of: "&"),
                 let firstChar = absoluteString.first,
-                let firstCharIndex = absoluteString.firstIndex(of: firstChar) {
+                let firstCharIndex = absoluteString.index(of: firstChar) {
                 absoluteString = String(absoluteString[firstCharIndex ..< absoluteString.index(before: range.upperBound)])
 
                 if let decoded = absoluteString.removingPercentEncoding, let newURL = URL(string: decoded) {

@@ -42,7 +42,7 @@ class ImageTests: XCTestCase {
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
         
-        let result = self.slp.crawlImages(singleImageTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlImages(singleImageTemplate, result: SwiftLinkPreview.Response())
         
         XCTAssertEqual((result[.image] as! String), data[Constants.image])
         
@@ -78,7 +78,7 @@ class ImageTests: XCTestCase {
         
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
         
-        let result = self.slp.crawlImages(galleryImageTemplate, canonicalUrl: nil, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlImages(galleryImageTemplate, result: SwiftLinkPreview.Response())
         
         XCTAssertEqual((result[.images] as! [String])[0], data[Constants.image1])
         XCTAssertEqual((result[.images] as! [String])[1], data[Constants.image2])
