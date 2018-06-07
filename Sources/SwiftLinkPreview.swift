@@ -208,7 +208,7 @@ extension SwiftLinkPreview {
             let range = NSRange(location: 0, length: text.utf16.count)
             let matches = detector.matches(in: text, options: [], range: range)
 
-            return matches.flatMap { $0.url }.first
+            return matches.compactMap { $0.url }.first
         } catch {
             return nil
         }

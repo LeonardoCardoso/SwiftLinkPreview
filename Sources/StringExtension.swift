@@ -83,8 +83,8 @@ extension String {
     
     // Substring
     func substring(_ start: Int, end: Int) -> String {
-        
-        return String(self[Range(self.index(self.startIndex, offsetBy: start) ..< self.index(self.startIndex, offsetBy: end))])
+
+        return self.substring(NSRange(location: start, length: end - start))
 
     }
 
