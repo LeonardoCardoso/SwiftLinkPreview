@@ -20,8 +20,8 @@ target 'SwiftLinkPreviewExample' do
   # Pods for SwiftLinkPreviewExample
   pod 'Alamofire'
   pod 'SwiftyDrop'
-  pod 'ImageSlideshow', '1.5.0'
-  pod 'ImageSlideshow/Alamofire', '1.5.0'
+  pod 'ImageSlideshow'
+  pod 'ImageSlideshow/Alamofire'
 
 end
 ```
