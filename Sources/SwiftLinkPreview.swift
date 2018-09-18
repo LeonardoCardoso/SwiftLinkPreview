@@ -313,29 +313,30 @@ extension SwiftLinkPreview {
 
             completion(result)
         } else {
-            let sourceUrl = url.absoluteString.hasPrefix("http://") || url.absoluteString.hasPrefix("https://") ? url : URL(string: "http://\(url)")
-            do {
-                guard let sourceUrl = sourceUrl else {
-                    if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
+            guard let sourceUrl = url.scheme == "http" || url.scheme == "https" ? url: URL( string: "http://\(url)" )
+            else {
+                if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
+                return
+            }
+            var request = URLRequest( url: sourceUrl )
+            request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
+            let (data, urlResponse, error) = session.synchronousDataTask(with: request )
+            if let error = error {
+                if !cancellable.isCancelled {
+                    let details = "\(sourceUrl.absoluteString): \(error.localizedDescription)"
+                    onError( .cannotBeOpened( details ) )
                     return
                 }
-                let data = try Data(contentsOf: sourceUrl)
-                var source: NSString? = nil
-                NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &source, usedLossyConversion: nil)
-
-                if let source = source {
-                    if !cancellable.isCancelled {
-                        self.parseHtmlString(source as String, response: response, completion: completion)
-                    }
-                } else {
-                    if !cancellable.isCancelled {
-                        onError(.parseError(sourceUrl.absoluteString))
-                    }
-                }
-            } catch let error {
+            }
+            if let data = data, let urlResponse = urlResponse, let encoding = urlResponse.textEncodingName,
+               let source = NSString( data: data, encoding:
+               CFStringConvertEncodingToNSStringEncoding( CFStringConvertIANACharSetNameToEncoding( encoding as CFString ) ) ) {
                 if !cancellable.isCancelled {
-                    let details = "\(sourceUrl?.absoluteString ?? String()): \(error.localizedDescription)"
-                    onError(.cannotBeOpened(details))
+                    self.parseHtmlString(source as String, response: response, completion: completion)
+                }
+            } else {
+                if !cancellable.isCancelled {
+                    onError(.parseError(sourceUrl.absoluteString))
                 }
             }
         }
