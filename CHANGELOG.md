@@ -15,6 +15,12 @@
 
 ---
 
+## 2.4.0
+
+#### Changed
+
+- Fixed missing Accept header
+
 ## [2.3.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.3.0)
 Released on 2018-06-07.
 
