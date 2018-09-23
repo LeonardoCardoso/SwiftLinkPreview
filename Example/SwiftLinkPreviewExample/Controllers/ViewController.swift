@@ -12,7 +12,7 @@ import ImageSlideshow
 import SwiftLinkPreview
 
 class ViewController: UIViewController {
-    
+
     // MARK: - Properties
     @IBOutlet private weak var centerLoadingActivityIndicatorView: UIActivityIndicatorView?
     @IBOutlet private weak var textField: UITextField?
@@ -28,9 +28,11 @@ class ViewController: UIViewController {
     @IBOutlet private weak var previewDescription: UILabel?
     @IBOutlet private weak var detailedView: UIView?
     @IBOutlet private weak var favicon: UIImageView?
-    
+
     // MARK: - Vars
     private var randomTexts: [String] = [
+        "blinkist.com",
+        "uber.com",
         "tw.yahoo.com",
         "https://www.linkedin.com/",
         "www.youtube.com",
@@ -56,38 +58,38 @@ class ViewController: UIViewController {
         "Also Vimeo https://vimeo.com/67992157",
 
         "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
-        "Well, it's a gif! https://goo.gl/jKCPgp",
+        "Well, it's a gif! https://goo.gl/jKCPgp"
         ]
 
     private var result = SwiftLinkPreview.Response()
     private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
-    
+
     private let slp = SwiftLinkPreview(cache: InMemoryCache())
-    
+
     // MARK: - Life cycle
     override func viewDidLoad() {
-        
+
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+
         self.showHideAll(hide: true)
         self.setUpSlideshow()
-        
+
     }
-    
+
     override func didReceiveMemoryWarning() {
-        
+
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
+
     }
-    
+
     private func getRandomText() -> String {
-        
+
         return randomTexts[Int(arc4random_uniform(UInt32(randomTexts.count)))]
-        
+
     }
-    
+
     private func startCrawling() {
 
         self.centerLoadingActivityIndicatorView?.startAnimating()
@@ -95,15 +97,15 @@ class ViewController: UIViewController {
         self.showHideAll(hide: true)
         self.textField?.resignFirstResponder()
         self.indicator?.isHidden = false
-        
+
     }
-    
+
     private func endCrawling() {
-        
+
         self.updateUI(enabled: true)
-        
+
     }
-    
+
     // Update UI
     private func showHideAll(hide: Bool) {
 
@@ -111,217 +113,213 @@ class ViewController: UIViewController {
         self.detailedView?.isHidden = hide
         self.openWithButton?.isHidden = hide
         self.previewAreaLabel?.isHidden = !hide
-        
+
     }
-    
+
     private func updateUI(enabled: Bool) {
 
         self.indicator?.isHidden = enabled
         self.textField?.isEnabled = enabled
         self.randomTextButton?.isEnabled = enabled
         self.submitButton?.isEnabled = enabled
-        
+
     }
-    
+
     private func setData() {
-        
+
         if let value: [String] = self.result[.images] as? [String] {
-            
+
             if !value.isEmpty {
-                
+
                 var images: [InputSource] = []
                 for image in value {
-                    
+
                     if let source = AlamofireSource(urlString: image) {
-                        
+
                         images.append(source)
-                        
+
                     }
-                    
+
                 }
-                
+
                 self.setImage(images: images)
-                
-                
+
             } else {
-                
+
                 self.setImage(image: self.result[.image] as? String)
-                
+
             }
-            
+
         } else {
-            
+
             self.setImage(image: self.result[.image] as? String)
-            
+
         }
-        
+
         if let value: String = self.result[.title] as? String {
-            
+
             self.previewTitle?.text = value.isEmpty ? "No title" : value
-            
+
         } else {
-            
+
             self.previewTitle?.text = "No title"
-            
+
         }
-        
+
         if let value: String = self.result[.canonicalUrl] as? String {
-            
+
             self.previewCanonicalUrl?.text = value
-            
+
         }
-        
+
         if let value: String = self.result[.description] as? String {
-            
+
             self.previewDescription?.text = value.isEmpty ? "No description" : value
-            
+
         } else {
-            
+
             self.previewTitle?.text = "No description"
-            
+
         }
-        
+
         if let value: String = self.result[.icon] as? String, let url = URL(string: value) {
             self.favicon?.af_setImage(withURL: url)
         }
-        
+
         self.showHideAll(hide: false)
         self.endCrawling()
-        
+
     }
-    
+
     private func setImage(image: String?) {
-        
+
         if let image: String = image {
-            
+
             if !image.isEmpty {
-                
+
                 if let source = AlamofireSource(urlString: image) {
-                    
+
                     self.setImage(images: [source])
-                    
+
                 } else {
-                    
+
                     self.slideshow?.setImageInputs(placeholderImages)
-                    
+
                 }
-                
-                
+
             } else {
-                
+
                 self.slideshow?.setImageInputs(placeholderImages)
-                
+
             }
-            
+
         } else {
-            
+
             self.slideshow?.setImageInputs(placeholderImages)
-            
-        }
-        
-        self.centerLoadingActivityIndicatorView?.stopAnimating()
-        
-    }
-    
-    private func setImage(images: [InputSource]?) {
-        
-        if let images = images {
-            
-            self.slideshow?.setImageInputs(images)
-            
-        } else {
-            
-            self.slideshow?.setImageInputs(placeholderImages)
-            
+
         }
 
         self.centerLoadingActivityIndicatorView?.stopAnimating()
-        
+
     }
-    
+
+    private func setImage(images: [InputSource]?) {
+
+        if let images = images {
+
+            self.slideshow?.setImageInputs(images)
+
+        } else {
+
+            self.slideshow?.setImageInputs(placeholderImages)
+
+        }
+
+        self.centerLoadingActivityIndicatorView?.stopAnimating()
+
+    }
+
     private func setUpSlideshow() {
-        
+
         self.slideshow?.backgroundColor = UIColor.white
         self.slideshow?.slideshowInterval = 7.0
         self.slideshow?.pageControlPosition = PageControlPosition.hidden
         self.slideshow?.contentScaleMode = .scaleAspectFill
-        
+
     }
-    
+
     // MARK: - Actions
     @IBAction func randomTextAction(_ sender: AnyObject) {
-        
+
         textField?.text = getRandomText()
-        
+
     }
-    
+
     @IBAction func submitAction(_ sender: AnyObject) {
-        
+
         guard textField?.text?.isEmpty == false else {
-            
+
             Drop.down("Please, enter a text", state: .warning)
             return
-            
+
         }
-        
+
         self.startCrawling()
 
         let textFieldText = textField?.text ?? String()
-        
+
         if let url = self.slp.extractURL(text: textFieldText),
             let cached = self.slp.cache.slp_getCachedResponse(url: url.absoluteString) {
-            
+
             self.result = cached
             self.setData()
 
             result.forEach { print("\($0):", $1) }
-            
+
         } else {
             self.slp.preview(
                 textFieldText,
                 onSuccess: { result in
-                    
+
                     result.forEach { print("\($0):", $1) }
                     self.result = result
                     self.setData()
-                    
+
             },
                 onError: { error in
-                    
+
                     print(error)
                     self.endCrawling()
-                    
+
                     Drop.down(error.description, state: .error)
-                    
+
             }
             )
         }
-        
+
     }
-    
+
     @IBAction func openWithAction(_ sender: UIButton) {
-        
+
         if let url = self.result[.finalUrl] as? URL {
 
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
 
         }
-        
+
     }
-    
-    
+
 }
 
 // MARK: - UITextFieldDelegate
 extension ViewController: UITextFieldDelegate {
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
+
         self.submitAction(textField)
         self.textField?.resignFirstResponder()
         return true
-        
-    }
-    
-}
 
+    }
+
+}

@@ -27,7 +27,7 @@ open class Cancellable: NSObject {
 }
 
 open class SwiftLinkPreview: NSObject {
-    
+
     public typealias Response = [SwiftLinkResponseKey: Any]
 
     // MARK: - Vars
@@ -42,7 +42,7 @@ open class SwiftLinkPreview: NSObject {
     public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
 
     // MARK: - Constructor
-    
+
     //Swift-only init with default parameters
     @nonobjc public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
         self.workQueue = workQueue
@@ -50,14 +50,14 @@ open class SwiftLinkPreview: NSObject {
         self.cache = cache
         self.session = session
     }
-    
+
     //Objective-C init with default parameters
     @objc public override init() {
         let _session = URLSession.shared
         let _workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue
         let _responseQueue: DispatchQueue = DispatchQueue.main
         let _cache: Cache  = DisabledCache.instance
-        
+
         self.workQueue = _workQueue
         self.responseQueue = _responseQueue
         self.cache = _cache
@@ -65,8 +65,8 @@ open class SwiftLinkPreview: NSObject {
     }
 
     //Objective-C init with paramaters.  nil objects will default.  Timeout values are ignored if InMemoryCache is disabled.
-    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue? , disableInMemoryCache: Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval) {
-        
+    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue?, disableInMemoryCache: Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval) {
+
         let _session = session ?? URLSession.shared
         let _workQueue = workQueue ?? SwiftLinkPreview.defaultWorkQueue
         let _responseQueue = responseQueue ?? DispatchQueue.main
@@ -77,19 +77,18 @@ open class SwiftLinkPreview: NSObject {
         self.cache = _cache
         self.session = _session
     }
-    
-    
+
     // MARK: - Functions
     // Make preview
     //Swift-only preview function using Swift specific closure types
     @nonobjc @discardableResult open func preview(_ text: String, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
-        
+
         let cancellable = Cancellable()
 
         self.session = URLSession(configuration: self.session.configuration,
                                   delegate: self, // To handle redirects
             delegateQueue: self.session.delegateQueue)
-        
+
         let successResponseQueue = { (response: Response) in
             if !cancellable.isCancelled {
                 self.responseQueue.async {
@@ -179,7 +178,7 @@ open class SwiftLinkPreview: NSObject {
 
         return url
     }
-    
+
     //Objective-C wrapper for preview method.  Core incompataility is use of Swift specific enum types in closures.
     //Returns a dictionary of rsults rather than enum for success, and an NSError object on error that encodes the local error description on error
     /*
@@ -195,20 +194,19 @@ open class SwiftLinkPreview: NSObject {
      
      */
     @objc @discardableResult open func previewLink(_ text: String, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
-        
-        func success (_ result: Response) -> Void {
+
+        func success (_ result: Response) {
             var ResponseData = [String: Any]()
             for item in result {
                 ResponseData.updateValue(item.value, forKey: item.key.rawValue)
             }
             onSuccess(ResponseData)
         }
-        
-        
-        func failure (_ theError: PreviewError) -> Void  {
+
+        func failure (_ theError: PreviewError) {
             var errorCode: Int
             errorCode = 1
-            
+
             switch theError {
             case .noURLHasBeenFound:
                 errorCode = 1
@@ -219,12 +217,12 @@ open class SwiftLinkPreview: NSObject {
             case .parseError:
                 errorCode = 4
             }
-            
+
             onError(NSError(domain: "SwiftLinkPreviewDomain",
                             code: errorCode,
                             userInfo: [NSLocalizedDescriptionKey: theError.description]))
         }
-        
+
         return self.preview(text, onSuccess: success, onError: failure)
     }
 }
@@ -299,9 +297,23 @@ extension SwiftLinkPreview {
     }
 
     // Extract HTML code and the information contained on it
-    fileprivate func extractInfo(response: Response, cancellable: Cancellable, completion: @escaping (Response) -> Void, onError: (PreviewError) -> ()) {
+    fileprivate func extractInfo(response: Response, cancellable: Cancellable, completion: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) {
 
         guard !cancellable.isCancelled, let url = response[.finalUrl] as? URL else { return }
+
+        func requestSync(sourceUrl: URL, request: URLRequest) -> (Bool, Data?, URLResponse?) {
+
+            let (data, urlResponse, error) = session.synchronousDataTask(with: request )
+            if let error = error {
+                if !cancellable.isCancelled {
+                    let details = "\(sourceUrl.absoluteString): \(error.localizedDescription)"
+                    onError( .cannotBeOpened( details ) )
+                    return (false, data, urlResponse)
+                }
+            }
+            return (true, data, urlResponse)
+
+        }
 
         if url.absoluteString.isImage() {
             var result = response
@@ -313,10 +325,11 @@ extension SwiftLinkPreview {
 
             completion(result)
         } else {
+
             guard let sourceUrl = url.scheme == "http" || url.scheme == "https" ? url: URL( string: "http://\(url)" )
-            else {
-                if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
-                return
+                else {
+                    if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
+                    return
             }
             var request = URLRequest( url: sourceUrl )
             request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
@@ -329,19 +342,31 @@ extension SwiftLinkPreview {
                 }
             }
             if let data = data, let urlResponse = urlResponse, let encoding = urlResponse.textEncodingName,
-               let source = NSString( data: data, encoding:
-               CFStringConvertEncodingToNSStringEncoding( CFStringConvertIANACharSetNameToEncoding( encoding as CFString ) ) ) {
+                let source = NSString( data: data, encoding:
+                    CFStringConvertEncodingToNSStringEncoding( CFStringConvertIANACharSetNameToEncoding( encoding as CFString ) ) ) {
                 if !cancellable.isCancelled {
                     self.parseHtmlString(source as String, response: response, completion: completion)
                 }
             } else {
-                if !cancellable.isCancelled {
-                    onError(.parseError(sourceUrl.absoluteString))
+                do {
+                    let data = try Data(contentsOf: sourceUrl)
+                    var source: NSString? = nil
+                    NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &source, usedLossyConversion: nil)
+
+                    if let source = source {
+                        if !cancellable.isCancelled {
+                            self.parseHtmlString(source as String, response: response, completion: completion)
+                        }
+                    }
+                } catch _ {
+                    if !cancellable.isCancelled {
+                        onError(.parseError(sourceUrl.absoluteString))
+                    }
                 }
             }
+
         }
     }
-
 
     private func parseHtmlString(_ htmlString: String, response: Response, completion: @escaping (Response) -> Void) {
         completion(self.performPageCrawling(self.cleanSource(htmlString), response: response))
@@ -351,7 +376,7 @@ extension SwiftLinkPreview {
     private func cleanSource(_ source: String) -> String {
 
         var source = source
-        
+
         source = source.deleteTagByPattern(Regex.inlineStylePattern)
         source = source.deleteTagByPattern(Regex.inlineScriptPattern)
         source = source.deleteTagByPattern(Regex.scriptPattern)
@@ -360,7 +385,6 @@ extension SwiftLinkPreview {
         return source
 
     }
-
 
     // Perform the page crawiling
     private func performPageCrawling(_ htmlCode: String, response: Response) -> Response {
@@ -376,7 +400,6 @@ extension SwiftLinkPreview {
 
         return self.crawlImages(otherResponse.htmlCode, result: otherResponse.result)
     }
-
 
     // Extract canonical URL
     internal func extractCanonicalURL(_ finalUrl: URL) -> String {
@@ -420,7 +443,7 @@ extension SwiftLinkPreview {
     fileprivate func extractBaseUrl(_ url: String) -> String {
 
         return String(url.split(separator: "/", maxSplits: 1, omittingEmptySubsequences: true)[0])
-        
+
     }
 
 }
@@ -434,10 +457,7 @@ extension SwiftLinkPreview {
 
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.linkPattern, index: 1)
 
-        let filters = [
-        { (link: String) -> Bool in link.range(of: "apple-touch") != nil },
-        { (link: String) -> Bool in link.range(of: "shortcut") != nil },
-        { (link: String) -> Bool in link.range(of: "icon") != nil }
+        let filters = [ { (link: String) -> Bool in link.range(of: "apple-touch") != nil }, { (link: String) -> Bool in link.range(of: "shortcut") != nil }, { (link: String) -> Bool in link.range(of: "icon") != nil }
         ]
 
         for filter in filters {
@@ -627,49 +647,48 @@ extension SwiftLinkPreview {
                         } else {
 
                             return resultThirdSearch
-                            
+
                         }
-                        
+
                     } else {
-                        
+
                         return resultFirstSearch
-                        
+
                     }
-                    
+
                 }
-                
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
     // Get tag content
     private func getTagContent(_ tag: String, content: String, minimum: Int) -> String {
-        
+
         let pattern = Regex.tagPattern(tag)
-        
+
         let index = 2
         let rawMatches = Regex.pregMatchAll(content, regex: pattern, index: index)
-        
+
         let matches = rawMatches.filter({ $0.extendedTrim.tagsStripped.count >= minimum })
         var result = matches.count > 0 ? matches[0] : ""
-        
+
         if result.isEmpty {
-            
+
             if let match = Regex.pregMatchFirst(content, regex: pattern, index: 2) {
-                
+
                 result = match.extendedTrim.tagsStripped
-                
+
             }
-            
+
         }
-        
+
         return result
-        
+
     }
-    
+
 }
 
 extension SwiftLinkPreview: URLSessionDataDelegate {
