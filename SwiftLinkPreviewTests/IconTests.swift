@@ -39,8 +39,6 @@ class IconTests: XCTestCase {
         template = File.toString(Constants.bodyIcon)
     }
 
-
-
     func testLink() {
         for _ in 1..<1000 {
             let icon = random(array: iconList)

@@ -11,31 +11,31 @@ import XCTest
 
 class Counter {
     private var val: Int
-    
+
     init(_ count: Int) {
         val = count
     }
-    
+
     func dec() {
         val -= 1
     }
-    
+
     var isZero: Bool {
         return val == 0
     }
 }
 
-class MemoryCheckedSwiftLinkPrefiew : SwiftLinkPreview {
-    
+class MemoryCheckedSwiftLinkPrefiew: SwiftLinkPreview {
+
     let expectation: XCTestExpectation
     let counter: Counter
-    
+
     init(expectation: XCTestExpectation, counter: Counter) {
         self.expectation = expectation
         self.counter = counter
         super.init()
     }
-    
+
     deinit {
         counter.dec()
         if counter.isZero {
@@ -45,7 +45,7 @@ class MemoryCheckedSwiftLinkPrefiew : SwiftLinkPreview {
 }
 
 class MemoryLeaks: XCTestCase {
-    
+
 //    func testObjectDestroy() {
 //        let e = expectation(description: "instrument")
 //        let requestCount = 3

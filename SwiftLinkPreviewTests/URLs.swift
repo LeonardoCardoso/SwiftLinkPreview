@@ -9,7 +9,7 @@
 import Foundation
 
 struct URLs {
-    
+
     // Please add the text in the format:
     // [text, expectation, canonical]
     // ["xxx https://your.url.com/etc#something?else=true xxx", "https://your.url.com/etc#something?else=true", "your.url.com"]
@@ -125,6 +125,5 @@ struct URLs {
             "goo.gl"
         ]
     ]
-    
-    
+
 }

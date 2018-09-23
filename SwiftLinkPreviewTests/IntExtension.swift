@@ -9,9 +9,9 @@
 import Foundation
 
 public extension Int {
-    
+
     public static func random(_ lower: Int = 0, upper: Int = 100) -> Int {
         return lower + Int(arc4random_uniform(UInt32(upper - 1 - lower + 1)))
     }
-    
+
 }
