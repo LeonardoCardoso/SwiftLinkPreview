@@ -1,0 +1,29 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'SwiftLinkPreviewExample' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for SwiftLinkPreviewExample
+  pod 'Alamofire', '4.7.3'
+  pod 'SwiftyDrop', '4.1.0'
+  pod 'ImageSlideshow', '1.5.3'
+  pod 'ImageSlideshow/Alamofire', '1.5.3'
+  pod 'SwiftLinkPreview', :path => '../'
+
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+
+            if ['SwiftLinkPreview'].include?(target.name)
+                config.build_settings['SWIFT_VERSION'] = '4.2'
+            else
+                config.build_settings['SWIFT_VERSION'] = '3.0'
+            end
+            
+        end
+    end
+end

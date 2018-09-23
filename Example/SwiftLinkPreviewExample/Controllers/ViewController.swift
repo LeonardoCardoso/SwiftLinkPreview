@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyDrop
 import ImageSlideshow
+import SwiftLinkPreview
 
 class ViewController: UIViewController {
     
@@ -30,6 +31,7 @@ class ViewController: UIViewController {
     
     // MARK: - Vars
     private var randomTexts: [String] = [
+        "tw.yahoo.com",
         "https://www.linkedin.com/",
         "www.youtube.com",
         "www.google.com",
