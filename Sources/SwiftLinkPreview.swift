@@ -16,6 +16,7 @@ public enum SwiftLinkResponseKey: String {
     case image
     case images
     case icon
+    case video
 }
 
 open class Cancellable: NSObject {
@@ -134,6 +135,7 @@ open class SwiftLinkPreview: NSObject {
                                 result[.image] = $0[.image]
                                 result[.images] = $0[.images]
                                 result[.icon] = $0[.icon]
+                                result[.video] = $0[.video]
 
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
                                 self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
@@ -481,7 +483,8 @@ extension SwiftLinkPreview {
         let possibleTags: [String] = [
             SwiftLinkResponseKey.title.rawValue,
             SwiftLinkResponseKey.description.rawValue,
-            SwiftLinkResponseKey.image.rawValue
+            SwiftLinkResponseKey.image.rawValue,
+            SwiftLinkResponseKey.video.rawValue
         ]
 
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
@@ -503,6 +506,14 @@ extension SwiftLinkPreview {
                             if tag == "image" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
                                 if value.isImage() { result[key] = value }
+                            } else {
+                                result[key] = value
+                            }
+                        } else if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
+                            let value = value.decoded.extendedTrim
+                            if tag == "video" {
+                                let value = addImagePrefixIfNeeded(value, result: result)
+                                if value.isVideo() { result[key] = value }
                             } else {
                                 result[key] = value
                             }

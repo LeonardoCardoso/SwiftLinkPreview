@@ -103,6 +103,10 @@ extension String {
         return Regex.test(self, regex: Regex.imagePattern)
 
     }
+    
+    func isVideo() -> Bool {
+        return Regex.test(self, regex: Regex.videoTagPattern)
+    }
 
     // Split into substring of equal length
     func split(by length: Int) -> [String] {
