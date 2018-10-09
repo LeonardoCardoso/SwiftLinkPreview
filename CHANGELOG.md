@@ -20,8 +20,8 @@ Released on 2018-10-09.
 
 #### Changed
 
-- Added isVideo() check.
-        - Added by [Onur Genes](https://github.com/onurgenes)
+- Added isVideo() check
+	- Added by [Onur Genes](https://github.com/onurgenes)
 
 ## 2.3.1(https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.3.1)
 Released on 2018-09-23.
