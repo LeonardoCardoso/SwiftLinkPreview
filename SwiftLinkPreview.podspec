@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
 	s.name = "SwiftLinkPreview"
 	s.summary = "It makes a preview from an url, grabbing all the information such as title, relevant texts and images."
 	s.requires_arc = true
-	s.version = "2.3.1"
+	s.version = "3.0.0"
 	s.license = { :type => "MIT", :file => "LICENSE" }
 	s.author = { "Leonardo Cardoso" => "contact@leocardz.com" }
 	s.homepage = "https://github.com/LeonardoCardoso/SwiftLinkPreview"
