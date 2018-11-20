@@ -10,7 +10,7 @@
 [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 [![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
 
-#### Index 
+#### Index
 
 * [Visual Examples](#visual-examples)
 * [Requirements and Details](#requirements-and-details)
@@ -34,11 +34,11 @@
 
 ## Visual Examples
 
-**UTF-8** | **Extended UTF-8**	 | **Gallery** 
-:--:|:--:|:--:|	
+**UTF-8** | **Extended UTF-8**	 | **Gallery**
+:--:|:--:|:--:|
 ![UTF-8](Images/default.gif "UTF-8") | ![Extended UTF-8](Images/langs.gif "Extended UTF-8") |![Gallery](Images/gallery.gif "Gallery")
-**Video Websites** | **Images** 
-![Video Websites](Images/videos.gif "Video Websites") | ![Images](Images/images.gif "Images") | 
+**Video Websites** | **Images**
+![Video Websites](Images/videos.gif "Video Websites") | ![Images](Images/images.gif "Images") |
 
 ## Requirements and Details
 
@@ -55,7 +55,7 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 ```ruby
 	source 'https://github.com/CocoaPods/Specs.git'
 	platform :ios, '9.0'
-	
+
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
@@ -104,8 +104,8 @@ import SwiftLinkPreview
 
 // ...
 
-let slp = SwiftLinkPreview(session: URLSession = URLSession.shared, 
-			   workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, 
+let slp = SwiftLinkPreview(session: URLSession = URLSession.shared,
+			   workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue,
 			   responseQueue: DispatchQueue = DispatchQueue.main,
 		           cache: Cache = DisabledCache.instance)
 ```
@@ -116,19 +116,19 @@ slp.preview("Text containing URL",
 	    onSuccess: { result in print("\(result)") },
 	    onError: { error in print("\(error)")})
 ```
-**result** is a dictionary ```[String: AnyObject]``` like:
+**result** is a struct ```Response```:
 
 ```swift
-[
-   "url": "original URL", // NSURL
-   "finalUrl": "final ~unshortened~ URL.", // NSURL
-   "canonicalUrl": "canonical URL", // String
-   "title": "title", // String
-   "description": "page description or relevant text", // String
-   "images": ["array of URLs of the images"], // String array
-   "image": "main image", // String
-   "icon": "favicon" // String
-]
+Response {
+	let url: URL // URL
+	let finalUrl: URL // unshortened URL
+	let canonicalUrl: String // canonical URL
+	let title: String // title
+	let description: String // page description or relevant text
+	let images: [String] // array of URLs of the images
+	let image: String // main image
+	let icon: String // favicon
+}
 ```
 
 #### Cancelling a request
@@ -163,9 +163,9 @@ If you want to create your own cache, just implement this protocol and use it on
 
 ```swift
 public protocol Cache {
-    
+
     func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response?
-    
+
     func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?)
 }
 ```
@@ -197,7 +197,7 @@ Feel free to fork this repo and add URLs on [SwiftLinkPreviewTests/URLs.swift](S
 
 ## Information and Contact
 
-Developed by [@LeonardoCardoso](https://github.com/LeonardoCardoso). 
+Developed by [@LeonardoCardoso](https://github.com/LeonardoCardoso).
 
 Contact me either by Twitter [@leocardz](https://twitter.com/leocardz) or emailing me to [contact@leocardz.com](mailto:contact@leocardz.com).
 
@@ -212,17 +212,17 @@ Contact me either by Twitter [@leocardz](https://twitter.com/leocardz) or emaili
     The MIT License (MIT)
 
 	Copyright (c) 2016 Leonardo Cardoso
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in all
 	copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
