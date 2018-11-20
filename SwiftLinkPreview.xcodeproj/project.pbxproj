@@ -1063,6 +1063,7 @@
 				PRODUCT_NAME = SwiftLinkPreview;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
@@ -1084,6 +1085,7 @@
 				PRODUCT_NAME = SwiftLinkPreview;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Release;
@@ -1098,6 +1100,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
@@ -1112,6 +1115,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Release;
@@ -1131,6 +1135,7 @@
 				PRODUCT_NAME = SwiftLinkPreview;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
@@ -1151,6 +1156,7 @@
 				PRODUCT_NAME = SwiftLinkPreview;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
@@ -1165,6 +1171,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 4.2;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
 			name = Debug;
@@ -1178,6 +1185,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 4.2;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
 			name = Release;
@@ -1198,6 +1206,7 @@
 				PRODUCT_NAME = SwiftLinkPreview;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALID_ARCHS = "arm64 armv7 armv7k armv7s";
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
@@ -1220,6 +1229,7 @@
 				PRODUCT_NAME = SwiftLinkPreview;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALID_ARCHS = "arm64 armv7 armv7k armv7s";
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
