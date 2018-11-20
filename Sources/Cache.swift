@@ -10,22 +10,22 @@ import Foundation
 
 public protocol Cache {
 
-    func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response?
+    func slp_getCachedResponse(url: String) -> Response?
 
-    func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?)
+    func slp_setCachedResponse(url: String, response: Response?)
 }
 
 public class DisabledCache: Cache {
 
     public static let instance = DisabledCache()
 
-    public func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response? { return nil; }
+    public func slp_getCachedResponse(url: String) -> Response? { return nil; }
 
-    public func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?) { }
+    public func slp_setCachedResponse(url: String, response: Response?) { }
 }
 
 open class InMemoryCache: Cache {
-    private var cache = Dictionary<String, (response: SwiftLinkPreview.Response, date: Date)>()
+    private var cache = Dictionary<String, (response: Response, date: Date)>()
     private let invalidationTimeout: TimeInterval
     private let cleanupTimer: DispatchSource?
 
@@ -56,7 +56,7 @@ open class InMemoryCache: Cache {
         }
     }
 
-    open func slp_getCachedResponse(url: String) -> SwiftLinkPreview.Response? {
+    open func slp_getCachedResponse(url: String) -> Response? {
         return type(of: self).cacheQueue.sync {
             guard let response = cache[url] else { return nil }
 
@@ -68,7 +68,7 @@ open class InMemoryCache: Cache {
         }
     }
 
-    open func slp_setCachedResponse(url: String, response: SwiftLinkPreview.Response?) {
+    open func slp_setCachedResponse(url: String, response: Response?) {
         type(of: self).cacheQueue.sync {
             if let response = response {
                 cache[url] = (response, Date())
