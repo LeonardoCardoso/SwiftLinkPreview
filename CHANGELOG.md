@@ -1,5 +1,8 @@
 # Change Log
 
+#### 3.x Releases
+- `3.0.0`
+
 #### 2.x Releases
 - `2.3.x` Releases - [2.3.0](#230) | [2.3.1](#231)
 - `2.2.x` Releases - [2.2.0](#220)
@@ -10,10 +13,15 @@
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
 
 #### 0.x Releases
-- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013) | [0.1.4](#014) | [0.1.5](#015) | [0.1.6](#016)  
+- `0.1.x` Releases - [0.1.0](#010) | [0.1.1](#011) | [0.1.2](#012) | [0.1.3](#013) | [0.1.4](#014) | [0.1.5](#015) | [0.1.6](#016)
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## 3.0.0
+#### Changed
+- Response is now a swift `struct` instead of a `Dictionary<String, Any>`
+- Moving to Swift 4.2
 
 ## 2.3.1(https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.3.1)
 Released on 2018-09-23.
@@ -118,7 +126,7 @@ Released on 2017-02-24.
     - Changed by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 #### Fixed
-- Crash when no URL was sent to SLP.	
+- Crash when no URL was sent to SLP.
 	- Fixed by [Leonardo Cardoso](https://github.com/LeonardoCardoso).
 
 ## [2.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.0.0)
@@ -132,11 +140,11 @@ Released on 2017-01-19.
 	- Changed by [Yehor Popovych](https://github.com/ypopovych).
 
 #### Added
-- Caching support (InMemoryCache, but can be extended to other types)	
+- Caching support (InMemoryCache, but can be extended to other types)
 	- Added by [Yehor Popovych](https://github.com/ypopovych).
 
 #### API breaking changes
-- Subscriptions via Enum require changes in current code	
+- Subscriptions via Enum require changes in current code
 - `preview` method returns a Cancellable object with cancel method. This allows reusing of single configured SLP instance for multiple requests. cancel method removed from SwiftLinkPreview class.
 
 <br /><hr ><br />
@@ -222,7 +230,7 @@ Released on 2016-07-11.
 
 #### Fixed
 - Crash when parsing pages without title - [#11](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/11)
-	- Fixed by [Fraser](https://github.com/fraserscottmorrison)	
+	- Fixed by [Fraser](https://github.com/fraserscottmorrison)
 
 ## [0.1.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/0.1.0)
 Released on 2016-07-04.
