@@ -128,6 +128,7 @@ Response {
 	let images: [String] // array of URLs of the images
 	let image: String // main image
 	let icon: String // favicon
+	let video: String // video
 }
 ```
 
