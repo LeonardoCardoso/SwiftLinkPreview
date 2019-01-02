@@ -53,11 +53,11 @@ class MetaTests: XCTestCase {
 
         twitterTemplate = twitterTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(twitterTemplate, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(twitterTemplate, result: Response())
 
-        XCTAssertEqual((result[.title] as! String), twitterData[Constants.twitterTitle]!.decoded)
-        XCTAssertEqual((result[.description] as! String), twitterData[Constants.twitterDescription]!.decoded)
-        XCTAssertEqual((result[.image] as! String), twitterData[Constants.twitterImageSrc])
+        XCTAssertEqual(result.title, twitterData[Constants.twitterTitle]!.decoded)
+        XCTAssertEqual(result.description, twitterData[Constants.twitterDescription]!.decoded)
+        XCTAssertEqual(result.image, twitterData[Constants.twitterImageSrc])
 
     }
 
@@ -93,11 +93,11 @@ class MetaTests: XCTestCase {
 
         facebookTemplate = facebookTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(facebookTemplate, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(facebookTemplate, result: Response())
 
-        XCTAssertEqual((result[.title] as! String), facebookData[Constants.facebookTitle]!.decoded)
-        XCTAssertEqual((result[.description] as! String), facebookData[Constants.facebookDescription]!.decoded)
-        XCTAssertEqual((result[.image] as! String), facebookData[Constants.facebookImage])
+        XCTAssertEqual(result.title, facebookData[Constants.facebookTitle]!.decoded)
+        XCTAssertEqual(result.description, facebookData[Constants.facebookDescription]!.decoded)
+        XCTAssertEqual(result.image, facebookData[Constants.facebookImage])
     }
 
     func testFacebook() {
@@ -132,11 +132,11 @@ class MetaTests: XCTestCase {
 
         itempropTemplate = itempropTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(itempropTemplate, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(itempropTemplate, result: Response())
 
-        XCTAssertEqual((result[.title] as! String), itempropData[Constants.title]!.decoded)
-        XCTAssertEqual((result[.description] as! String), itempropData[Constants.description]!.decoded)
-        XCTAssertEqual((result[.image] as! String), itempropData[Constants.image])
+        XCTAssertEqual(result.title, itempropData[Constants.title]!.decoded)
+        XCTAssertEqual(result.description, itempropData[Constants.description]!.decoded)
+        XCTAssertEqual(result.image, itempropData[Constants.image])
     }
 
     func testItemprop() {
@@ -171,11 +171,11 @@ class MetaTests: XCTestCase {
 
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(metaTemplate, result: SwiftLinkPreview.Response())
+        let result = self.slp.crawlMetaTags(metaTemplate, result: Response())
 
-        XCTAssertEqual((result[.title] as! String), metaData[Constants.title]!.decoded)
-        XCTAssertEqual((result[.description] as! String), metaData[Constants.description]!.decoded)
-        XCTAssertEqual((result[.image] as! String), metaData[Constants.image])
+        XCTAssertEqual(result.title, metaData[Constants.title]!.decoded)
+        XCTAssertEqual(result.description, metaData[Constants.description]!.decoded)
+        XCTAssertEqual(result.image, metaData[Constants.image])
     }
 
     func testMeta() {

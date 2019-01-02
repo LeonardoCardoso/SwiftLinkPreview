@@ -43,9 +43,9 @@ class TitleTests: XCTestCase {
 
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: metaData[Constants.bodyRandom]!).extendedTrim
 
-        let response = self.slp.crawlTitle(metaTemplate, result: SwiftLinkPreview.Response())
+        let response = self.slp.crawlTitle(metaTemplate, result: Response())
 
-        let comparable = (response.result[.title] as! String)
+        let comparable = response.result.title
         let comparison = comparable == metaData[Constants.title]!.decoded.extendedTrim ||
             comparable == metaData[Constants.headRandom]!.decoded.extendedTrim ||
             comparable == metaData[Constants.bodyRandom]!.decoded.extendedTrim

@@ -48,16 +48,16 @@ class IconTests: XCTestCase {
             testTemplate = testTemplate.replace(Constants.href, with: icon)
             testTemplate = testTemplate.replace(Constants.rel, with: type)
 
-            var result = SwiftLinkPreview.Response()
-            result[.url] = "google.com"
-            result[.canonicalUrl] = "google.com"
-            result[.finalUrl] = URL(string: "https://google.com")
+            var result = Response()
+            result.url = URL(string: "google.com")
+            result.canonicalUrl = "google.com"
+            result.finalUrl = URL(string: "https://google.com")
 
             result = slp.crawIcon(testTemplate, result: result)
 
             let url = icon.range(of: "http") != nil ? icon : "https://google.com/\(icon)".replace("com//", with: "com/")
 
-            XCTAssertEqual(url, result[.icon] as! String)
+            XCTAssertEqual(url, result.icon)
         }
     }
 

@@ -51,9 +51,9 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
 
-        let response = self.slp.crawlDescription(template, result: SwiftLinkPreview.Response())
+        let response = self.slp.crawlDescription(template, result: Response())
 
-        let comparable = (response.result[.description] as! String)
+        let comparable = response.result.description
 
         XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
 
@@ -91,9 +91,9 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
 
-        let response = self.slp.crawlDescription(template, result: SwiftLinkPreview.Response())
+        let response = self.slp.crawlDescription(template, result: Response())
 
-        let comparable = (response.result[.description] as! String)
+        let comparable = response.result.description
 
         XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
 
@@ -131,9 +131,9 @@ class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
 
-        let response = self.slp.crawlDescription(template, result: SwiftLinkPreview.Response())
+        let response = self.slp.crawlDescription(template, result: Response())
 
-        let comparable = (response.result[.description] as! String)
+        let comparable = response.result.description
 
         XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
 

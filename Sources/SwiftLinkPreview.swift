@@ -29,8 +29,6 @@ open class Cancellable: NSObject {
 
 open class SwiftLinkPreview: NSObject {
 
-    public typealias Response = [SwiftLinkResponseKey: Any]
-
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
     static let decriptionMinimumRelevant: Int = 100
@@ -122,20 +120,20 @@ open class SwiftLinkPreview: NSObject {
                         if let result = self.cache.slp_getCachedResponse(url: unshortened.absoluteString) {
                             successResponseQueue(result)
                         } else {
-
-                            var result: [SwiftLinkResponseKey: Any] = [:]
-                            result[.url] = url
-                            result[.finalUrl] = self.extractInURLRedirectionIfNeeded(unshortened)
-                            result[.canonicalUrl] = self.extractCanonicalURL(unshortened)
+                            
+                            var result = Response()
+                            result.url = url
+                            result.finalUrl = self.extractInURLRedirectionIfNeeded(unshortened)
+                            result.canonicalUrl = self.extractCanonicalURL(unshortened)
 
                             self.extractInfo(response: result, cancellable: cancellable, completion: {
 
-                                result[.title] = $0[.title]
-                                result[.description] = $0[.description]
-                                result[.image] = $0[.image]
-                                result[.images] = $0[.images]
-                                result[.icon] = $0[.icon]
-                                result[.video] = $0[.video]
+                                result.title = $0.title
+                                result.description = $0.description
+                                result.image = $0.image
+                                result.images = $0.images
+                                result.icon = $0.icon
+                                result.video = $0.video
 
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
                                 self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
@@ -198,11 +196,7 @@ open class SwiftLinkPreview: NSObject {
     @objc @discardableResult open func previewLink(_ text: String, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
 
         func success (_ result: Response) {
-            var ResponseData = [String: Any]()
-            for item in result {
-                ResponseData.updateValue(item.value, forKey: item.key.rawValue)
-            }
-            onSuccess(ResponseData)
+            onSuccess(result.dictionary)
         }
 
         func failure (_ theError: PreviewError) {
@@ -301,7 +295,7 @@ extension SwiftLinkPreview {
     // Extract HTML code and the information contained on it
     fileprivate func extractInfo(response: Response, cancellable: Cancellable, completion: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) {
 
-        guard !cancellable.isCancelled, let url = response[.finalUrl] as? URL else { return }
+        guard !cancellable.isCancelled, let url = response.finalUrl else { return }
 
         func requestSync(sourceUrl: URL, request: URLRequest) -> (Bool, Data?, URLResponse?) {
 
@@ -320,10 +314,10 @@ extension SwiftLinkPreview {
         if url.absoluteString.isImage() {
             var result = response
 
-            result[.title] = ""
-            result[.description] = ""
-            result[.images] = [url.absoluteString]
-            result[.image] = url.absoluteString
+            result.title = ""
+            result.description = ""
+            result.images = [url.absoluteString]
+            result.image = url.absoluteString
 
             completion(result)
         } else {
@@ -466,7 +460,7 @@ extension SwiftLinkPreview {
             if let first = metatags.filter(filter).first {
                 let matches = Regex.pregMatchAll(first, regex: Regex.hrefPattern, index: 1)
                 if let val = matches.first {
-                    result[SwiftLinkResponseKey.icon] = self.addImagePrefixIfNeeded(val.replace("\"", with: ""), result: result)
+                    result.icon = self.addImagePrefixIfNeeded(val.replace("\"", with: ""), result: result)
                     return result
                 }
             }
@@ -481,10 +475,10 @@ extension SwiftLinkPreview {
         var result = result
 
         let possibleTags: [String] = [
-            SwiftLinkResponseKey.title.rawValue,
-            SwiftLinkResponseKey.description.rawValue,
-            SwiftLinkResponseKey.image.rawValue,
-            SwiftLinkResponseKey.video.rawValue
+            Response.Key.title.rawValue,
+            Response.Key.description.rawValue,
+            Response.Key.image.rawValue,
+            Response.Key.video.rawValue
         ]
 
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
@@ -500,22 +494,23 @@ extension SwiftLinkPreview {
                     metatag.range(of: "itemprop=\"\(tag)") != nil ||
                     metatag.range(of: "itemprop='\(tag)") != nil) {
 
-                    if let key = SwiftLinkResponseKey(rawValue: tag), result[key] == nil {
+                    if let key = Response.Key(rawValue: tag),
+                        result.value(for: key) == nil {
                         if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                             let value = value.decoded.extendedTrim
                             if tag == "image" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
-                                if value.isImage() { result[key] = value }
+                                if value.isImage() { result.set(value, for: key) }
                             } else {
-                                result[key] = value
+                                result.set(value, for: key)
                             }
                         } else if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
                             let value = value.decoded.extendedTrim
                             if tag == "video" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
-                                if value.isVideo() { result[key] = value }
+                                if value.isVideo() { result.set(value, for: key) }
                             } else {
-                                result[key] = value
+                                result.set(value, for: key)
                             }
                         }
                     }
@@ -529,18 +524,18 @@ extension SwiftLinkPreview {
     // Crawl for title if needed
     internal func crawlTitle(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
         var result = result
-        let title = result[.title] as? String
+        let title = result.title
 
         if title == nil || title?.isEmpty ?? true {
             if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
                 if value.isEmpty {
                     let fromBody: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant)
                     if !fromBody.isEmpty {
-                        result[.title] = fromBody.decoded.extendedTrim
+                        result.title = fromBody.decoded.extendedTrim
                         return (htmlCode.replace(fromBody, with: ""), result)
                     }
                 } else {
-                    result[.title] = value.decoded.extendedTrim
+                    result.title = value.decoded.extendedTrim
                 }
             }
         }
@@ -551,12 +546,12 @@ extension SwiftLinkPreview {
     // Crawl for description if needed
     internal func crawlDescription(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
         var result = result
-        let description = result[.description] as? String
+        let description = result.description
 
         if description == nil || description?.isEmpty ?? true {
             let value: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
             if !value.isEmpty {
-                result[.description] = value.decoded.extendedTrim
+                result.description = value.decoded.extendedTrim
             }
         }
 
@@ -568,23 +563,23 @@ extension SwiftLinkPreview {
 
         var result = result
 
-        let mainImage = result[.image] as? String
+        let mainImage = result.image
 
         if mainImage == nil || mainImage?.isEmpty == true {
 
-            let images = result[.images] as? [String]
+            let images = result.images
 
             if images == nil || images?.isEmpty ?? true {
                 let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
                 if !values.isEmpty {
                     let imgs = values.map { self.addImagePrefixIfNeeded($0, result: result) }
 
-                    result[.images] = imgs
-                    result[.image] = imgs.first
+                    result.images = imgs
+                    result.image = imgs.first
                 }
             }
         } else {
-            result[.images] = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
+            result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
         }
         return result
     }
@@ -594,7 +589,7 @@ extension SwiftLinkPreview {
 
         var image = image
 
-        if let canonicalUrl = result[.canonicalUrl] as? String, let finalUrl = (result[.finalUrl] as? URL)?.absoluteString {
+        if let canonicalUrl = result.canonicalUrl, let finalUrl = result.finalUrl?.absoluteString {
             if finalUrl.hasPrefix("https:") {
                 if image.hasPrefix("//") {
                     image = "https:" + image
