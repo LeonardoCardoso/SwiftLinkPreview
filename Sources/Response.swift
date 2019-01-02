@@ -19,4 +19,7 @@ public struct Response {
     public internal(set) var image: String?
     public internal(set) var icon: String?
     public internal(set) var video: String?
+    
+    public init() { }
+    
 }

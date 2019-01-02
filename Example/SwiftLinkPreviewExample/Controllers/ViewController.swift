@@ -61,7 +61,7 @@ class ViewController: UIViewController {
         "Well, it's a gif! https://goo.gl/jKCPgp"
         ]
 
-    private var result = SwiftLinkPreview.Response()
+    private var result = Response()
     private let placeholderImages = [ImageSource(image: UIImage(named: "Placeholder")!)]
 
     private let slp = SwiftLinkPreview(cache: InMemoryCache())
@@ -127,7 +127,7 @@ class ViewController: UIViewController {
 
     private func setData() {
 
-        if let value: [String] = self.result[.images] as? [String] {
+        if let value = self.result.images {
 
             if !value.isEmpty {
 
@@ -146,17 +146,17 @@ class ViewController: UIViewController {
 
             } else {
 
-                self.setImage(image: self.result[.image] as? String)
+                self.setImage(image: self.result.image)
 
             }
 
         } else {
 
-            self.setImage(image: self.result[.image] as? String)
+            self.setImage(image: self.result.image)
 
         }
 
-        if let value: String = self.result[.title] as? String {
+        if let value: String = self.result.title {
 
             self.previewTitle?.text = value.isEmpty ? "No title" : value
 
@@ -166,13 +166,13 @@ class ViewController: UIViewController {
 
         }
 
-        if let value: String = self.result[.canonicalUrl] as? String {
+        if let value: String = self.result.canonicalUrl {
 
             self.previewCanonicalUrl?.text = value
 
         }
 
-        if let value: String = self.result[.description] as? String {
+        if let value: String = self.result.description {
 
             self.previewDescription?.text = value.isEmpty ? "No description" : value
 
@@ -182,7 +182,7 @@ class ViewController: UIViewController {
 
         }
 
-        if let value: String = self.result[.icon] as? String, let url = URL(string: value) {
+        if let value: String = self.result.icon, let url = URL(string: value) {
             self.favicon?.af_setImage(withURL: url)
         }
 
@@ -256,6 +256,18 @@ class ViewController: UIViewController {
     }
 
     @IBAction func submitAction(_ sender: AnyObject) {
+        
+        func printResult(_ result: Response) {
+            print("url: ", result.url ?? "no url")
+            print("finalUrl: ", result.finalUrl ?? "no finalUrl")
+            print("canonicalUrl: ", result.canonicalUrl ?? "no canonicalUrl")
+            print("title: ", result.title ?? "no title")
+            print("images: ", result.images ?? "no images")
+            print("image: ", result.image ?? "no image")
+            print("video: ", result.video ?? "no video")
+            print("icon: ", result.icon ?? "no icon")
+            print("description: ", result.description ?? "no description")
+        }
 
         guard textField?.text?.isEmpty == false else {
 
@@ -274,14 +286,15 @@ class ViewController: UIViewController {
             self.result = cached
             self.setData()
 
-            result.forEach { print("\($0):", $1) }
+            printResult(result)
 
         } else {
             self.slp.preview(
                 textFieldText,
                 onSuccess: { result in
 
-                    result.forEach { print("\($0):", $1) }
+                    printResult(result)
+                    
                     self.result = result
                     self.setData()
 
@@ -301,7 +314,7 @@ class ViewController: UIViewController {
 
     @IBAction func openWithAction(_ sender: UIButton) {
 
-        if let url = self.result[.finalUrl] as? URL {
+        if let url = self.result.finalUrl {
 
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
 

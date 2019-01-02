@@ -1,10 +1,10 @@
 # Change Log
 
 #### 3.x Releases
-- `3.0.0`
+- `3.0.x` Releases - [3.0.0](#300)
 
 #### 2.x Releases
-- `2.3.x` Releases - [2.3.0](#230) | [2.3.1](#231) | [2.3.2](#232)
+- `2.3.x` Releases - [2.3.0](#230) | [2.3.1](#231)
 - `2.2.x` Releases - [2.2.0](#220)
 - `2.1.x` Releases - [2.1.0](#210)
 - `2.0.x` Releases - [2.0.0](#200) | [2.0.1](#201) | [2.0.2](#202) | [2.0.3](#203) | [2.0.4](#204) | [2.0.5](#205) | [2.0.6](#206) | [2.0.7](#207)
@@ -18,20 +18,20 @@
 
 ---
 
-## 2.3.2(https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.3.2)
-Released on 2018-10-09.
+## [3.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.0)
+Released on 2019-01-02.
 
-#### Changed
+#### Added
 
 - Added isVideo() check
 	- Added by [Onur Genes](https://github.com/onurgenes)
 
-## 3.0.0
 #### Changed
 - Response is now a swift `struct` instead of a `Dictionary<String, Any>`
 - Moving to Swift 4.2
+	- Changed by [Giuseppe Travasoni](https://github.com/neobeppe)
 
-## 2.3.1(https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.3.1)
+## [2.3.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/2.3.1)
 Released on 2018-09-23.
 
 #### Changed
