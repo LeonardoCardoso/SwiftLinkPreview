@@ -18,6 +18,14 @@
 
 ---
 
+## [3.0.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.1)
+
+#### Added
+
+- Added schema.org price crawler
+    - Added by [William Gossard](https://github.com/nova974)
+
+
 ## [3.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.0)
 Released on 2019-01-02.
 
