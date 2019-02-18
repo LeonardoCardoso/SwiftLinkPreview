@@ -46,9 +46,9 @@ class TitleTests: XCTestCase {
         let response = self.slp.crawlTitle(metaTemplate, result: Response())
 
         let comparable = response.result.title
-        let comparison = comparable == metaData[Constants.title]!.decoded.extendedTrim ||
-            comparable == metaData[Constants.headRandom]!.decoded.extendedTrim ||
-            comparable == metaData[Constants.bodyRandom]!.decoded.extendedTrim
+        let comparison = comparable == metaData[Constants.title]!.removingHTMLEntities.extendedTrim ||
+            comparable == metaData[Constants.headRandom]!.removingHTMLEntities.extendedTrim ||
+            comparable == metaData[Constants.bodyRandom]!.removingHTMLEntities.extendedTrim
 
         XCTAssert(comparison)
 

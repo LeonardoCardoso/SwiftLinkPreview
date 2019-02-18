@@ -14,7 +14,6 @@ import Foundation
 #elseif os(OSX)
 
     import Cocoa
-    import HTMLString
 
 #endif
 
@@ -32,13 +31,6 @@ extension String {
 
         let components = self.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         return components.filter { !$0.isEmpty }.joined(separator: " ").trim
-
-    }
-
-    // Decode HTML entities
-    var decoded: String {
-
-        return removingHTMLEntities
 
     }
 

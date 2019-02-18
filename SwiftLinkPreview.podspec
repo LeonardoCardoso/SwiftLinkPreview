@@ -14,5 +14,6 @@ Pod::Spec.new do |s|
 	s.source = { :git => "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", :tag => s.version }
 	s.source_files = "Sources/**/*.swift"
 	s.swift_version = '4.2'
+	s.dependency 'HTMLString'
 
 end

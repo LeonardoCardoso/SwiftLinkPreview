@@ -55,8 +55,8 @@ class MetaTests: XCTestCase {
 
         let result = self.slp.crawlMetaTags(twitterTemplate, result: Response())
 
-        XCTAssertEqual(result.title, twitterData[Constants.twitterTitle]!.decoded)
-        XCTAssertEqual(result.description, twitterData[Constants.twitterDescription]!.decoded)
+        XCTAssertEqual(result.title, twitterData[Constants.twitterTitle]!.removingHTMLEntities)
+        XCTAssertEqual(result.description, twitterData[Constants.twitterDescription]!.removingHTMLEntities)
         XCTAssertEqual(result.image, twitterData[Constants.twitterImageSrc])
 
     }
@@ -95,8 +95,8 @@ class MetaTests: XCTestCase {
 
         let result = self.slp.crawlMetaTags(facebookTemplate, result: Response())
 
-        XCTAssertEqual(result.title, facebookData[Constants.facebookTitle]!.decoded)
-        XCTAssertEqual(result.description, facebookData[Constants.facebookDescription]!.decoded)
+        XCTAssertEqual(result.title, facebookData[Constants.facebookTitle]!.removingHTMLEntities)
+        XCTAssertEqual(result.description, facebookData[Constants.facebookDescription]!.removingHTMLEntities)
         XCTAssertEqual(result.image, facebookData[Constants.facebookImage])
     }
 
@@ -134,8 +134,8 @@ class MetaTests: XCTestCase {
 
         let result = self.slp.crawlMetaTags(itempropTemplate, result: Response())
 
-        XCTAssertEqual(result.title, itempropData[Constants.title]!.decoded)
-        XCTAssertEqual(result.description, itempropData[Constants.description]!.decoded)
+        XCTAssertEqual(result.title, itempropData[Constants.title]!.removingHTMLEntities)
+        XCTAssertEqual(result.description, itempropData[Constants.description]!.removingHTMLEntities)
         XCTAssertEqual(result.image, itempropData[Constants.image])
     }
 
@@ -173,8 +173,8 @@ class MetaTests: XCTestCase {
 
         let result = self.slp.crawlMetaTags(metaTemplate, result: Response())
 
-        XCTAssertEqual(result.title, metaData[Constants.title]!.decoded)
-        XCTAssertEqual(result.description, metaData[Constants.description]!.decoded)
+        XCTAssertEqual(result.title, metaData[Constants.title]!.removingHTMLEntities)
+        XCTAssertEqual(result.description, metaData[Constants.description]!.removingHTMLEntities)
         XCTAssertEqual(result.image, metaData[Constants.image])
     }
 

@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14ED3C94221A412C00072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C93221A40F000072289 /* HTMLString.framework */; };
-		14ED3C95221A413200072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C93221A40F000072289 /* HTMLString.framework */; };
-		14ED3C97221A41AC00072289 /* HTMLString.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C93221A40F000072289 /* HTMLString.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		14ED3CAB221A4F9900072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA5221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CAC221A4FA200072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA5221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CAD221A4FA800072289 /* HTMLString.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA5221A4F7D00072289 /* HTMLString.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		14ED3CAE221A4FD100072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C9C221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CAF221A4FDE00072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA8221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CB0221A4FE500072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA8221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CB2221A4FF200072289 /* HTMLString.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA8221A4F7D00072289 /* HTMLString.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		14ED3CB3221A500400072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA0221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CB4221A501300072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA0221A4F7D00072289 /* HTMLString.framework */; };
+		14ED3CB6221A502000072289 /* HTMLString.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3CA0221A4F7D00072289 /* HTMLString.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68074FFA1F23B6C900649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFB1F23BB1100649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFC1F23BB1400649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
@@ -160,7 +167,29 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				14ED3C97221A41AC00072289 /* HTMLString.framework in Embed Frameworks */,
+				14ED3CAD221A4FA800072289 /* HTMLString.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14ED3CB1221A4FE800072289 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				14ED3CB2221A4FF200072289 /* HTMLString.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14ED3CB5221A501800072289 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				14ED3CB6221A502000072289 /* HTMLString.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,7 +197,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14ED3C93221A40F000072289 /* HTMLString.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HTMLString.framework; path = Carthage/Build/Mac/HTMLString.framework; sourceTree = "<group>"; };
+		14ED3C9B221A4F7D00072289 /* CAAE7A04-175F-34EB-BEAF-828903B39D64.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "CAAE7A04-175F-34EB-BEAF-828903B39D64.bcsymbolmap"; sourceTree = "<group>"; };
+		14ED3C9C221A4F7D00072289 /* HTMLString.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HTMLString.framework; sourceTree = "<group>"; };
+		14ED3C9D221A4F7D00072289 /* HTMLString.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = HTMLString.framework.dSYM; sourceTree = "<group>"; };
+		14ED3C9E221A4F7D00072289 /* 8E4A62A0-8149-35C3-A5DF-3D8772437865.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "8E4A62A0-8149-35C3-A5DF-3D8772437865.bcsymbolmap"; sourceTree = "<group>"; };
+		14ED3CA0221A4F7D00072289 /* HTMLString.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HTMLString.framework; sourceTree = "<group>"; };
+		14ED3CA1221A4F7D00072289 /* CD56137A-D0F0-3EB5-B1E2-8CC81D733D65.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "CD56137A-D0F0-3EB5-B1E2-8CC81D733D65.bcsymbolmap"; sourceTree = "<group>"; };
+		14ED3CA2221A4F7D00072289 /* HTMLString.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = HTMLString.framework.dSYM; sourceTree = "<group>"; };
+		14ED3CA3221A4F7D00072289 /* C2B46BB8-4ECD-35D1-A91A-E4B9C7521BC9.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "C2B46BB8-4ECD-35D1-A91A-E4B9C7521BC9.bcsymbolmap"; sourceTree = "<group>"; };
+		14ED3CA5221A4F7D00072289 /* HTMLString.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HTMLString.framework; sourceTree = "<group>"; };
+		14ED3CA6221A4F7D00072289 /* HTMLString.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = HTMLString.framework.dSYM; sourceTree = "<group>"; };
+		14ED3CA8221A4F7D00072289 /* HTMLString.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HTMLString.framework; sourceTree = "<group>"; };
+		14ED3CA9221A4F7D00072289 /* DAA21D9E-5F9D-3A34-A048-7B71C60A53F0.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "DAA21D9E-5F9D-3A34-A048-7B71C60A53F0.bcsymbolmap"; sourceTree = "<group>"; };
+		14ED3CAA221A4F7D00072289 /* HTMLString.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = HTMLString.framework.dSYM; sourceTree = "<group>"; };
 		68074FF91F23B6C900649DE6 /* head-meta-icon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "head-meta-icon.html"; sourceTree = "<group>"; };
 		686E58DE1F22416D000C2A33 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		7A552DE121A460910019E8B1 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -223,6 +264,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14ED3CB3221A500400072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98DC533D1D1D73DB001134E3 /* SwiftLinkPreview.framework in Frameworks */,
+				14ED3CB4221A501300072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,7 +281,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14ED3C94221A412C00072289 /* HTMLString.framework in Frameworks */,
+				14ED3CAB221A4F9900072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98E7C32A1D3B24D2009E5F6D /* SwiftLinkPreview.framework in Frameworks */,
-				14ED3C95221A413200072289 /* HTMLString.framework in Frameworks */,
+				14ED3CAC221A4FA200072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +298,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14ED3CAF221A4FDE00072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98F76D181D3AF7C200E9B10E /* SwiftLinkPreview.framework in Frameworks */,
+				14ED3CB0221A4FE500072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +315,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14ED3CAE221A4FD100072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,9 +325,57 @@
 		14ED3C92221A40DA00072289 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				14ED3C93221A40F000072289 /* HTMLString.framework */,
+				14ED3C9F221A4F7D00072289 /* iOS */,
+				14ED3CA4221A4F7D00072289 /* Mac */,
+				14ED3CA7221A4F7D00072289 /* tvOS */,
+				14ED3C9A221A4F7D00072289 /* watchOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		14ED3C9A221A4F7D00072289 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				14ED3C9B221A4F7D00072289 /* CAAE7A04-175F-34EB-BEAF-828903B39D64.bcsymbolmap */,
+				14ED3C9C221A4F7D00072289 /* HTMLString.framework */,
+				14ED3C9D221A4F7D00072289 /* HTMLString.framework.dSYM */,
+				14ED3C9E221A4F7D00072289 /* 8E4A62A0-8149-35C3-A5DF-3D8772437865.bcsymbolmap */,
+			);
+			name = watchOS;
+			path = Carthage/Build/watchOS;
+			sourceTree = "<group>";
+		};
+		14ED3C9F221A4F7D00072289 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				14ED3CA0221A4F7D00072289 /* HTMLString.framework */,
+				14ED3CA1221A4F7D00072289 /* CD56137A-D0F0-3EB5-B1E2-8CC81D733D65.bcsymbolmap */,
+				14ED3CA2221A4F7D00072289 /* HTMLString.framework.dSYM */,
+				14ED3CA3221A4F7D00072289 /* C2B46BB8-4ECD-35D1-A91A-E4B9C7521BC9.bcsymbolmap */,
+			);
+			name = iOS;
+			path = Carthage/Build/iOS;
+			sourceTree = "<group>";
+		};
+		14ED3CA4221A4F7D00072289 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				14ED3CA5221A4F7D00072289 /* HTMLString.framework */,
+				14ED3CA6221A4F7D00072289 /* HTMLString.framework.dSYM */,
+			);
+			name = Mac;
+			path = Carthage/Build/Mac;
+			sourceTree = "<group>";
+		};
+		14ED3CA7221A4F7D00072289 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				14ED3CA8221A4F7D00072289 /* HTMLString.framework */,
+				14ED3CA9221A4F7D00072289 /* DAA21D9E-5F9D-3A34-A048-7B71C60A53F0.bcsymbolmap */,
+				14ED3CAA221A4F7D00072289 /* HTMLString.framework.dSYM */,
+			);
+			name = tvOS;
+			path = Carthage/Build/tvOS;
 			sourceTree = "<group>";
 		};
 		985DCEB01D2BFD2700B40D76 /* Files */ = {
@@ -489,6 +583,7 @@
 				98DC53341D1D73DB001134E3 /* Sources */,
 				98DC53351D1D73DB001134E3 /* Frameworks */,
 				98DC53361D1D73DB001134E3 /* Resources */,
+				14ED3CB5221A501800072289 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -562,6 +657,7 @@
 				98F76CE71D3AF6DB00E9B10E /* Sources */,
 				98F76CE81D3AF6DB00E9B10E /* Frameworks */,
 				98F76CE91D3AF6DB00E9B10E /* Resources */,
+				14ED3CB1221A4FE800072289 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1010,6 +1106,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1034,6 +1134,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1052,6 +1156,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = SwiftLinkPreviewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -1067,6 +1175,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = SwiftLinkPreviewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -1174,6 +1286,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = "Sources/Info-tvOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1195,6 +1311,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = "Sources/Info-tvOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1212,6 +1332,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = "SwiftLinkPreviewTests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -1226,6 +1350,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = "SwiftLinkPreviewTests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreviewTests;
@@ -1245,6 +1373,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
 				INFOPLIST_FILE = "Sources/Info-watchOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1268,6 +1400,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
 				INFOPLIST_FILE = "Sources/Info-watchOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

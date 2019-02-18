@@ -9,5 +9,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftLinkPreview"
+    name: "SwiftLinkPreview",
+    dependencies: [
+        .Package(url: "https://github.com/alexaubry/HTMLString", majorVersion: 4, minor: 0)
+        ]
 )

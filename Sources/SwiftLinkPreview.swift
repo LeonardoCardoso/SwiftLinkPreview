@@ -5,7 +5,9 @@
 //  Created by Leonardo Cardoso on 09/06/2016.
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
+
 import Foundation
+import HTMLString
 
 public enum SwiftLinkResponseKey: String {
     case url
@@ -497,7 +499,7 @@ extension SwiftLinkPreview {
                     if let key = Response.Key(rawValue: tag),
                         result.value(for: key) == nil {
                         if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
-                            let value = value.decoded.extendedTrim
+                            let value = value.removingHTMLEntities.extendedTrim
                             if tag == "image" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
                                 if value.isImage() { result.set(value, for: key) }
@@ -505,7 +507,7 @@ extension SwiftLinkPreview {
                                 result.set(value, for: key)
                             }
                         } else if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
-                            let value = value.decoded.extendedTrim
+                            let value = value.removingHTMLEntities.extendedTrim
                             if tag == "video" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
                                 if value.isVideo() { result.set(value, for: key) }
@@ -531,11 +533,11 @@ extension SwiftLinkPreview {
                 if value.isEmpty {
                     let fromBody: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant)
                     if !fromBody.isEmpty {
-                        result.title = fromBody.decoded.extendedTrim
+                        result.title = fromBody.removingHTMLEntities.extendedTrim
                         return (htmlCode.replace(fromBody, with: ""), result)
                     }
                 } else {
-                    result.title = value.decoded.extendedTrim
+                    result.title = value.removingHTMLEntities.extendedTrim
                 }
             }
         }
@@ -551,7 +553,7 @@ extension SwiftLinkPreview {
         if description == nil || description?.isEmpty ?? true {
             let value: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
             if !value.isEmpty {
-                result.description = value.decoded.extendedTrim
+                result.description = value.removingHTMLEntities.extendedTrim
             }
         }
 

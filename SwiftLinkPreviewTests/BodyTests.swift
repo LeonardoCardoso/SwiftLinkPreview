@@ -55,7 +55,7 @@ class BodyTests: XCTestCase {
 
         let comparable = response.result.description
 
-        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
+        XCTAssert(comparable == metaData[Constants.random1]!.removingHTMLEntities || comparable == metaData[Constants.random2]!.removingHTMLEntities)
 
     }
 
@@ -95,7 +95,7 @@ class BodyTests: XCTestCase {
 
         let comparable = response.result.description
 
-        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
+        XCTAssert(comparable == metaData[Constants.random1]!.removingHTMLEntities || comparable == metaData[Constants.random2]!.removingHTMLEntities)
 
     }
 
@@ -135,7 +135,7 @@ class BodyTests: XCTestCase {
 
         let comparable = response.result.description
 
-        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
+        XCTAssert(comparable == metaData[Constants.random1]!.removingHTMLEntities || comparable == metaData[Constants.random2]!.removingHTMLEntities)
 
     }
 
