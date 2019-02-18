@@ -14,6 +14,7 @@ import Foundation
 #elseif os(OSX)
 
     import Cocoa
+    import HTMLString
 
 #endif
 
@@ -37,24 +38,7 @@ extension String {
     // Decode HTML entities
     var decoded: String {
 
-        let encodedData = self.data(using: String.Encoding.utf8)!
-        let attributedOptions: [NSAttributedString.DocumentReadingOptionKey: Any] =
-            [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)
-        ]
-
-        do {
-
-            let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
-
-            return attributedString.string
-
-        } catch _ {
-
-            return self
-
-        }
+        return removingHTMLEntities
 
     }
 

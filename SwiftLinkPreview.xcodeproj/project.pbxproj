@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14ED3C94221A412C00072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C93221A40F000072289 /* HTMLString.framework */; };
+		14ED3C95221A413200072289 /* HTMLString.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C93221A40F000072289 /* HTMLString.framework */; };
+		14ED3C97221A41AC00072289 /* HTMLString.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14ED3C93221A40F000072289 /* HTMLString.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68074FFA1F23B6C900649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFB1F23BB1100649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFC1F23BB1400649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
@@ -150,7 +153,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		14ED3C96221A419E00072289 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				14ED3C97221A41AC00072289 /* HTMLString.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		14ED3C93221A40F000072289 /* HTMLString.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HTMLString.framework; path = Carthage/Build/Mac/HTMLString.framework; sourceTree = "<group>"; };
 		68074FF91F23B6C900649DE6 /* head-meta-icon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "head-meta-icon.html"; sourceTree = "<group>"; };
 		686E58DE1F22416D000C2A33 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		7A552DE121A460910019E8B1 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -220,6 +238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14ED3C94221A412C00072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98E7C32A1D3B24D2009E5F6D /* SwiftLinkPreview.framework in Frameworks */,
+				14ED3C95221A413200072289 /* HTMLString.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +276,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14ED3C92221A40DA00072289 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14ED3C93221A40F000072289 /* HTMLString.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		985DCEB01D2BFD2700B40D76 /* Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +305,7 @@
 		98846C8C1D09AA6E00846726 = {
 			isa = PBXGroup;
 			children = (
+				14ED3C92221A40DA00072289 /* Frameworks */,
 				98C545941D2B30930003A74E /* Headers */,
 				98846C971D09AA6E00846726 /* Products */,
 				98846C981D09AA6E00846726 /* Sources */,
@@ -496,6 +525,7 @@
 				98E7C2F91D3B2300009E5F6D /* Sources */,
 				98E7C2FA1D3B2300009E5F6D /* Frameworks */,
 				98E7C2FB1D3B2300009E5F6D /* Resources */,
+				14ED3C96221A419E00072289 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1055,6 +1085,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "Sources/Info-macOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1077,6 +1111,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "Sources/Info-macOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1095,6 +1133,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = "SwiftLinkPreviewTests/Info-macOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
@@ -1110,6 +1152,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = "SwiftLinkPreviewTests/Info-macOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leocardz.SwiftLinkPreview;
