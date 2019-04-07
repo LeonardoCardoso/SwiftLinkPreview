@@ -1,7 +1,7 @@
 # Change Log
 
 #### 3.x Releases
-- `3.0.x` Releases - [3.0.0](#300)
+- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
 
 #### 2.x Releases
 - `2.3.x` Releases - [2.3.0](#230) | [2.3.1](#231)
