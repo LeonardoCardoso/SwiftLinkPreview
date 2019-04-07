@@ -17,6 +17,7 @@ public enum SwiftLinkResponseKey: String {
     case images
     case icon
     case video
+    case price
 }
 
 open class Cancellable: NSObject {
@@ -75,6 +76,7 @@ open class SwiftLinkPreview: NSObject {
         self.responseQueue = _responseQueue
         self.cache = _cache
         self.session = _session
+
     }
 
     // MARK: - Functions
@@ -134,6 +136,7 @@ open class SwiftLinkPreview: NSObject {
                                 result.images = $0.images
                                 result.icon = $0.icon
                                 result.video = $0.video
+                                result.price = $0.price
 
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
                                 self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
@@ -393,6 +396,8 @@ extension SwiftLinkPreview {
         var otherResponse = self.crawlTitle(sanitizedHtmlCode, result: result)
 
         otherResponse = self.crawlDescription(otherResponse.htmlCode, result: otherResponse.result)
+        
+        otherResponse = self.crawlPrice(otherResponse.htmlCode, result: otherResponse.result)
 
         return self.crawlImages(otherResponse.htmlCode, result: otherResponse.result)
     }
@@ -478,7 +483,7 @@ extension SwiftLinkPreview {
             Response.Key.title.rawValue,
             Response.Key.description.rawValue,
             Response.Key.image.rawValue,
-            Response.Key.video.rawValue
+            Response.Key.video.rawValue,
         ]
 
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
@@ -501,12 +506,7 @@ extension SwiftLinkPreview {
                             if tag == "image" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
                                 if value.isImage() { result.set(value, for: key) }
-                            } else {
-                                result.set(value, for: key)
-                            }
-                        } else if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
-                            let value = value.decoded.extendedTrim
-                            if tag == "video" {
+                            } else if tag == "video" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
                                 if value.isVideo() { result.set(value, for: key) }
                             } else {
@@ -582,6 +582,22 @@ extension SwiftLinkPreview {
             result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
         }
         return result
+    }
+    
+    // Crawl for price
+    internal func crawlPrice(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
+        var result = result
+        
+        let mainPrice = result.price
+        
+        if mainPrice == nil || mainPrice?.isEmpty ?? true {
+            let values = Regex.pregMatchAll(htmlCode, regex: Regex.pricePattern, index: 1)
+            if !values.isEmpty {
+                result.price = values.first
+            }
+        }
+        
+        return (htmlCode, result)
     }
 
     // Add prefix image if needed

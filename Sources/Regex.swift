@@ -24,6 +24,7 @@ class Regex {
     static let scriptPattern = "<script(.*?)>"
     static let commentPattern = "<!--(.*?)-->"
     static let hrefPattern = ".*href=\"(.*?)\".*"
+    static let pricePattern = "itemprop=\"price\" content=\"([^\"]*)\""
 
     // Test regular expression
     static func test(_ string: String, regex: String) -> Bool {
