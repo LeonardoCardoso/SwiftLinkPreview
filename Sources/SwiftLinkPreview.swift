@@ -356,6 +356,8 @@ extension SwiftLinkPreview {
                         if !cancellable.isCancelled {
                             self.parseHtmlString(source as String, response: response, completion: completion)
                         }
+                    } else {
+                        onError(.cannotBeOpened(sourceUrl.absoluteString))
                     }
                 } catch _ {
                     if !cancellable.isCancelled {
