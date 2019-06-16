@@ -10,7 +10,7 @@ import Foundation
 
 internal extension Response {
     
-    internal var dictionary: [String: Any] {
+    var dictionary: [String: Any] {
         var responseData:[String: Any] = [:]
         responseData["url"] = url
         responseData["finalUrl"] = finalUrl
@@ -25,7 +25,7 @@ internal extension Response {
         return responseData
     }
     
-    internal enum Key: String {
+    enum Key: String {
         case url
         case finalUrl
         case canonicalUrl
@@ -38,7 +38,7 @@ internal extension Response {
         case price
     }
     
-    internal mutating func set(_ value: Any, for key: Key) {
+    mutating func set(_ value: Any, for key: Key) {
         switch key {
         case Key.url:
             if let value = value as? URL { self.url = value }
@@ -63,7 +63,7 @@ internal extension Response {
         }
     }
     
-    internal func value(for key: Key) -> Any? {
+    func value(for key: Key) -> Any? {
         switch key {
         case Key.url:
             return self.url
