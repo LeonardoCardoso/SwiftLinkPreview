@@ -1,7 +1,7 @@
 # Change Log
 
 #### 3.x Releases
-- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
+- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)| [3.0.2](#302)
 
 #### 2.x Releases
 - `2.3.x` Releases - [2.3.0](#230) | [2.3.1](#231)
@@ -17,6 +17,13 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [3.0.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.2)
+
+#### Added
+
+- Fixed lack case nil when unwrap data
+- Added by [Quang Truong Tuan](https://github.com/tuanquanghpvn)
 
 ## [3.0.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.1)
 
