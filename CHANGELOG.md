@@ -1,7 +1,8 @@
 # Change Log
 
 #### 3.x Releases
-- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)| [3.0.2](#302)
+- `3.1.x` Releases - [3.1.0](#310)
+- `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
 
 #### 2.x Releases
 - `2.3.x` Releases - [2.3.0](#230) | [2.3.1](#231)
@@ -17,13 +18,14 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+## [3.1.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.1.0)
 
-## [3.0.2](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.2)
+#### Changed
 
-#### Added
-
+- Swift 5 compatibility
+    - Added by [Rajesh](https://github.com/rajeshbeats)
 - Fixed lack case nil when unwrap data
-- Added by [Quang Truong Tuan](https://github.com/tuanquanghpvn)
+    - Added by [Quang Truong Tuan](https://github.com/tuanquanghpvn)
 
 ## [3.0.1](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.0.1)
 

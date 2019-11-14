@@ -9,7 +9,7 @@ import Foundation
 
 public extension URLSession {
 
-    public func synchronousDataTask(with url: URL) -> (Data?, URLResponse?, NSError?) {
+    func synchronousDataTask(with url: URL) -> (Data?, URLResponse?, NSError?) {
 
         var data: Data?, response: URLResponse?, error: NSError?
         let semaphore = DispatchSemaphore(value: 0)
@@ -27,7 +27,7 @@ public extension URLSession {
 
     }
 
-    public func synchronousDataTask(with request: URLRequest) -> (Data?, URLResponse?, NSError?) {
+    func synchronousDataTask(with request: URLRequest) -> (Data?, URLResponse?, NSError?) {
 
         var data: Data?, response: URLResponse?, error: NSError?
         let semaphore = DispatchSemaphore(value: 0)
