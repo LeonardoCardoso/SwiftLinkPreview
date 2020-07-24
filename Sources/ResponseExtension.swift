@@ -22,7 +22,7 @@ internal extension Response {
         responseData["icon"] = icon
         responseData["video"] = video
         responseData["price"] = price
-        return responseData
+        return responseData 
     }
     
     enum Key: String {
