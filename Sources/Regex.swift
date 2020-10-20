@@ -40,9 +40,9 @@ class Regex {
 
             let rx = try NSRegularExpression(pattern: regex, options: [.caseInsensitive])
 
-            if let match = rx.firstMatch(in: string, options: [], range: NSRange(location: 0, length: string.count)) {
+            if let match = rx.firstMatch(in: string, options: [], range:NSRange(string.startIndex..., in: string)) {
 
-                var result: [String] = Regex.stringMatches([match], text: string, index: index)
+                let result: [String] = Regex.stringMatches([match], text: string, index: index)
                 return result.count == 0 ? nil : result[0]
 
             } else {
@@ -72,10 +72,10 @@ class Regex {
 
             if string.count > limit {
                 string.split(by: limit).forEach {
-                    matches.append(contentsOf: rx.matches(in: string, options: [], range: NSRange(location: 0, length: $0.count)))
+                    matches.append(contentsOf: rx.matches(in: string, options: [], range: NSRange($0.startIndex..., in: $0)))
                 }
             } else {
-                matches.append(contentsOf: rx.matches(in: string, options: [], range: NSRange(location: 0, length: string.count)))
+                matches.append(contentsOf: rx.matches(in: string, options: [], range: NSRange(string.startIndex..., in: string)))
             }
 
             return !matches.isEmpty ? Regex.stringMatches(matches, text: string, index: index) : []
