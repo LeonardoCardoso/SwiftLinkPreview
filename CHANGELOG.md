@@ -18,6 +18,12 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+#### Changed
+- Updated Package.swift to swift-tools-version:4.2
+  - Changed by [skunkworker](https://github.com/skunkworker)
+
+
 ## [3.1.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.1.0)
 
 #### Changed
