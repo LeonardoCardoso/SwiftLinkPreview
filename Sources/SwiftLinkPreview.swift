@@ -580,9 +580,23 @@ extension SwiftLinkPreview {
                     result.images = imgs
                     result.image = imgs.first
                 }
+                else{
+                    let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 1)
+                    if !values.isEmpty {
+                        result.images = values
+                        result.image = values.first
+                    }
+                }
             }
         } else {
-            result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
+                let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 1)
+                if !values.isEmpty {
+                    result.images = values
+                    result.image = values.first
+                }
+                else{
+                    result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
+                }
         }
         return result
     }
