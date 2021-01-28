@@ -20,6 +20,10 @@
 
 ---
 
+#### Changed
+- fixed youtube and open graph tags image metadata issues
+  - Changed by [nafis042](https://github.com/nafis042)
+
 ## [3.2.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.2.0)
 
 #### Changed
