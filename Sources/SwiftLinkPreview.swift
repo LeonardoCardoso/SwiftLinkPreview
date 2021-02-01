@@ -380,6 +380,7 @@ extension SwiftLinkPreview {
             }
             var request = URLRequest( url: sourceUrl )
             request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
+            request.addValue("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", forHTTPHeaderField: "user-Agent")
             let (data, urlResponse, error) = session.synchronousDataTask(with: request )
             if let error = error {
                 if !cancellable.isCancelled {
@@ -627,9 +628,23 @@ extension SwiftLinkPreview {
                     result.images = imgs
                     result.image = imgs.first
                 }
+                else{
+                    let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 1)
+                    if !values.isEmpty {
+                        result.images = values
+                        result.image = values.first
+                    }
+                }
             }
         } else {
-            result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
+                let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 1)
+                if !values.isEmpty {
+                    result.images = values
+                    result.image = values.first
+                }
+                else{
+                    result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
+                }
         }
         return result
     }
