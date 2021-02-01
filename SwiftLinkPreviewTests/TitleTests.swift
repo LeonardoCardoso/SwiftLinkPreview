@@ -28,7 +28,7 @@ class TitleTests: XCTestCase {
     // MARK: - Title
     func setUpTitle() {
 
-        var metaData =
+        let metaData =
             [
                 Constants.title: String.randomText(),
                 Constants.headRandom: String.randomTag(),
