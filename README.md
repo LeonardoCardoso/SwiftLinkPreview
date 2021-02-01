@@ -112,9 +112,10 @@ let slp = SwiftLinkPreview(session: URLSession = URLSession.shared,
 
 #### Requesting preview
 ```swift
-slp.preview("Text containing URL",
-	    onSuccess: { result in print("\(result)") },
-	    onError: { error in print("\(error)")})
+let preview = slp.preview("Text containing URL",
+                          onSuccess: { result in print("\(result)") },
+                          onError: { error in print("\(error)")})
+// preview.cancel() to cancel it.
 ```
 **result** is a struct ```Response```:
 
