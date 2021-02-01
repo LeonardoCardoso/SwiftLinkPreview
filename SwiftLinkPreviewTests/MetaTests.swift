@@ -34,7 +34,7 @@ class MetaTests: XCTestCase {
     // MARK: - Twitter
     func setUpTwitterAndRun() {
 
-        var twitterData =
+        let twitterData =
             [
                 Constants.twitterTitle: String.randomText(),
                 Constants.twitterSite: String.randomUrl(),
@@ -74,7 +74,7 @@ class MetaTests: XCTestCase {
     // MARK: - Facebook
     func setUpFacebookAndRun() {
 
-        var facebookData =
+        let facebookData =
             [
                 Constants.facebookTitle: String.randomText(),
                 Constants.facebookSite: String.randomUrl(),
@@ -113,7 +113,7 @@ class MetaTests: XCTestCase {
     // MARK: - Facebook
     func setUpItempropAndRun() {
 
-        var itempropData =
+        let itempropData =
             [
                 Constants.title: String.randomText(),
                 Constants.site: String.randomUrl(),
@@ -152,7 +152,7 @@ class MetaTests: XCTestCase {
     // MARK: - Meta
     func setUpMetaAndRun() {
 
-        var metaData =
+        let metaData =
             [
                 Constants.title: String.randomText(),
                 Constants.site: String.randomUrl(),

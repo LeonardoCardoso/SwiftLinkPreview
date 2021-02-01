@@ -1,6 +1,7 @@
 # Change Log
 
 #### 3.x Releases
+- `3.3.x` Releases - [3.3.0](#330)
 - `3.2.x` Releases - [3.2.0](#320)
 - `3.1.x` Releases - [3.1.0](#310)
 - `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
@@ -20,11 +21,19 @@
 
 ---
 
+## [3.3.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.3.0)
+
+#### Changed
+- Handle empty landing pages with HTML meta redirects
+  	- Changed by [lhunath](https://github.com/lhunath)
+- fixed youtube and open graph tags image metadata issues
+  	- Changed by [nafis042](https://github.com/nafis042)
+
 ## [3.2.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.2.0)
 
 #### Changed
 - Updated Package.swift to swift-tools-version:4.2
-  - Changed by [skunkworker](https://github.com/skunkworker)
+  	- Changed by [skunkworker](https://github.com/skunkworker)
 - Fixes the NSRange to use a String defined range instead of inferring length from the count property
     - Changed by [adamwulf](https://github.com/adamwulf)
 

@@ -183,7 +183,7 @@ class ViewController: UIViewController {
         }
 
         if let value: String = self.result.icon, let url = URL(string: value) {
-            self.favicon?.af_setImage(withURL: url)
+            self.favicon?.af.setImage(withURL: url)
         }
 
         self.showHideAll(hide: false)
@@ -243,7 +243,7 @@ class ViewController: UIViewController {
 
         self.slideshow?.backgroundColor = UIColor.white
         self.slideshow?.slideshowInterval = 7.0
-        self.slideshow?.pageControlPosition = PageControlPosition.hidden
+        self.slideshow?.pageIndicatorPosition = .init(horizontal: .center, vertical: .bottom)
         self.slideshow?.contentScaleMode = .scaleAspectFill
 
     }

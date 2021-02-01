@@ -32,7 +32,7 @@ class BodyTests: XCTestCase {
     // MARK: - Span
     func setUpSpan() {
 
-        var metaData =
+        let metaData =
             [
                 Constants.random1: String.randomText(),
                 Constants.random2: String.randomText()
