@@ -21,6 +21,10 @@
 
 ---
 
+#### Changed
+- Resolve relative image URLs against the request URL.
+  	- Changed by [lhunath](https://github.com/lhunath)
+
 ## [3.3.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.3.0)
 
 #### Changed
