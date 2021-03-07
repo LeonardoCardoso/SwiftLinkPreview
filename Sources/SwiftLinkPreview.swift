@@ -678,8 +678,8 @@ extension SwiftLinkPreview {
         var image = image
 
         // TODO: account for HTML <base>
-        if let canonicalUrl = canonicalUrl, let finalUrl = finalUrl {
-            if image.hasPrefix("/"), let proto = finalUrl.split(separator: ":").first {
+        if let canonicalUrl = canonicalUrl, let finalUrl = finalUrl, let proto = finalUrl.split(separator: ":").first {
+            if image.hasPrefix("/") {
                 if image.hasPrefix("//") {
                     // image url is //domain/path
                     image = proto + ":" + image
