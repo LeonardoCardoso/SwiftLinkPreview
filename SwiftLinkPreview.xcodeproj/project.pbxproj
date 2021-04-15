@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F8164ED26287866000F2905 /* VideoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8164EC26287866000F2905 /* VideoTests.swift */; };
 		68074FFA1F23B6C900649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFB1F23BB1100649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFC1F23BB1400649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
@@ -151,6 +152,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F8164EC26287866000F2905 /* VideoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTests.swift; sourceTree = "<group>"; };
 		68074FF91F23B6C900649DE6 /* head-meta-icon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "head-meta-icon.html"; sourceTree = "<group>"; };
 		686E58DE1F22416D000C2A33 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		7A552DE121A460910019E8B1 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */,
 				985DCEC81D2C029700B40D76 /* BodyTests.swift */,
 				985DCEC61D2C026000B40D76 /* ImageTests.swift */,
+				1F8164EC26287866000F2905 /* VideoTests.swift */,
 				985DCEC41D2C022E00B40D76 /* MetaTests.swift */,
 				982812911D3A9293000D3ABB /* RegexTests.swift */,
 				986D5BE41D33DFE50025555F /* TitleTests.swift */,
@@ -733,6 +736,7 @@
 				982812901D3A9281000D3ABB /* URLs.swift in Sources */,
 				982812921D3A9293000D3ABB /* RegexTests.swift in Sources */,
 				686E58DF1F22416D000C2A33 /* IconTests.swift in Sources */,
+				1F8164ED26287866000F2905 /* VideoTests.swift in Sources */,
 				9828136D1D3AE2EA000D3ABB /* IntExtension.swift in Sources */,
 				985DCECF1D2C03D900B40D76 /* StringTestExtension.swift in Sources */,
 				98B5ED4A1D3E7DC600AEBD54 /* HugeTests.swift in Sources */,

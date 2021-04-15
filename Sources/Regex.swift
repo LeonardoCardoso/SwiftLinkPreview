@@ -11,6 +11,7 @@ import Foundation
 class Regex {
 
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
+    static let videoPattern = "(.+?)\\.(mp4|mpeg|avi|mov)$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
     static let secondaryVideoTagPattern = "og:video\".*content=\"(.+?)\".*>"
     static let imageTagPattern = "<img(.+?)src=\"([^\"](.+?))\"(.+?)[/]?>"
