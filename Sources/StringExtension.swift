@@ -105,7 +105,7 @@ extension String {
     }
     
     func isVideo() -> Bool {
-        return Regex.test(self, regex: Regex.videoTagPattern)
+        return Regex.test(self, regex: Regex.videoTagPattern) || Regex.test(self, regex: Regex.secondaryVideoTagPattern)
     }
 
     // Split into substring of equal length
