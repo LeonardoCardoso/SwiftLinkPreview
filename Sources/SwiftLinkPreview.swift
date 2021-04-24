@@ -380,7 +380,7 @@ extension SwiftLinkPreview {
             }
             var request = URLRequest( url: sourceUrl )
             request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
-            request.addValue("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", forHTTPHeaderField: "user-Agent")
+            request.addValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1 AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0", forHTTPHeaderField: "user-Agent")
             let (data, urlResponse, error) = session.synchronousDataTask(with: request )
             if let error = error {
                 if !cancellable.isCancelled {
