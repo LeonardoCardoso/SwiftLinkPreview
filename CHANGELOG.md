@@ -28,6 +28,8 @@
   	- Changed by [lhunath](https://github.com/lhunath)
 - fixed youtube and open graph tags image metadata issues
   	- Changed by [nafis042](https://github.com/nafis042)
+- Fixed github link image for `og:image` property.
+  	- Changed by [MuhtasimTanmoy](https://github.com/MuhtasimTanmoy/)
 
 ## [3.2.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.2.0)
 

@@ -103,7 +103,11 @@ extension String {
         return Regex.test(self, regex: Regex.imagePattern)
 
     }
-    
+
+    func isOpenGraphImage() -> Bool {
+        return Regex.test(self, regex: Regex.openGraphImagePattern)
+    }
+     
     func isVideo() -> Bool {
         return Regex.test(self, regex: Regex.videoTagPattern)
     }
