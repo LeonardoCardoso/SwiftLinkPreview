@@ -24,9 +24,15 @@
 
 ## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)
 
+#### Added
+- Added support for m3u8 lists
+	- Added by [jeffhodsdon](https://github.com/jeffhodsdon)
+
 #### Changed
 - Resolve relative image URLs against the request URL.
   	- Changed by [lhunath](https://github.com/lhunath)
+- Video parsing fix
+	- Changed by [jeffhodsdon](https://github.com/jeffhodsdon)
 
 ## [3.3.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.3.0)
 
