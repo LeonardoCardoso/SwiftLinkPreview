@@ -20,8 +20,8 @@ class HugeTests: XCTestCase {
 
         do {
 
-            // Get youtube.com becaus it contains a huge HTML
-            let source = try String(contentsOf: URL(string: "https://youtube.com")!).extendedTrim
+            // Get reddit.com because it contains a huge HTML
+            let source = try String(contentsOf: URL(string: "https://reddit.com")!).extendedTrim
 
             let title = self.slp.crawlCode(source, minimum: SwiftLinkPreview.titleMinimumRelevant)
             let description = self.slp.crawlCode(source, minimum: SwiftLinkPreview.decriptionMinimumRelevant)

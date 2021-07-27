@@ -1,6 +1,7 @@
 # Change Log
 
 #### 3.x Releases
+- `3.4.x` Releases - [3.4.0](#340)
 - `3.3.x` Releases - [3.3.0](#330)
 - `3.2.x` Releases - [3.2.0](#320)
 - `3.1.x` Releases - [3.1.0](#310)
@@ -20,6 +21,20 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)
+
+#### Added
+- Added support for m3u8 lists
+	- Added by [jeffhodsdon](https://github.com/jeffhodsdon)
+
+#### Changed
+- Resolve relative image URLs against the request URL.
+  	- Changed by [lhunath](https://github.com/lhunath)
+- Video parsing fix
+	- Changed by [jeffhodsdon](https://github.com/jeffhodsdon)
+- Fixed github link image for `og:image` property.
+  	- Changed by [MuhtasimTanmoy](https://github.com/MuhtasimTanmoy/)
 
 ## [3.3.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.3.0)
 
