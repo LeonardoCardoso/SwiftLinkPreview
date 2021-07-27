@@ -32,9 +32,6 @@
 		9272A10D1E2EF0E600F9F17E /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC71D0A00DF003FA2B3 /* Regex.swift */; };
 		9272A10E1E2EF0E700F9F17E /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC71D0A00DF003FA2B3 /* Regex.swift */; };
 		9272A10F1E2EF0E800F9F17E /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98348AC71D0A00DF003FA2B3 /* Regex.swift */; };
-		9272A1111E2F07AF00F9F17E /* MemoryLeaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9272A1101E2F07AF00F9F17E /* MemoryLeaks.swift */; };
-		9272A1121E2F07AF00F9F17E /* MemoryLeaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9272A1101E2F07AF00F9F17E /* MemoryLeaks.swift */; };
-		9272A1131E2F07AF00F9F17E /* MemoryLeaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9272A1101E2F07AF00F9F17E /* MemoryLeaks.swift */; };
 		982812901D3A9281000D3ABB /* URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9828128F1D3A9281000D3ABB /* URLs.swift */; };
 		982812921D3A9293000D3ABB /* RegexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982812911D3A9293000D3ABB /* RegexTests.swift */; };
 		982813231D3AD9D4000D3ABB /* SwiftLinkPreview.h in Headers */ = {isa = PBXBuildFile; fileRef = 98C545951D2B30AD0003A74E /* SwiftLinkPreview.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -156,7 +153,6 @@
 		7A552DE121A460910019E8B1 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		7A552DE621A466EB0019E8B1 /* ResponseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseExtension.swift; sourceTree = "<group>"; };
 		9272A1041E2EC11000F9F17E /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
-		9272A1101E2F07AF00F9F17E /* MemoryLeaks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryLeaks.swift; sourceTree = "<group>"; };
 		9828128F1D3A9281000D3ABB /* URLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLs.swift; sourceTree = "<group>"; };
 		982812911D3A9293000D3ABB /* RegexTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexTests.swift; sourceTree = "<group>"; };
 		9828136C1D3AE2EA000D3ABB /* IntExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
@@ -360,7 +356,6 @@
 		98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */ = {
 			isa = PBXGroup;
 			children = (
-				9272A1101E2F07AF00F9F17E /* MemoryLeaks.swift */,
 				98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */,
 				985DCEC81D2C029700B40D76 /* BodyTests.swift */,
 				985DCEC61D2C026000B40D76 /* ImageTests.swift */,
@@ -740,7 +735,6 @@
 				9272A10B1E2EEE1700F9F17E /* StringExtension.swift in Sources */,
 				986D5BE51D33DFE60025555F /* TitleTests.swift in Sources */,
 				985DCEC71D2C026000B40D76 /* ImageTests.swift in Sources */,
-				9272A1111E2F07AF00F9F17E /* MemoryLeaks.swift in Sources */,
 				988B48D81D2C3C3D0040A4AD /* Constants.swift in Sources */,
 				9272A10D1E2EF0E600F9F17E /* Regex.swift in Sources */,
 			);
@@ -777,7 +771,6 @@
 				9272A10C1E2EEE1800F9F17E /* StringExtension.swift in Sources */,
 				98E7C3271D3B24C6009E5F6D /* StringTestExtension.swift in Sources */,
 				98E7C3281D3B24C6009E5F6D /* File.swift in Sources */,
-				9272A1131E2F07AF00F9F17E /* MemoryLeaks.swift in Sources */,
 				98E7C3291D3B24C6009E5F6D /* IntExtension.swift in Sources */,
 				9272A10F1E2EF0E800F9F17E /* Regex.swift in Sources */,
 			);
@@ -814,7 +807,6 @@
 				9272A10A1E2EEE1600F9F17E /* StringExtension.swift in Sources */,
 				98F76D111D3AF78600E9B10E /* StringTestExtension.swift in Sources */,
 				98F76D121D3AF78600E9B10E /* File.swift in Sources */,
-				9272A1121E2F07AF00F9F17E /* MemoryLeaks.swift in Sources */,
 				98F76D131D3AF78600E9B10E /* IntExtension.swift in Sources */,
 				9272A10E1E2EF0E700F9F17E /* Regex.swift in Sources */,
 			);
