@@ -38,6 +38,8 @@ class ViewController: UIViewController {
         "www.youtube.com",
         "www.google.com",
         "facebook.com",
+        
+        "https://github.com/LeonardoCardoso/SwiftLinkPreview",
 
         "https://leocardz.com/swift-link-preview-5a9860c7756f",
         "NASA! 🖖🏽 https://www.nasa.gov/",
@@ -57,7 +59,6 @@ class ViewController: UIViewController {
         "Youtube?! It does! https://www.youtube.com/watch?v=cv2mjAgFTaI",
         "Also Vimeo https://vimeo.com/67992157",
 
-        "Even with image itself https://lh6.googleusercontent.com/-aDALitrkRFw/UfQEmWPMQnI/AAAAAAAFOlQ/mDh1l4ej15k/w337-h697-no/db1969caa4ecb88ef727dbad05d5b5b3.jpg",
         "Well, it's a gif! https://goo.gl/jKCPgp"
         ]
 
