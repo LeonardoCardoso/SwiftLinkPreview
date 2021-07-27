@@ -12,6 +12,7 @@ class Regex {
  
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)\\?.*$"
     static let videoPattern = "(.+?)\\.(mp4|mpeg|avi|mov|m3u8)\\?.*$"
+    static let openGraphImagePattern = "(.+?)\\.(gif||jpg|jpeg|png|bmp)$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
     static let secondaryVideoTagPattern = "og:video\".*content=\"(.+?)\".*>"
     static let imageTagPattern = "<img(.+?)src=\"([^\"](.+?))\"(.+?)[/]?>"

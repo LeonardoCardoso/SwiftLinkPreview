@@ -108,7 +108,11 @@ extension String {
 
         return false
     }
-    
+
+    func isOpenGraphImage() -> Bool {
+        return Regex.test(self, regex: Regex.openGraphImagePattern)
+    }
+     
     func isVideo() -> Bool {
         let possible = ["mp4", "mov", "mpeg", "avi", "m3u8"]
         if let url = URL(string: self),

@@ -33,6 +33,8 @@
   	- Changed by [lhunath](https://github.com/lhunath)
 - Video parsing fix
 	- Changed by [jeffhodsdon](https://github.com/jeffhodsdon)
+- Fixed github link image for `og:image` property.
+  	- Changed by [MuhtasimTanmoy](https://github.com/MuhtasimTanmoy/)
 
 ## [3.3.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.3.0)
 
