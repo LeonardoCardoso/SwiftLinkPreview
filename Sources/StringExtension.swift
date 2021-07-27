@@ -100,12 +100,23 @@ extension String {
     // Check if url is an image
     func isImage() -> Bool {
 
-        return Regex.test(self, regex: Regex.imagePattern)
+        let possible = ["gif", "jpg", "jpeg", "png", "bmp"]
+        if let url = URL(string: self),
+           possible.contains(url.pathExtension) {
+            return true
+        }
 
+        return false
     }
     
     func isVideo() -> Bool {
-        return Regex.test(self, regex: Regex.videoTagPattern)
+        let possible = ["mp4", "mov", "mpeg", "avi", "m3u8"]
+        if let url = URL(string: self),
+           possible.contains(url.pathExtension) {
+            return true
+        }
+
+        return false
     }
 
     // Split into substring of equal length

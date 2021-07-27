@@ -9,12 +9,13 @@ import Foundation
 
 // MARK: - Regular expressions
 class Regex {
-
-    static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
+ 
+    static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)\\?.*$"
+    static let videoPattern = "(.+?)\\.(mp4|mpeg|avi|mov|m3u8)\\?.*$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
-    static let secondaryVideoTagPattern = "og:video\" content=\"([^\"](.+?))\"(.+?)[/]?>"
+    static let secondaryVideoTagPattern = "og:video\".*content=\"(.+?)\".*>"
     static let imageTagPattern = "<img(.+?)src=\"([^\"](.+?))\"(.+?)[/]?>"
-    static let secondaryImageTagPattern = "og:image\" content=\"([^\"](.+?))\"(.+?)[/]?>"
+    static let secondaryImageTagPattern = "og:image\".*content=\"(.+?)\".*>"
     static let titlePattern = "<title(.*?)>(.*?)</title>"
     static let metatagPattern = "<meta(.*?)>"
     static let metatagContentPattern = "content=(\"(.*?)\")|('(.*?)')"

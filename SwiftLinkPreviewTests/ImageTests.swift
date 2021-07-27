@@ -95,5 +95,22 @@ class ImageTests: XCTestCase {
         }
 
     }
+    
+    func testImgur() {
+        
+        do {
+
+            let source = try String(contentsOf: URL(string: "https://imgur.com/GoAkW6w")!).extendedTrim
+
+            let result = self.slp.crawlMetaTags(source, result: Response())
+
+            print(result)
+
+        } catch let err as NSError {
+
+            print("\(err)")
+
+        }
+    }
 
 }
