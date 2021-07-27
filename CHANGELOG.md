@@ -1,6 +1,7 @@
 # Change Log
 
 #### 3.x Releases
+- `3.4.x` Releases - [3.4.0](#340)
 - `3.3.x` Releases - [3.3.0](#330)
 - `3.2.x` Releases - [3.2.0](#320)
 - `3.1.x` Releases - [3.1.0](#310)
@@ -20,6 +21,8 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)
 
 #### Changed
 - Resolve relative image URLs against the request URL.
