@@ -26,8 +26,10 @@
 ## [3.5.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.5.0)
 
 #### Changed
-- Update README.md [#150](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/150)
+- Updated README.md [#150](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/150)
 	- Changed by [benlmyers](https://github.com/benlmyers)
+- Updated regex limit [#148](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/148)
+	- Changed by [kinhvodoi92](https://github.com/kinhvodoi92)
 
 
 ## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)
