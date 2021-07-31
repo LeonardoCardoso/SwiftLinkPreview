@@ -71,7 +71,7 @@ class Regex {
 
             var matches: [NSTextCheckingResult] = []
 
-            let limit = 300000
+            let limit = 1000000
 
             if string.count > limit {
                 string.split(by: limit).forEach {
