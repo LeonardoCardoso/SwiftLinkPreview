@@ -82,6 +82,13 @@ extension String {
     }
 
     // Substring
+    
+    func getSubstring(_ start: Int, end: Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: start)
+        let endIndex = self.index(startIndex, offsetBy: end)
+        return String(self[startIndex..<endIndex])
+    }
+    
     func substring(_ start: Int, end: Int) -> String {
 
         return self.substring(NSRange(location: start, length: end - start))
@@ -100,27 +107,12 @@ extension String {
     // Check if url is an image
     func isImage() -> Bool {
 
-        let possible = ["gif", "jpg", "jpeg", "png", "bmp"]
-        if let url = URL(string: self),
-           possible.contains(url.pathExtension) {
-            return true
-        }
+        return Regex.test(self, regex: Regex.imagePattern)
 
-        return false
     }
-
-    func isOpenGraphImage() -> Bool {
-        return Regex.test(self, regex: Regex.openGraphImagePattern)
-    }
-     
+    
     func isVideo() -> Bool {
-        let possible = ["mp4", "mov", "mpeg", "avi", "m3u8"]
-        if let url = URL(string: self),
-           possible.contains(url.pathExtension) {
-            return true
-        }
-
-        return false
+        return Regex.test(self, regex: Regex.videoTagPattern)
     }
 
     // Split into substring of equal length
