@@ -39,7 +39,7 @@ open class SwiftLinkPreview: NSObject {
     public let responseQueue: DispatchQueue
     public let cache: Cache
 
-    public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
+    public static let defaultWorkQueue = DispatchQueue.global(qos: .background)
 
     // MARK: - Constructor
 
@@ -90,7 +90,8 @@ open class SwiftLinkPreview: NSObject {
                                   delegate: self, // To handle redirects
             delegateQueue: self.session.delegateQueue)
 
-        let successResponseQueue = { (response: Response) in
+        let successResponseQueue = { [weak self] (response: Response) in
+            guard let self = self else { return }
             if !cancellable.isCancelled {
                 self.responseQueue.async {
                     if !cancellable.isCancelled {
@@ -100,7 +101,8 @@ open class SwiftLinkPreview: NSObject {
             }
         }
 
-        let errorResponseQueue = { (error: PreviewError) in
+        let errorResponseQueue = { [weak self] (error: PreviewError) in
+            guard let self = self else { return }
             if !cancellable.isCancelled {
                 self.responseQueue.async {
                     if !cancellable.isCancelled {
@@ -111,14 +113,16 @@ open class SwiftLinkPreview: NSObject {
         }
 
         if let url = self.extractURL(text: text) {
-            workQueue.async {
+            workQueue.async { [weak self] in
+                guard let self = self else { return }
                 if cancellable.isCancelled {return}
 
                 if let result = self.cache.slp_getCachedResponse(url: url.absoluteString) {
                     successResponseQueue(result)
                 } else {
 
-                    self.unshortenURL(url, cancellable: cancellable, completion: { unshortened in
+                    self.unshortenURL(url, cancellable: cancellable, completion: { [weak self] unshortened in
+                        guard let self = self else { return }
                         if let result = self.cache.slp_getCachedResponse(url: unshortened.absoluteString) {
                             successResponseQueue(result)
                         } else {
@@ -128,15 +132,16 @@ open class SwiftLinkPreview: NSObject {
                             result.finalUrl = self.extractInURLRedirectionIfNeeded(unshortened)
                             result.canonicalUrl = self.extractCanonicalURL(unshortened)
 
-                            self.extractInfo(response: result, cancellable: cancellable, completion: {
-
-                                result.title = $0.title
-                                result.description = $0.description
-                                result.image = $0.image
-                                result.images = $0.images
-                                result.icon = $0.icon
-                                result.video = $0.video
-                                result.price = $0.price
+                            self.extractInfo(response: result, cancellable: cancellable, completion: { [weak self] value in
+                                guard let self = self else { return }
+                                
+                                result.title = value.title
+                                result.description = value.description
+                                result.image = value.image
+                                result.images = value.images
+                                result.icon = value.icon
+                                result.video = value.video
+                                result.price = value.price
 
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
                                 self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
@@ -181,49 +186,6 @@ open class SwiftLinkPreview: NSObject {
 
         return url
     }
-
-    //Objective-C wrapper for preview method.  Core incompataility is use of Swift specific enum types in closures.
-    //Returns a dictionary of rsults rather than enum for success, and an NSError object on error that encodes the local error description on error
-    /*
-     Keys for the dictionary are derived from the enum names above.  That enum def is canonical, below is a convenience comment
-     url
-     finalUrl
-     canonicalUrl
-     title
-     description
-     image
-     images
-     icon
-     
-     */
-    @objc @discardableResult open func previewLink(_ text: String, onSuccess: @escaping (Dictionary<String, Any>) -> Void, onError: @escaping (NSError) -> Void) -> Cancellable {
-
-        func success (_ result: Response) {
-            onSuccess(result.dictionary)
-        }
-
-        func failure (_ theError: PreviewError) {
-            var errorCode: Int
-            errorCode = 1
-
-            switch theError {
-            case .noURLHasBeenFound:
-                errorCode = 1
-            case .invalidURL:
-                errorCode = 2
-            case .cannotBeOpened:
-                errorCode = 3
-            case .parseError:
-                errorCode = 4
-            }
-
-            onError(NSError(domain: "SwiftLinkPreviewDomain",
-                            code: errorCode,
-                            userInfo: [NSLocalizedDescriptionKey: theError.description]))
-        }
-
-        return self.preview(text, onSuccess: success, onError: failure)
-    }
 }
 
 // Extraction functions
@@ -251,7 +213,8 @@ extension SwiftLinkPreview {
         var request = URLRequest(url: url)
         request.httpMethod = "HEAD"
 
-        task = session.dataTask(with: request, completionHandler: { data, response, error in
+        task = session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
+            guard let self = self else { return }
             guard !cancellable.isCancelled
             else { return }
 
@@ -268,7 +231,8 @@ extension SwiftLinkPreview {
                         if response?.mimeType?.contains( "/html" ) ?? false {
                             var request = URLRequest( url: url )
                             request.addValue( "text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept" )
-                            self.session.dataTask( with: request, completionHandler: { data, response, error in
+                            self.session.dataTask( with: request, completionHandler: { [weak self] data, response, error in
+                                guard let self = self else { return }
                                 guard !cancellable.isCancelled
                                 else { return }
 
@@ -372,16 +336,17 @@ extension SwiftLinkPreview {
 
             completion(result)
         } else {
-
             guard let sourceUrl = url.scheme == "http" || url.scheme == "https" ? url: URL( string: "http://\(url)" )
                 else {
                     if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
                     return
             }
+            
             var request = URLRequest( url: sourceUrl )
             request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
             request.addValue("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", forHTTPHeaderField: "user-Agent")
             let (data, urlResponse, error) = session.synchronousDataTask(with: request )
+            
             if let error = error {
                 if !cancellable.isCancelled {
                     let details = "\(sourceUrl.absoluteString): \(error.localizedDescription)"
@@ -424,7 +389,6 @@ extension SwiftLinkPreview {
 
     // Removing unnecessary data from the source
     private func cleanSource(_ source: String) -> String {
-
         var source = source
 
         source = source.deleteTagByPattern(Regex.inlineStylePattern)
@@ -443,12 +407,9 @@ extension SwiftLinkPreview {
         let sanitizedHtmlCode = htmlCode.deleteTagByPattern(Regex.linkPattern).extendedTrim
 
         result = self.crawlMetaTags(sanitizedHtmlCode, result: result)
-
-        var otherResponse = self.crawlTitle(sanitizedHtmlCode, result: result)
-
-        otherResponse = self.crawlDescription(otherResponse.htmlCode, result: otherResponse.result)
         
-        otherResponse = self.crawlPrice(otherResponse.htmlCode, result: otherResponse.result)
+        let otherResponse = self.crawlTitle(sanitizedHtmlCode, result: result)
+
 
         return self.crawlImages(otherResponse.htmlCode, result: otherResponse.result)
     }
@@ -532,9 +493,7 @@ extension SwiftLinkPreview {
 
         let possibleTags: [String] = [
             Response.Key.title.rawValue,
-            Response.Key.description.rawValue,
             Response.Key.image.rawValue,
-            Response.Key.video.rawValue,
         ]
 
         let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
@@ -594,21 +553,6 @@ extension SwiftLinkPreview {
         return (htmlCode, result)
     }
 
-    // Crawl for description if needed
-    internal func crawlDescription(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
-        var result = result
-        let description = result.description
-
-        if description == nil || description?.isEmpty ?? true {
-            let value: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
-            if !value.isEmpty {
-                result.description = value.decoded.extendedTrim
-            }
-        }
-
-        return (htmlCode, result)
-    }
-
     // Crawl for images
     internal func crawlImages(_ htmlCode: String, result: Response) -> Response {
 
@@ -626,45 +570,28 @@ extension SwiftLinkPreview {
                 let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 2)
                 if !values.isEmpty {
                     result.images = values
-                    result.image = values.first
+                    result.image = values.first(where: { $0.isImage() || $0.isOpenGraphImage() })
                 } else {
                     // If no OpenGraph image found pick any from <img/> tag to show.
                     let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
                     if !values.isEmpty {
                         let imgs = values.map { self.addImagePrefixIfNeeded($0, result: result) }
                         result.images = imgs
-                        result.image = imgs.first
+                        result.image = imgs.first(where: { $0.isImage() || $0.isOpenGraphImage()  })
                     }
                 }
-
             }
         } else {
                 let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 2)
                 if !values.isEmpty {
                     result.images = values
-                    result.image = values.first
+                    result.image = values.first(where: { $0.isImage() || $0.isOpenGraphImage()  })
                 }
                 else{
                     result.images = [self.addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
                 }
         }
         return result
-    }
-    
-    // Crawl for price
-    internal func crawlPrice(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
-        var result = result
-        
-        let mainPrice = result.price
-        
-        if mainPrice == nil || mainPrice?.isEmpty ?? true {
-            let values = Regex.pregMatchAll(htmlCode, regex: Regex.pricePattern, index: 1)
-            if !values.isEmpty {
-                result.price = values.first
-            }
-        }
-        
-        return (htmlCode, result)
     }
 
     // Add prefix image if needed

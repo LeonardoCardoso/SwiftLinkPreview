@@ -47,7 +47,8 @@ open class InMemoryCache: Cache {
     }
 
     open func cleanup() {
-        type(of: self).cacheQueue.async {
+        type(of: self).cacheQueue.async { [weak self] in
+            guard let self = self else { return }
             for (url, data) in self.cache {
                 if data.date.timeIntervalSinceNow >= self.invalidationTimeout {
                     self.cache[url] = nil

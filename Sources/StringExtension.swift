@@ -100,9 +100,9 @@ extension String {
     // Check if url is an image
     func isImage() -> Bool {
 
-        let possible = ["gif", "jpg", "jpeg", "png", "bmp"]
+        let possible = ["jpg", "jpeg", "png", "bmp"]
         if let url = URL(string: self),
-           possible.contains(url.pathExtension) {
+           possible.contains(url.pathExtension.lowercased()) {
             return true
         }
 
