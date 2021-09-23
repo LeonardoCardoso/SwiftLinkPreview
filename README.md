@@ -5,7 +5,7 @@
 > It makes a preview from an URL, grabbing all the information such as title, relevant texts and images.
 
 [![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
-[![CocoaPods](https://img.shields.io/badge/pod-v3.4.0-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
+[![CocoaPods](https://img.shields.io/badge/pod-v3.5.0-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
 [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#swift-package-manager)
 [![Build Status](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview.svg?branch=master)](https://travis-ci.org/LeonardoCardoso/SwiftLinkPreview)
@@ -59,7 +59,7 @@ To use **SwiftLinkPreview** as a pod package just add the following in your **Po
 	target 'Your Target Name' do
 	  	use_frameworks!
 	  	// ...
-	  	pod 'SwiftLinkPreview', '~> 3.4.0'
+	  	pod 'SwiftLinkPreview', '~> 3.5.0'
 	  	// ...
 	end
 ```
@@ -70,7 +70,7 @@ To use **SwiftLinkPreview** as a Carthage module package just add the following 
 
 ```ruby
   	// ...
-	github "LeonardoCardoso/SwiftLinkPreview" ~> 3.4.0
+	github "LeonardoCardoso/SwiftLinkPreview" ~> 3.5.0
   	// ...
 ```
 
@@ -85,7 +85,7 @@ let package = Package(
   name: "Your Target Name",
   dependencies: [
   	// ...
-    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "3.4.0")
+    .Package(url: "https://github.com/LeonardoCardoso/SwiftLinkPreview.git", "3.5.0")
   	// ...
   ]
 )
@@ -121,16 +121,17 @@ let preview = slp.preview("Text containing URL",
 
 ```swift
 Response {
-	let url: URL // URL
-	let finalUrl: URL // unshortened URL
-	let canonicalUrl: String // canonical URL
-	let title: String // title
-	let description: String // page description or relevant text
-	let images: [String] // array of URLs of the images
-	let image: String // main image
-	let icon: String // favicon
-	let video: String // video
-	let price: String // price
+	let baseURL: String? // base
+	let url: URL? // URL
+	let finalUrl: URL? // unshortened URL
+	let canonicalUrl: String? // canonical URL
+	let title: String? // title
+	let description: String? // page description or relevant text
+	let images: [String]? // array of URLs of the images
+	let image: String? // main image
+	let icon: String? // favicon
+	let video: String? // video
+	let price: String? // price
 }
 ```
 

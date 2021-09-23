@@ -23,7 +23,7 @@ public enum SwiftLinkResponseKey: String {
 open class Cancellable: NSObject {
     public private(set) var isCancelled: Bool = false
 
-    open func cancel() {
+    @objc open func cancel() {
         isCancelled = true
     }
 }
@@ -127,15 +127,17 @@ open class SwiftLinkPreview: NSObject {
                             result.url = url
                             result.finalUrl = self.extractInURLRedirectionIfNeeded(unshortened)
                             result.canonicalUrl = self.extractCanonicalURL(unshortened)
+                            result.baseURL = result.baseURL ?? (result.canonicalUrl?.starts(with: "http") == false ? "https://\(result.canonicalUrl!)" : result.canonicalUrl)
 
                             self.extractInfo(response: result, cancellable: cancellable, completion: {
 
                                 result.title = $0.title
                                 result.description = $0.description
-                                result.image = $0.image
-                                result.images = $0.images
-                                result.icon = $0.icon
-                                result.video = $0.video
+
+                                result.image = self.formatImageURL($0.image, base: $0.baseURL)
+                                result.images = self.formatImageURLs($0.images, base: $0.baseURL)
+                                result.icon = self.formatImageURL($0.icon, base: $0.baseURL)
+                                result.video = self.formatImageURL($0.video, base: $0.baseURL)
                                 result.price = $0.price
 
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
@@ -152,6 +154,28 @@ open class SwiftLinkPreview: NSObject {
         }
 
         return cancellable
+    }
+
+    private func formatImageURL(_ url: String?, base: String?) -> String? {
+        guard var url = url else { return nil }
+
+        if !url.starts(with: "http"), let base = base {
+            url = "\(base)\(url)"
+        }
+
+        return url
+    }
+
+    func formatImageURLs(_ array: [String]?, base: String?) -> [String]? {
+        guard var array = array else { return nil }
+
+        for i in 0 ..< array.count {
+            if let formatted = formatImageURL(array[0], base: base) {
+                array[i] = formatted
+            }
+        }
+
+        return Array(Set(array))
     }
 
     /*
@@ -287,9 +311,9 @@ extension SwiftLinkPreview {
                                                 CFStringConvertIANACharSetNameToEncoding( $0 as CFString ) ) )
                                     } ?? .utf8
                                     if let html = String( data: data, encoding: encoding ) {
-                                        for meta in Regex.pregMatchAll( html, regex: Regex.metatagPattern, index: 1 ) {
+                                        for meta in Regex.pregMatchAll( html, regex: Regex.metaTagPattern, index: 1 ) {
                                             if (meta.contains( "http-equiv=\"refresh\"" ) || meta.contains( "http-equiv='refresh'" )),
-                                               let value = Regex.pregMatchFirst( meta, regex: Regex.metatagContentPattern, index: 2 )?.decoded.extendedTrim,
+                                               let value = Regex.pregMatchFirst( meta, regex: Regex.metaTagContentPattern, index: 2 )?.decoded.extendedTrim,
                                                let redirectString = value.split( separator: ";" )
                                                                          .first( where: { $0.lowercased().starts( with: "url=" ) } )?
                                                                          .split( separator: "=", maxSplits: 1 ).last,
@@ -444,6 +468,8 @@ extension SwiftLinkPreview {
 
         result = self.crawlMetaTags(sanitizedHtmlCode, result: result)
 
+        result = self.crawlMetaBase(sanitizedHtmlCode, result: result)
+
         var otherResponse = self.crawlTitle(sanitizedHtmlCode, result: result)
 
         otherResponse = self.crawlDescription(otherResponse.htmlCode, result: otherResponse.result)
@@ -534,10 +560,10 @@ extension SwiftLinkPreview {
             Response.Key.title.rawValue,
             Response.Key.description.rawValue,
             Response.Key.image.rawValue,
-            Response.Key.video.rawValue,
+            Response.Key.video.rawValue
         ]
 
-        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metatagPattern, index: 1)
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metaTagPattern, index: 1)
 
         for metatag in metatags {
             for tag in possibleTags {
@@ -552,7 +578,7 @@ extension SwiftLinkPreview {
 
                     if let key = Response.Key(rawValue: tag),
                         result.value(for: key) == nil {
-                        if let value = Regex.pregMatchFirst(metatag, regex: Regex.metatagContentPattern, index: 2) {
+                        if let value = Regex.pregMatchFirst(metatag, regex: Regex.metaTagContentPattern, index: 2) {
                             let value = value.decoded.extendedTrim
                             if tag == "image" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
@@ -567,6 +593,17 @@ extension SwiftLinkPreview {
                     }
                 }
             }
+        }
+
+        return result
+    }
+
+    internal func crawlMetaBase(_ htmlCode: String, result: Response) -> Response {
+
+        var result = result
+
+        if let base = Regex.pregMatchAll(htmlCode, regex: Regex.baseTagPattern, index: 2).first {
+            result.set(base, for: .baseURL)
         }
 
         return result
