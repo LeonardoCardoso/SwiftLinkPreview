@@ -17,8 +17,9 @@ class Regex {
     static let imageTagPattern = "<img(.+?)src=\"([^\"](.+?))\"(.+?)[/]?>"
     static let secondaryImageTagPattern = "og:image\"(.+?)content=\"([^\"](.+?))\"(.+?)[/]?>"
     static let titlePattern = "<title(.*?)>(.*?)</title>"
-    static let metatagPattern = "<meta(.*?)>"
-    static let metatagContentPattern = "content=(\"(.*?)\")|('(.*?)')"
+    static let metaTagPattern = "<meta(.*?)>"
+    static let baseTagPattern = "<base(.+?)href=\"(.*?)\"(.+?)[/]?>"
+    static let metaTagContentPattern = "content=(\"(.*?)\")|('(.*?)')"
     static let cannonicalUrlPattern = "([^\\+&#@%\\?=~_\\|!:,;]+)"
     static let rawTagPattern = "<[^>]+>"
     static let inlineStylePattern = "<style(.*?)>(.*?)</style>"
@@ -71,7 +72,7 @@ class Regex {
 
             var matches: [NSTextCheckingResult] = []
 
-            let limit = 1000000
+            let limit = 300000
 
             if string.count > limit {
                 string.split(by: limit).forEach {

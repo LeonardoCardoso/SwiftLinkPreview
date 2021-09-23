@@ -12,6 +12,7 @@ internal extension Response {
     
     var dictionary: [String: Any] {
         var responseData:[String: Any] = [:]
+        responseData["baseURL"] = baseURL
         responseData["url"] = url
         responseData["finalUrl"] = finalUrl
         responseData["canonicalUrl"] = canonicalUrl
@@ -35,11 +36,14 @@ internal extension Response {
         case images
         case icon
         case video
+        case baseURL
         case price
     }
     
     mutating func set(_ value: Any, for key: Key) {
         switch key {
+        case Key.baseURL:
+            if let value = value as? String { self.baseURL = value }
         case Key.url:
             if let value = value as? URL { self.url = value }
         case Key.finalUrl:
@@ -65,6 +69,8 @@ internal extension Response {
     
     func value(for key: Key) -> Any? {
         switch key {
+        case Key.baseURL:
+            return self.baseURL
         case Key.url:
             return self.url
         case Key.finalUrl:
