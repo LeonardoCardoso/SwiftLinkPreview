@@ -30,6 +30,8 @@
 	- Changed by [benlmyers](https://github.com/benlmyers)
 - Updated regex limit [#148](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/148)
 	- Changed by [kinhvodoi92](https://github.com/kinhvodoi92)
+- Annotated `Cancelable.cancel()` as `@objc` to make it compatibale with Objective-C [#135](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/135)
+	- Changed by [LeonardoCardoso](https://github.com/LeonardoCardoso)
 
 
 ## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)

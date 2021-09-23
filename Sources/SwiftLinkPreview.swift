@@ -23,7 +23,7 @@ public enum SwiftLinkResponseKey: String {
 open class Cancellable: NSObject {
     public private(set) var isCancelled: Bool = false
 
-    open func cancel() {
+    @objc open func cancel() {
         isCancelled = true
     }
 }
