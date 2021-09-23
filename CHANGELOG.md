@@ -1,6 +1,7 @@
 # Change Log
 
 #### 3.x Releases
+- `3.5.x` Releases - [3.5.0](#350)
 - `3.4.x` Releases - [3.4.0](#340)
 - `3.3.x` Releases - [3.3.0](#330)
 - `3.2.x` Releases - [3.2.0](#320)
@@ -21,6 +22,13 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [3.5.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.5.0)
+
+#### Changed
+- Update README.md [#150](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/150)
+	- Changed by [benlmyers](https://github.com/benlmyers)
+
 
 ## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)
 
