@@ -33,7 +33,8 @@ open class SwiftLinkPreview: NSObject {
     // MARK: - Vars
     static let titleMinimumRelevant: Int = 15
     static let decriptionMinimumRelevant: Int = 100
-
+    static let maxHtmlCharacter = 300000
+    
     public var session: URLSession
     public let workQueue: DispatchQueue
     public let responseQueue: DispatchQueue
@@ -118,7 +119,7 @@ open class SwiftLinkPreview: NSObject {
                     successResponseQueue(result)
                 } else {
 
-                    self.unshortenURL(url, cancellable: cancellable, completion: { unshortened in
+                    self.unshortenURL(url, cancellable: cancellable, completion: { unshortened  in
                         if let result = self.cache.slp_getCachedResponse(url: unshortened.absoluteString) {
                             successResponseQueue(result)
                         } else {
@@ -129,7 +130,6 @@ open class SwiftLinkPreview: NSObject {
                             result.canonicalUrl = self.extractCanonicalURL(unshortened)
 
                             self.extractInfo(response: result, cancellable: cancellable, completion: {
-
                                 result.title = $0.title
                                 result.description = $0.description
                                 result.image = $0.image
@@ -243,7 +243,7 @@ extension SwiftLinkPreview {
     }
 
     // Unshorten URL by following redirections
-    fileprivate func unshortenURL(_ url: URL, cancellable: Cancellable, completion: @escaping (URL) -> Void, onError: @escaping (PreviewError) -> Void) {
+    fileprivate func unshortenURL(_ url: URL, cancellable: Cancellable, isRedirectURL: Bool = false, completion: @escaping (URL) -> Void, onError: @escaping (PreviewError) -> Void) {
 
         if cancellable.isCancelled {return}
 
@@ -254,7 +254,6 @@ extension SwiftLinkPreview {
         task = session.dataTask(with: request, completionHandler: { data, response, error in
             guard !cancellable.isCancelled
             else { return }
-
             if error != nil {
                 self.workQueue.async {
                     if !cancellable.isCancelled {
@@ -271,7 +270,6 @@ extension SwiftLinkPreview {
                             self.session.dataTask( with: request, completionHandler: { data, response, error in
                                 guard !cancellable.isCancelled
                                 else { return }
-
                                 if error != nil {
                                     self.workQueue.async {
                                         if !cancellable.isCancelled {
@@ -286,16 +284,27 @@ extension SwiftLinkPreview {
                                         String.Encoding( rawValue: CFStringConvertEncodingToNSStringEncoding(
                                                 CFStringConvertIANACharSetNameToEncoding( $0 as CFString ) ) )
                                     } ?? .utf8
-                                    if let html = String( data: data, encoding: encoding ) {
-                                        for meta in Regex.pregMatchAll( html, regex: Regex.metatagPattern, index: 1 ) {
+                                    if var html = String( data: data, encoding: encoding ) {
+                                        if html.count > SwiftLinkPreview.maxHtmlCharacter {
+                                            html = html.getSubstring(0, end: SwiftLinkPreview.maxHtmlCharacter-1)
+                                        }
+                                        html = html.deleteTagByPattern(Regex.commentPattern)
+                                        let metas = Regex.pregMatchAll( html, regex: Regex.metatagPattern, index: 1 )
+                                        var shouldRefresh = true
+                                        if metas.contains(where: { $0.contains("property=\"og:title\"") || $0.contains("property='og:title'")}) {
+                                            shouldRefresh = false
+                                        }
+                                        for meta in metas {
                                             if (meta.contains( "http-equiv=\"refresh\"" ) || meta.contains( "http-equiv='refresh'" )),
                                                let value = Regex.pregMatchFirst( meta, regex: Regex.metatagContentPattern, index: 2 )?.decoded.extendedTrim,
                                                let redirectString = value.split( separator: ";" )
                                                                          .first( where: { $0.lowercased().starts( with: "url=" ) } )?
                                                                          .split( separator: "=", maxSplits: 1 ).last,
                                                let redirectURL = URL( string: self.addImagePrefixIfNeeded( String( redirectString ), url: url ) ) {
-                                                self.unshortenURL( redirectURL, cancellable: cancellable, completion: completion, onError: onError )
-                                                return
+                                                if shouldRefresh && !isRedirectURL {
+                                                    self.unshortenURL( redirectURL, cancellable: cancellable, isRedirectURL: true, completion: completion, onError: onError )
+                                                    return
+                                                }
                                             }
                                         }
                                     }
@@ -303,7 +312,8 @@ extension SwiftLinkPreview {
 
                                 self.workQueue.async {
                                     if !cancellable.isCancelled {
-                                        completion( url )
+                                        completion( url)
+                                        task = nil
                                     }
                                 }
                             } ).resume()
@@ -319,7 +329,7 @@ extension SwiftLinkPreview {
                     } else {
                         task?.cancel()
                         task = nil
-                        self.unshortenURL(finalResult, cancellable: cancellable, completion: completion, onError: onError)
+                        self.unshortenURL(finalResult, cancellable: cancellable, isRedirectURL: true, completion: completion, onError: onError)
                     }
                 } else {
                     self.workQueue.async {
@@ -372,7 +382,6 @@ extension SwiftLinkPreview {
 
             completion(result)
         } else {
-
             guard let sourceUrl = url.scheme == "http" || url.scheme == "https" ? url: URL( string: "http://\(url)" )
                 else {
                     if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
@@ -393,7 +402,11 @@ extension SwiftLinkPreview {
                 let source = NSString( data: data, encoding:
                     CFStringConvertEncodingToNSStringEncoding( CFStringConvertIANACharSetNameToEncoding( encoding as CFString ) ) ) {
                 if !cancellable.isCancelled {
-                    self.parseHtmlString(source as String, response: response, completion: completion)
+                    var sourceStr = source as String
+                    if sourceStr.count > SwiftLinkPreview.maxHtmlCharacter {
+                        sourceStr = sourceStr.getSubstring(0, end: SwiftLinkPreview.maxHtmlCharacter-1)
+                    }
+                    self.parseHtmlString(sourceStr, response: response, completion: completion)
                 }
             } else {
                 do {
@@ -403,7 +416,11 @@ extension SwiftLinkPreview {
 
                     if let source = source {
                         if !cancellable.isCancelled {
-                            self.parseHtmlString(source as String, response: response, completion: completion)
+                            var sourceStr = source as String
+                            if sourceStr.count > SwiftLinkPreview.maxHtmlCharacter {
+                                sourceStr = sourceStr.getSubstring(0, end: SwiftLinkPreview.maxHtmlCharacter-1)
+                            }
+                            self.parseHtmlString(sourceStr, response: response, completion: completion)
                         }
                     } else {
                         onError(.cannotBeOpened(sourceUrl.absoluteString))
@@ -556,7 +573,7 @@ extension SwiftLinkPreview {
                             let value = value.decoded.extendedTrim
                             if tag == "image" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
-                                if value.isOpenGraphImage(){ result.set(value, for: key) }
+                                if value.isImage() { result.set(value, for: key) }
                             } else if tag == "video" {
                                 let value = addImagePrefixIfNeeded(value, result: result)
                                 if value.isVideo() { result.set(value, for: key) }
@@ -621,25 +638,23 @@ extension SwiftLinkPreview {
             let images = result.images
 
             if images == nil || images?.isEmpty ?? true {
-
-                // Should look for <meta property="og:image" content=""/> first instead of <img/> tag.
-                let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 2)
+                let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
                 if !values.isEmpty {
-                    result.images = values
-                    result.image = values.first
-                } else {
-                    // If no OpenGraph image found pick any from <img/> tag to show.
-                    let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
+                    let imgs = values.map { self.addImagePrefixIfNeeded($0, result: result) }
+
+                    result.images = imgs
+                    result.image = imgs.first
+                }
+                else{
+                    let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 1)
                     if !values.isEmpty {
-                        let imgs = values.map { self.addImagePrefixIfNeeded($0, result: result) }
-                        result.images = imgs
-                        result.image = imgs.first
+                        result.images = values
+                        result.image = values.first
                     }
                 }
-
             }
         } else {
-                let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 2)
+                let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 1)
                 if !values.isEmpty {
                     result.images = values
                     result.image = values.first
@@ -680,27 +695,21 @@ extension SwiftLinkPreview {
         var image = image
 
         // TODO: account for HTML <base>
-        if let canonicalUrl = canonicalUrl, let finalUrl = finalUrl, let proto = finalUrl.split(separator: ":").first {
-            if image.hasPrefix("/") {
+        if let canonicalUrl = canonicalUrl, let finalUrl = finalUrl {
+            if finalUrl.hasPrefix("https:") {
                 if image.hasPrefix("//") {
-                    // image url is //domain/path
-                    image = proto + ":" + image
-                } else {
-                    // image url is /path relative to base url
-                    image = proto + "://" + canonicalUrl + image
+                    image = "https:" + image
+                } else if image.hasPrefix("/") {
+                    image = "https://" + canonicalUrl + image
                 }
-            } else if !image.contains("://") {
-                // image is relative to request url
-                let requestUrl = removeSuffixIfNeeded(finalUrl)
-                if requestUrl.hasSuffix("/") {
-                    image = requestUrl + image
-                } else {
-                    image = (requestUrl as NSString).deletingLastPathComponent + "/" + image
-                }
+            } else if image.hasPrefix("//") {
+                image = "http:" + image
+            } else if image.hasPrefix("/") {
+                image = "http://" + canonicalUrl + image
             }
         }
 
-        return image
+        return removeSuffixIfNeeded(image)
 
     }
 
@@ -807,3 +816,4 @@ extension SwiftLinkPreview: URLSessionDataDelegate {
     }
 
 }
+
