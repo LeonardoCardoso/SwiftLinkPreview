@@ -104,10 +104,10 @@ import SwiftLinkPreview
 
 // ...
 
-let slp = SwiftLinkPreview(session: URLSession = URLSession.shared,
-			   workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue,
-			   responseQueue: DispatchQueue = DispatchQueue.main,
-		           cache: Cache = DisabledCache.instance)
+let slp = SwiftLinkPreview(session: URLSession.shared,
+			   workQueue: SwiftLinkPreview.defaultWorkQueue,
+			   responseQueue: DispatchQueue.main,
+		           cache: DisabledCache.instance)
 ```
 
 #### Requesting preview
