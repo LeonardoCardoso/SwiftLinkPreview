@@ -38,7 +38,7 @@ class HugeTests: XCTestCase {
     }
     
     // MARK: - Amazon
-    func testAmazonLinksWithDefaultUserAgent() {
+    func testAmazonLinksWithGoogleBotUserAgent() {
                     
         // Amazon links are huge and serve up very different html based on the user agent string
         // Some user agents don't contain og tags and will fail to locate title and images
