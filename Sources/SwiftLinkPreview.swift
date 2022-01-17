@@ -137,7 +137,8 @@ open class SwiftLinkPreview: NSObject {
                                 result.icon = $0.icon
                                 result.video = $0.video
                                 result.price = $0.price
-
+                                result.metaData = $0.metaData
+                                
                                 self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
                                 self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
 
