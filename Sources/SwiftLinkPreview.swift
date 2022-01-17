@@ -605,7 +605,7 @@ extension SwiftLinkPreview {
                 result.description = value.decoded.extendedTrim
             }
         }
-
+        result.metaData = self.parse(metadataFrom: htmlCode as String)
         return (htmlCode, result)
     }
 
@@ -804,6 +804,40 @@ extension SwiftLinkPreview: URLSessionDataDelegate {
         var request = request
         request.httpMethod = "GET"
         completionHandler(request)
+    }
+
+    private func parse(metadataFrom htmlString: String) -> [String: String] {
+        // Regex to extract meta tag regex.
+        let metatagRegex = try! NSRegularExpression(pattern: "<meta(?:\".*?\"|\'.*?\'|[^\'\"])*?>", options: [.dotMatchesLineSeparators])
+        let metaTagMatches = metatagRegex.matches(in: htmlString, options: [], range: NSRange(location: 0, length: htmlString.utf16.count))
+        if metaTagMatches.isEmpty { return [:] }
+        // Regex to extract og property, content and theme colors.
+        let propertyRegex = try! NSRegularExpression(pattern: "\\sproperty=(?:\"|\')og:([a-zA_Z:]+?)(?:\"|\')", options: [])
+        let contentRegex = try! NSRegularExpression(pattern: "\\scontent=(?:\"|\')(.*?)(?:\"|\')", options: [])
+        let nsString = htmlString as NSString
+        // Create [ogProperty: content] dictionary.
+        return metaTagMatches.reduce([String: String]()) { attributes, result -> [String: String] in
+            var attributes = attributes
+            let property = { () -> (name: String, content: String)? in
+                let metaTag = nsString.substring(with: result.range(at: 0))
+                let range = NSRange(location: 0, length: metaTag.utf16.count)
+                guard let contentMatch = contentRegex.matches(in: metaTag, options: [], range: range).first else {
+                    return nil
+                }
+                let nsMetaTag = metaTag as NSString
+                let content = nsMetaTag.substring(with: contentMatch.range(at: 1))
+                // Gets property="og:*" || property='og:*' value.
+                if let propertyMatch = propertyRegex.matches(in: metaTag, options: [], range: range).first {
+                    let property = nsMetaTag.substring(with: propertyMatch.range(at: 1))
+                    return (name: property, content: content)
+                }
+                return nil
+            }()
+            if let property = property {
+                attributes[property.name] = property.content
+            }
+            return attributes
+        }
     }
 
 }

@@ -20,7 +20,8 @@ public struct Response {
     public internal(set) var icon: String?
     public internal(set) var video: String?
     public internal(set) var price: String?
-    
+    public internal(set) var metaData: [String: String]?
+
     public init() { }
     
 }
