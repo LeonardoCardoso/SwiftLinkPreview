@@ -86,10 +86,6 @@ open class SwiftLinkPreview: NSObject {
 
         let cancellable = Cancellable()
 
-        self.session = URLSession(configuration: self.session.configuration,
-                                  delegate: self, // To handle redirects
-            delegateQueue: self.session.delegateQueue)
-
         let successResponseQueue = { (response: Response) in
             if !cancellable.isCancelled {
                 self.responseQueue.async {
@@ -824,20 +820,6 @@ extension SwiftLinkPreview {
 
         return result
 
-    }
-
-}
-
-extension SwiftLinkPreview: URLSessionDataDelegate {
-
-    public func urlSession(_ session: URLSession,
-                           task: URLSessionTask,
-                           willPerformHTTPRedirection response: HTTPURLResponse,
-                           newRequest request: URLRequest,
-                           completionHandler: @escaping (URLRequest?) -> Void) {
-        var request = request
-        request.httpMethod = "GET"
-        completionHandler(request)
     }
 
 }
