@@ -157,13 +157,10 @@ open class SwiftLinkPreview: NSObject {
     }
 
     private func formatImageURL(_ url: String?, base: String?) -> String? {
-        guard var url = url else { return nil }
+        guard let base = base, let url = url, !url.contains( "://" )
+        else { return url }
 
-        if !url.starts(with: "http"), let base = base {
-            url = "\(base)\(url)"
-        }
-
-        return url
+        return base + (base.hasSuffix("/") || url.hasPrefix("/") ? "" : "/") + url
     }
 
     func formatImageURLs(_ array: [String]?, base: String?) -> [String]? {
