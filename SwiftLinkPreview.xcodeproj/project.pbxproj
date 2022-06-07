@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		1F8164ED26287866000F2905 /* VideoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8164EC26287866000F2905 /* VideoTests.swift */; };
+		27BCC85826FCF22E00886BDA /* BaseURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BCC85726FCF22E00886BDA /* BaseURLTests.swift */; };
+		27BCC85D26FCF3BF00886BDA /* BaseURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BCC85726FCF22E00886BDA /* BaseURLTests.swift */; };
+		27BCC85E26FCF3C000886BDA /* BaseURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BCC85726FCF22E00886BDA /* BaseURLTests.swift */; };
+		27BCC86026FCF4C000886BDA /* head-meta-base.html in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC85F26FCF4C000886BDA /* head-meta-base.html */; };
+		27BCC86126FCF4C000886BDA /* head-meta-base.html in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC85F26FCF4C000886BDA /* head-meta-base.html */; };
+		27BCC86226FCF4C000886BDA /* head-meta-base.html in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC85F26FCF4C000886BDA /* head-meta-base.html */; };
 		68074FFA1F23B6C900649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFB1F23BB1100649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
 		68074FFC1F23BB1400649DE6 /* head-meta-icon.html in Resources */ = {isa = PBXBuildFile; fileRef = 68074FF91F23B6C900649DE6 /* head-meta-icon.html */; };
@@ -150,6 +156,8 @@
 
 /* Begin PBXFileReference section */
 		1F8164EC26287866000F2905 /* VideoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTests.swift; sourceTree = "<group>"; };
+		27BCC85726FCF22E00886BDA /* BaseURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURLTests.swift; sourceTree = "<group>"; };
+		27BCC85F26FCF4C000886BDA /* head-meta-base.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "head-meta-base.html"; sourceTree = "<group>"; };
 		68074FF91F23B6C900649DE6 /* head-meta-icon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "head-meta-icon.html"; sourceTree = "<group>"; };
 		686E58DE1F22416D000C2A33 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		7A552DE121A460910019E8B1 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -257,17 +265,18 @@
 		985DCEB01D2BFD2700B40D76 /* Files */ = {
 			isa = PBXGroup;
 			children = (
-				98B5ED421D3E5F5C00AEBD54 /* head-meta-itemprop.html */,
-				986D5BE61D33E0FD0025555F /* head-title.html */,
-				985DCEBB1D2BFFAF00B40D76 /* body-text-span.html */,
-				985DCEBC1D2BFFAF00B40D76 /* body-text-p.html */,
-				985DCEBD1D2BFFAF00B40D76 /* body-text-div.html */,
-				985DCEB71D2BFE4100B40D76 /* body-image-single.html */,
 				985DCEB81D2BFE4100B40D76 /* body-image-gallery.html */,
-				985DCEB11D2BFD3400B40D76 /* head-meta-twitter.html */,
-				985DCEB21D2BFD3400B40D76 /* head-meta-meta.html */,
+				985DCEB71D2BFE4100B40D76 /* body-image-single.html */,
+				985DCEBD1D2BFFAF00B40D76 /* body-text-div.html */,
+				985DCEBC1D2BFFAF00B40D76 /* body-text-p.html */,
+				985DCEBB1D2BFFAF00B40D76 /* body-text-span.html */,
+				27BCC85F26FCF4C000886BDA /* head-meta-base.html */,
 				985DCEB31D2BFD3400B40D76 /* head-meta-facebook.html */,
 				68074FF91F23B6C900649DE6 /* head-meta-icon.html */,
+				98B5ED421D3E5F5C00AEBD54 /* head-meta-itemprop.html */,
+				985DCEB21D2BFD3400B40D76 /* head-meta-meta.html */,
+				985DCEB11D2BFD3400B40D76 /* head-meta-twitter.html */,
+				986D5BE61D33E0FD0025555F /* head-title.html */,
 			);
 			name = Files;
 			sourceTree = "<group>";
@@ -358,18 +367,19 @@
 		98DC53391D1D73DB001134E3 /* SwiftLinkPreviewTests */ = {
 			isa = PBXGroup;
 			children = (
-				98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */,
+				27BCC85726FCF22E00886BDA /* BaseURLTests.swift */,
 				985DCEC81D2C029700B40D76 /* BodyTests.swift */,
+				988B48D61D2C3C2E0040A4AD /* Constants */,
+				985DCEB01D2BFD2700B40D76 /* Files */,
+				98B5ED491D3E7DC600AEBD54 /* HugeTests.swift */,
+				686E58DE1F22416D000C2A33 /* IconTests.swift */,
 				985DCEC61D2C026000B40D76 /* ImageTests.swift */,
-				1F8164EC26287866000F2905 /* VideoTests.swift */,
+				98E7C3121D3B23F5009E5F6D /* Info */,
 				985DCEC41D2C022E00B40D76 /* MetaTests.swift */,
 				982812911D3A9293000D3ABB /* RegexTests.swift */,
 				986D5BE41D33DFE50025555F /* TitleTests.swift */,
-				686E58DE1F22416D000C2A33 /* IconTests.swift */,
-				988B48D61D2C3C2E0040A4AD /* Constants */,
-				985DCEB01D2BFD2700B40D76 /* Files */,
-				98E7C3121D3B23F5009E5F6D /* Info */,
 				988B48D11D2C39790040A4AD /* Utils */,
+				1F8164EC26287866000F2905 /* VideoTests.swift */,
 			);
 			path = SwiftLinkPreviewTests;
 			sourceTree = "<group>";
@@ -641,6 +651,7 @@
 				985DCEBF1D2BFFAF00B40D76 /* body-text-span.html in Resources */,
 				985DCEC01D2BFFAF00B40D76 /* body-text-p.html in Resources */,
 				985DCEC11D2BFFAF00B40D76 /* body-text-div.html in Resources */,
+				27BCC86026FCF4C000886BDA /* head-meta-base.html in Resources */,
 				985DCEB91D2BFE4100B40D76 /* body-image-single.html in Resources */,
 				985DCEB61D2BFD3400B40D76 /* head-meta-facebook.html in Resources */,
 				986D5BE71D33E0FD0025555F /* head-title.html in Resources */,
@@ -666,6 +677,7 @@
 				98E7C32F1D3B24DA009E5F6D /* body-image-single.html in Resources */,
 				98B5ED461D3E62A200AEBD54 /* head-meta-itemprop.html in Resources */,
 				98E7C3301D3B24DA009E5F6D /* body-image-gallery.html in Resources */,
+				27BCC86226FCF4C000886BDA /* head-meta-base.html in Resources */,
 				98E7C3311D3B24DA009E5F6D /* head-meta-twitter.html in Resources */,
 				98E7C3321D3B24DA009E5F6D /* head-meta-meta.html in Resources */,
 				98E7C3331D3B24DA009E5F6D /* head-meta-facebook.html in Resources */,
@@ -691,6 +703,7 @@
 				98F76D1D1D3AF87100E9B10E /* body-image-single.html in Resources */,
 				98B5ED441D3E62A000AEBD54 /* head-meta-itemprop.html in Resources */,
 				98F76D1E1D3AF87100E9B10E /* body-image-gallery.html in Resources */,
+				27BCC86126FCF4C000886BDA /* head-meta-base.html in Resources */,
 				98F76D1F1D3AF87100E9B10E /* head-meta-twitter.html in Resources */,
 				98F76D201D3AF87100E9B10E /* head-meta-meta.html in Resources */,
 				98F76D211D3AF87100E9B10E /* head-meta-facebook.html in Resources */,
@@ -740,6 +753,7 @@
 				986D5BE51D33DFE60025555F /* TitleTests.swift in Sources */,
 				985DCEC71D2C026000B40D76 /* ImageTests.swift in Sources */,
 				988B48D81D2C3C3D0040A4AD /* Constants.swift in Sources */,
+				27BCC85826FCF22E00886BDA /* BaseURLTests.swift in Sources */,
 				9272A10D1E2EF0E600F9F17E /* Regex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -777,6 +791,7 @@
 				98E7C3281D3B24C6009E5F6D /* File.swift in Sources */,
 				98E7C3291D3B24C6009E5F6D /* IntExtension.swift in Sources */,
 				9272A10F1E2EF0E800F9F17E /* Regex.swift in Sources */,
+				27BCC85E26FCF3C000886BDA /* BaseURLTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -813,6 +828,7 @@
 				98F76D121D3AF78600E9B10E /* File.swift in Sources */,
 				98F76D131D3AF78600E9B10E /* IntExtension.swift in Sources */,
 				9272A10E1E2EF0E700F9F17E /* Regex.swift in Sources */,
+				27BCC85D26FCF3BF00886BDA /* BaseURLTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,7 +924,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 arm64 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -965,7 +981,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 arm64 armv7s";
