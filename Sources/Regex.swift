@@ -8,8 +8,9 @@
 import Foundation
 
 // MARK: - Regular expressions
-class Regex {
-
+public class Regex {
+    
+    public static var kLimit: Int = 500000
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
     static let openGraphImagePattern = "(.+?)\\.(gif||jpg|jpeg|png|bmp)$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
@@ -71,7 +72,7 @@ class Regex {
 
             var matches: [NSTextCheckingResult] = []
 
-            let limit = 300000
+            let limit = Regex.kLimit
 
             if string.count > limit {
                 string.split(by: limit).forEach {
