@@ -38,8 +38,9 @@ class ViewController: UIViewController {
         "www.youtube.com",
         "www.google.com",
         "facebook.com",
-        
+
         "https://github.com/LeonardoCardoso/SwiftLinkPreview",
+        "https://www.jbhifi.com.au/products/playstation-4-biomutant",
 
         "https://leocardz.com/swift-link-preview-5a9860c7756f",
         "NASA! 🖖🏽 https://www.nasa.gov/",
@@ -268,6 +269,7 @@ class ViewController: UIViewController {
             print("video: ", result.video ?? "no video")
             print("icon: ", result.icon ?? "no icon")
             print("description: ", result.description ?? "no description")
+            print("baseURL: ", result.baseURL ?? "no baseURL")
         }
 
         guard textField?.text?.isEmpty == false else {

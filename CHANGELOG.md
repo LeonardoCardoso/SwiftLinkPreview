@@ -1,6 +1,7 @@
 # Change Log
 
 #### 3.x Releases
+- `3.5.x` Releases - [3.5.0](#350)
 - `3.4.x` Releases - [3.4.0](#340)
 - `3.3.x` Releases - [3.3.0](#330)
 - `3.2.x` Releases - [3.2.0](#320)
@@ -21,6 +22,21 @@
 - `0.0.x` Releases - [0.0.2](#002) | [0.0.3](#003)
 
 ---
+
+## [3.5.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.5.0)
+
+#### Added
+- Annotated `Cancelable.cancel()` as `@objc` to make it compatibale with Objective-C [#135](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/135)
+- Added removal of duplicates from the images array [#45](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/45)
+- Added capture of base URL [#45](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/45)
+	- Changed by [LeonardoCardoso](https://github.com/LeonardoCardoso)
+
+#### Changed
+- Updated README.md [#150](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/150)
+	- Changed by [benlmyers](https://github.com/benlmyers)
+- Updated regex limit [#148](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/148)
+	- Changed by [kinhvodoi92](https://github.com/kinhvodoi92)
+
 
 ## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)
 
