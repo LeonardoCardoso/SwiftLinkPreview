@@ -7,7 +7,7 @@
 //
 import Foundation
 
-public enum SwiftLinkResponseKey: String {
+public enum SwiftLinkResponseKey: String, Sendable {
     case url
     case finalUrl
     case canonicalUrl
@@ -83,9 +83,30 @@ open class SwiftLinkPreview: NSObject {
     // Make preview
     //Swift-only preview function using Swift specific closure types
     @nonobjc @discardableResult open func preview(_ text: String, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
-
         let cancellable = Cancellable()
+        performPreview(text, cancellable: cancellable, onSuccess: onSuccess, onError: onError)
+        return cancellable
+    }
 
+    /// Asynchronously loads link preview metadata for the first link in the provided text.
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, visionOS 1.0, macCatalyst 13.0, *)
+    open func preview(_ text: String) async throws -> Response {
+        let cancellable = Cancellable()
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Response, any Error>) in
+                performPreview(text, cancellable: cancellable) { response in
+                    continuation.resume(returning: response)
+                } onError: { error in
+                    continuation.resume(throwing: error)
+                }
+            }
+        } onCancel: {
+            cancellable.cancel()
+        }
+
+    }
+
+    private func performPreview(_ text: String, cancellable: Cancellable, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) {
         self.session = URLSession(configuration: self.session.configuration,
                                   delegate: self, // To handle redirects
             delegateQueue: self.session.delegateQueue)
@@ -150,8 +171,6 @@ open class SwiftLinkPreview: NSObject {
         } else {
             onError(.noURLHasBeenFound(text))
         }
-
-        return cancellable
     }
 
     /*

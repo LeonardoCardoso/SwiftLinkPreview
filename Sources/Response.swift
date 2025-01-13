@@ -8,8 +8,8 @@
 
 import Foundation
 
-public struct Response {
-    
+public struct Response: Sendable {
+
     public internal(set) var url: URL?
     public internal(set) var finalUrl: URL?
     public internal(set) var canonicalUrl: String?
