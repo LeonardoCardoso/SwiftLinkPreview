@@ -7,7 +7,7 @@
 //
 import Foundation
 
-public enum PreviewError: Error, CustomStringConvertible {
+public enum PreviewError: Error, Sendable, CustomStringConvertible {
     case noURLHasBeenFound(String?)
     case invalidURL(String?)
     case cannotBeOpened(String?)
