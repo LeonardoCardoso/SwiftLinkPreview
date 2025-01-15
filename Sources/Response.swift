@@ -8,8 +8,7 @@
 
 import Foundation
 
-public struct Response {
-
+public struct Response: Sendable {
     public internal(set) var baseURL: String?
     public internal(set) var url: URL?
     public internal(set) var finalUrl: URL?
@@ -23,5 +22,4 @@ public struct Response {
     public internal(set) var price: String?
     
     public init() { }
-    
 }
