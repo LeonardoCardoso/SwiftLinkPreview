@@ -8,7 +8,7 @@
 
 import Foundation
 
-class File {
+final class File {
 
     // Read local html files
     static func toString(_ file: String) -> String {

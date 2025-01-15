@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftLinkPreview
 
 // This class tests head title
-class TitleTests: XCTestCase {
+final class TitleTests: XCTestCase {
 
     // MARK: - Vars
     var titleTemplate = ""

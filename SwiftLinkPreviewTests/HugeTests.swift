@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftLinkPreview
 
 // This class tests head meta info
-class HugeTests: XCTestCase {
+final class HugeTests: XCTestCase {
 
     // MARK: - Vars
     let slp = SwiftLinkPreview()

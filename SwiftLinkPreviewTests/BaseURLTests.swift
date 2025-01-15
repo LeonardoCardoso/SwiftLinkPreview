@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftLinkPreview
 
 // This class tests head meta info
-class BaseURLTests: XCTestCase {
+final class BaseURLTests: XCTestCase {
 
     // MARK: - Vars
     var baseTemplate = ""

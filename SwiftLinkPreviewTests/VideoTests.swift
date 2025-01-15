@@ -9,8 +9,8 @@
 import XCTest
 @testable import SwiftLinkPreview
 
-// This class tests videos
-class VideoTests: XCTestCase {
+// This final class tests videos
+final class VideoTests: XCTestCase {
 
     // MARK: - Vars
     let slp = SwiftLinkPreview()

@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftLinkPreview
 
 // This class tests head meta info
-class MetaTests: XCTestCase {
+final class MetaTests: XCTestCase {
 
     // MARK: - Vars
     var twitterTemplate = ""

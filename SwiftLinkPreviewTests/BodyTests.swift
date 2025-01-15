@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftLinkPreview
 
 // This class tests body texts
-class BodyTests: XCTestCase {
+final class BodyTests: XCTestCase {
 
     // MARK: - Vars
     var spanTemplate = ""

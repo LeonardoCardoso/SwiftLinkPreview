@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftLinkPreview
 
-class IconTests: XCTestCase {
+final class IconTests: XCTestCase {
 
     let slp = SwiftLinkPreview()
 

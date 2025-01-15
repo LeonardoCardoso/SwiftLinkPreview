@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftLinkPreview
 
 // This class tests URLs
-class RegexTests: XCTestCase {
+final class RegexTests: XCTestCase {
 
     // MARK: - Vars
     let slp = SwiftLinkPreview()

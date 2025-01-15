@@ -9,8 +9,8 @@
 import XCTest
 @testable import SwiftLinkPreview
 
-// This class tests body images
-class ImageTests: XCTestCase {
+// This final class tests body images
+final class ImageTests: XCTestCase {
 
     // MARK: - Vars
     var singleImageTemplate = ""
