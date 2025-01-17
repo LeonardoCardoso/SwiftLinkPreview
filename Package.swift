@@ -12,13 +12,16 @@ import PackageDescription
 let package = Package(
     name: "SwiftLinkPreview",
     products: [
-      .library(name: "SwiftLinkPreview",
-               targets: ["SwiftLinkPreview"])
+        .library(
+            name: "SwiftLinkPreview",
+            targets: ["SwiftLinkPreview"]
+        ),
     ],
     targets: [
-      .target(
-        name: "SwiftLinkPreview",
-        dependencies: [],
-        path: "Sources")
+        .target(
+            name: "SwiftLinkPreview",
+            dependencies: [],
+            path: "Sources"
+        ),
     ]
 )

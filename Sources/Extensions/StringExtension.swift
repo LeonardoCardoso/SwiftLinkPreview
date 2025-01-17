@@ -9,97 +9,79 @@ import Foundation
 
 #if os(iOS) || os(watchOS) || os(tvOS)
 
-    import UIKit
+import UIKit
 
 #elseif os(OSX)
 
-    import Cocoa
+import Cocoa
 
 #endif
 
 extension String {
-
     // Trim
     var trim: String {
-
-        return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-
+        return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
     // Remove extra white spaces
     var extendedTrim: String {
-
         let components = self.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         return components.filter { !$0.isEmpty }.joined(separator: " ").trim
-
     }
 
     // Decode HTML entities
     var decoded: String {
-
-        let encodedData = self.data(using: String.Encoding.utf8)!
+        let encodedData = data(using: String.Encoding.utf8)!
         let attributedOptions: [NSAttributedString.DocumentReadingOptionKey: Any] =
             [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)
-        ]
+                .documentType: NSAttributedString.DocumentType.html,
+                .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue),
+            ]
 
         do {
-
-            let attributedString = try NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil)
+            let attributedString = try NSAttributedString(
+                data: encodedData,
+                options: attributedOptions,
+                documentAttributes: nil
+            )
 
             return attributedString.string
-
         } catch _ {
-
             return self
-
         }
-
     }
 
     // Strip tags
     var tagsStripped: String {
-
-        return self.deleteTagByPattern(Regex.rawTagPattern)
-
+        return deleteTagByPattern(Regex.rawTagPattern)
     }
 
     // Delete tab by pattern
     func deleteTagByPattern(_ pattern: String) -> String {
-
-        return self.replacingOccurrences(of: pattern, with: "", options: .regularExpression, range: nil)
-
+        return replacingOccurrences(of: pattern, with: "", options: .regularExpression, range: nil)
     }
 
     // Replace
     func replace(_ search: String, with: String) -> String {
-
-        let replaced: String = self.replacingOccurrences(of: search, with: with)
+        let replaced: String = replacingOccurrences(of: search, with: with)
 
         return replaced.isEmpty ? self : replaced
-
     }
 
     // Substring
     func substring(_ start: Int, end: Int) -> String {
-
-        return self.substring(NSRange(location: start, length: end - start))
-
+        return substring(NSRange(location: start, length: end - start))
     }
 
     func substring(_ range: NSRange) -> String {
-
         var end = range.location + range.length
-        end = end > self.count ? self.count - 1 : end
+        end = end > count ? count - 1 : end
 
-        return self.substring(range.location, end: end)
-
+        return substring(range.location, end: end)
     }
 
     // Check if url is an image
     func isImage() -> Bool {
-
         let possible = ["gif", "jpg", "jpeg", "png", "bmp"]
         if let url = URL(string: self),
            possible.contains(url.pathExtension) {
@@ -112,7 +94,7 @@ extension String {
     func isOpenGraphImage() -> Bool {
         return Regex.test(self, regex: Regex.openGraphImagePattern)
     }
-     
+
     func isVideo() -> Bool {
         let possible = ["mp4", "mov", "mpeg", "avi", "m3u8"]
         if let url = URL(string: self),
@@ -128,13 +110,12 @@ extension String {
         var startIndex = self.startIndex
         var results = [Substring]()
 
-        while startIndex < self.endIndex {
-            let endIndex = self.index(startIndex, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
-            results.append(self[startIndex..<endIndex])
+        while startIndex < endIndex {
+            let endIndex = index(startIndex, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
+            results.append(self[startIndex ..< endIndex])
             startIndex = endIndex
         }
 
         return results.map { String($0) }
     }
-
 }

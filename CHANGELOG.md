@@ -1,7 +1,9 @@
 # Change Log
 
+#### 4.x Releases
+- `4.0.x` Releases - [4.0.0](#400)
+
 #### 3.x Releases
-- `3.5.x` Releases - [3.5.0](#350)
 - `3.4.x` Releases - [3.4.0](#340)
 - `3.3.x` Releases - [3.3.0](#330)
 - `3.2.x` Releases - [3.2.0](#320)
@@ -23,7 +25,7 @@
 
 ---
 
-## [3.5.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.5.0)
+## [4.0.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/4.0.0)
 
 #### Added
 - Annotated `Cancelable.cancel()` as `@objc` to make it compatibale with Objective-C [#135](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/135)
@@ -36,6 +38,18 @@
 	- Changed by [benlmyers](https://github.com/benlmyers)
 - Updated regex limit [#148](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/148)
 	- Changed by [kinhvodoi92](https://github.com/kinhvodoi92)
+- Modernized code
+	- Changed by [LeonardoCardoso](https://github.com/LeonardoCardoso)
+- Mark public structs Sendable and add an async preview function
+    - Changed by [harlanhaskins](https://github.com/harlanhaskins)
+
+#### Removed
+- Removed VALID_ARCHS from xcodeproj [#154](https://github.com/LeonardoCardoso/SwiftLinkPreview/pull/154)
+    - Changed by [eliburke](https://github.com/eliburke)
+
+### Fixed
+- Amazon links did not contain og tags with the default user agent [#154](https://github.com/LeonardoCardoso/SwiftLinkPreview/pull/155)
+    - Changed by [chadpav](https://github.com/chadpav)
 
 
 ## [3.4.0](https://github.com/LeonardoCardoso/Swift-Link-Preview/releases/tag/3.4.0)

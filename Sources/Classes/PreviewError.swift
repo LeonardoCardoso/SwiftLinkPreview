@@ -14,20 +14,19 @@ public enum PreviewError: Error, Sendable, CustomStringConvertible {
     case parseError(String?)
 
     public var description: String {
-        switch(self) {
-        case .noURLHasBeenFound(let error):
-            return NSLocalizedString("No URL has been found. \(reason(error))", comment: String())
-        case .invalidURL(let error):
-            return NSLocalizedString("This data is not valid URL. \(reason(error)).", comment: String())
-        case .cannotBeOpened(let error):
-            return NSLocalizedString("This URL cannot be opened. \(reason(error)).", comment: String())
-        case .parseError(let error):
-            return NSLocalizedString("An error occurred when parsing the HTML. \(reason(error)).", comment: String())
+        switch self {
+        case let .noURLHasBeenFound(error):
+            NSLocalizedString("No URL has been found. \(reason(error))", comment: String())
+        case let .invalidURL(error):
+            NSLocalizedString("This data is not valid URL. \(reason(error)).", comment: String())
+        case let .cannotBeOpened(error):
+            NSLocalizedString("This URL cannot be opened. \(reason(error)).", comment: String())
+        case let .parseError(error):
+            NSLocalizedString("An error occurred when parsing the HTML. \(reason(error)).", comment: String())
         }
     }
 
     private func reason(_ error: String?) -> String {
-        return "Reason: \(error ?? String())"
+        "Reason: \(error ?? String())"
     }
-
 }

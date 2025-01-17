@@ -8,8 +8,8 @@
 import Foundation
 
 // MARK: - Regular expressions
-class Regex {
 
+enum Regex {
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
     static let openGraphImagePattern = "(.+?)\\.(gif||jpg|jpeg|png|bmp)$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
@@ -32,85 +32,70 @@ class Regex {
 
     // Test regular expression
     static func test(_ string: String, regex: String) -> Bool {
-
-        return Regex.pregMatchFirst(string, regex: regex) != nil
-
+        Regex.pregMatchFirst(string, regex: regex) != nil
     }
 
     // Match first occurrency
     static func pregMatchFirst(_ string: String, regex: String, index: Int = 0) -> String? {
-
         do {
-
             let rx = try NSRegularExpression(pattern: regex, options: [.caseInsensitive])
 
-            if let match = rx.firstMatch(in: string, options: [], range:NSRange(string.startIndex..., in: string)) {
-
+            if let match = rx.firstMatch(in: string, options: [], range: NSRange(string.startIndex..., in: string)) {
                 let result: [String] = Regex.stringMatches([match], text: string, index: index)
-                return result.count == 0 ? nil : result[0]
-
+                return result.isEmpty ? nil : result[0]
             } else {
-
                 return nil
-
             }
-
         } catch {
-
             return nil
-
         }
-
     }
 
     // Match all occurrencies
     static func pregMatchAll(_ string: String, regex: String, index: Int = 0) -> [String] {
-
         do {
-
             let rx = try NSRegularExpression(pattern: regex, options: [.caseInsensitive])
 
             var matches: [NSTextCheckingResult] = []
 
-            let limit = 300000
+            let limit = 300_000
 
             if string.count > limit {
-                string.split(by: limit).forEach {
-                    matches.append(contentsOf: rx.matches(in: string, options: [], range: NSRange($0.startIndex..., in: $0)))
+                for item in string.split(by: limit) {
+                    matches.append(contentsOf: rx.matches(
+                        in: string,
+                        options: [],
+                        range: NSRange(item.startIndex..., in: item)
+                    ))
                 }
             } else {
-                matches.append(contentsOf: rx.matches(in: string, options: [], range: NSRange(string.startIndex..., in: string)))
+                matches.append(contentsOf: rx.matches(
+                    in: string,
+                    options: [],
+                    range: NSRange(string.startIndex..., in: string)
+                ))
             }
 
             return !matches.isEmpty ? Regex.stringMatches(matches, text: string, index: index) : []
-
         } catch {
-
             return []
-
         }
-
     }
 
     // Extract matches from string
     static func stringMatches(_ results: [NSTextCheckingResult], text: String, index: Int = 0) -> [String] {
-
         return results.map {
             let range = $0.range(at: index)
-            if text.count > range.location + range.length {
-                return (text as NSString).substring(with: range)
+            return if text.count > range.location + range.length {
+                (text as NSString).substring(with: range)
             } else {
-                return ""
+                ""
             }
         }
-
     }
 
     // Return tag pattern
     static func tagPattern(_ tag: String) -> String {
-
         return "<" + tag + "(.*?)>(.*?)</" + tag + ">"
-
     }
-
 }

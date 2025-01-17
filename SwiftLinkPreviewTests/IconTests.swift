@@ -6,11 +6,10 @@
 //  Copyright © 2017 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
 final class IconTests: XCTestCase {
-
     let slp = SwiftLinkPreview()
 
     var template = ""
@@ -23,14 +22,14 @@ final class IconTests: XCTestCase {
         "http://github.com/images/touch-icon-ipad.png",
         "http://github.com/images/apple-touch-icon-57x57.png",
         "/favicon.ico",
-        "/fluid-icon.png"
+        "/fluid-icon.png",
     ]
 
     let typeList = [
         "apple-touch-icon",
         "apple-touch-icon-precomposed",
         "shortcut icon",
-        "fluid-icon"
+        "fluid-icon",
     ]
 
     override func setUp() {
@@ -40,7 +39,7 @@ final class IconTests: XCTestCase {
     }
 
     func testLink() {
-        for _ in 1..<1000 {
+        for _ in 1 ..< 1000 {
             let icon = random(array: iconList)
             let type = random(array: typeList)
             var testTemplate = template

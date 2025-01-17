@@ -6,13 +6,13 @@
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
 // This class tests head meta info
 final class MetaTests: XCTestCase {
-
     // MARK: - Vars
+
     var twitterTemplate = ""
     var facebookTemplate = ""
     var itempropTemplate = ""
@@ -20,27 +20,27 @@ final class MetaTests: XCTestCase {
     let slp = SwiftLinkPreview()
 
     // MARK: - SetUps
+
     // Those setup functions get that template, and fulfil determinated areas with rand texts, images and tags
     override func setUp() {
         super.setUp()
 
-        self.twitterTemplate = File.toString(Constants.headMetaTwitter)
-        self.facebookTemplate = File.toString(Constants.headMetaFacebook)
-        self.itempropTemplate = File.toString(Constants.headMetaItemprop)
-        self.metaTemplate = File.toString(Constants.headMetaMeta)
-
+        twitterTemplate = File.toString(Constants.headMetaTwitter)
+        facebookTemplate = File.toString(Constants.headMetaFacebook)
+        itempropTemplate = File.toString(Constants.headMetaItemprop)
+        metaTemplate = File.toString(Constants.headMetaMeta)
     }
 
     // MARK: - Twitter
-    func setUpTwitterAndRun() {
 
+    func setUpTwitterAndRun() {
         let twitterData =
             [
                 Constants.twitterTitle: String.randomText(),
                 Constants.twitterSite: String.randomUrl(),
                 Constants.twitterDescription: String.randomText(),
-                Constants.twitterImageSrc: String.randomImage()
-        ]
+                Constants.twitterImageSrc: String.randomImage(),
+            ]
 
         var twitterTemplate = self.twitterTemplate
         twitterTemplate = twitterTemplate.replace(Constants.headRandomPre, with: String.randomTag())
@@ -48,52 +48,62 @@ final class MetaTests: XCTestCase {
 
         twitterTemplate = twitterTemplate.replace(Constants.twitterTitle, with: twitterData[Constants.twitterTitle]!)
         twitterTemplate = twitterTemplate.replace(Constants.twitterSite, with: twitterData[Constants.twitterSite]!)
-        twitterTemplate = twitterTemplate.replace(Constants.twitterDescription, with: twitterData[Constants.twitterDescription]!)
-        twitterTemplate = twitterTemplate.replace(Constants.twitterImageSrc, with: twitterData[Constants.twitterImageSrc]!)
+        twitterTemplate = twitterTemplate.replace(
+            Constants.twitterDescription,
+            with: twitterData[Constants.twitterDescription]!
+        )
+        twitterTemplate = twitterTemplate.replace(
+            Constants.twitterImageSrc,
+            with: twitterData[Constants.twitterImageSrc]!
+        )
 
         twitterTemplate = twitterTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(twitterTemplate, result: Response())
+        let result = slp.crawlMetaTags(twitterTemplate, result: Response())
 
         XCTAssertEqual(result.title, twitterData[Constants.twitterTitle]!.decoded)
         XCTAssertEqual(result.description, twitterData[Constants.twitterDescription]!.decoded)
         XCTAssertEqual(result.image, twitterData[Constants.twitterImageSrc])
-
     }
 
     func testTwitter() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpTwitterAndRun()
-
+            setUpTwitterAndRun()
         }
-
     }
 
     // MARK: - Facebook
-    func setUpFacebookAndRun() {
 
+    func setUpFacebookAndRun() {
         let facebookData =
             [
                 Constants.facebookTitle: String.randomText(),
                 Constants.facebookSite: String.randomUrl(),
                 Constants.facebookDescription: String.randomText(),
-                Constants.facebookImage: String.randomImage()
-        ]
+                Constants.facebookImage: String.randomImage(),
+            ]
 
         var facebookTemplate = self.facebookTemplate
         facebookTemplate = facebookTemplate.replace(Constants.headRandomPre, with: String.randomTag())
         facebookTemplate = facebookTemplate.replace(Constants.headRandomPos, with: String.randomTag())
 
-        facebookTemplate = facebookTemplate.replace(Constants.facebookTitle, with: facebookData[Constants.facebookTitle]!)
+        facebookTemplate = facebookTemplate.replace(
+            Constants.facebookTitle,
+            with: facebookData[Constants.facebookTitle]!
+        )
         facebookTemplate = facebookTemplate.replace(Constants.facebookSite, with: facebookData[Constants.facebookSite]!)
-        facebookTemplate = facebookTemplate.replace(Constants.facebookDescription, with: facebookData[Constants.facebookDescription]!)
-        facebookTemplate = facebookTemplate.replace(Constants.facebookImage, with: facebookData[Constants.facebookImage]!)
+        facebookTemplate = facebookTemplate.replace(
+            Constants.facebookDescription,
+            with: facebookData[Constants.facebookDescription]!
+        )
+        facebookTemplate = facebookTemplate.replace(
+            Constants.facebookImage,
+            with: facebookData[Constants.facebookImage]!
+        )
 
         facebookTemplate = facebookTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(facebookTemplate, result: Response())
+        let result = slp.crawlMetaTags(facebookTemplate, result: Response())
 
         XCTAssertEqual(result.title, facebookData[Constants.facebookTitle]!.decoded)
         XCTAssertEqual(result.description, facebookData[Constants.facebookDescription]!.decoded)
@@ -101,25 +111,21 @@ final class MetaTests: XCTestCase {
     }
 
     func testFacebook() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpFacebookAndRun()
-
+            setUpFacebookAndRun()
         }
-
     }
 
     // MARK: - Facebook
-    func setUpItempropAndRun() {
 
+    func setUpItempropAndRun() {
         let itempropData =
             [
                 Constants.title: String.randomText(),
                 Constants.site: String.randomUrl(),
                 Constants.description: String.randomText(),
-                Constants.image: String.randomImage()
-        ]
+                Constants.image: String.randomImage(),
+            ]
 
         var itempropTemplate = self.itempropTemplate
         itempropTemplate = itempropTemplate.replace(Constants.headRandomPre, with: String.randomTag())
@@ -132,7 +138,7 @@ final class MetaTests: XCTestCase {
 
         itempropTemplate = itempropTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(itempropTemplate, result: Response())
+        let result = slp.crawlMetaTags(itempropTemplate, result: Response())
 
         XCTAssertEqual(result.title, itempropData[Constants.title]!.decoded)
         XCTAssertEqual(result.description, itempropData[Constants.description]!.decoded)
@@ -140,25 +146,21 @@ final class MetaTests: XCTestCase {
     }
 
     func testItemprop() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpItempropAndRun()
-
+            setUpItempropAndRun()
         }
-
     }
 
     // MARK: - Meta
-    func setUpMetaAndRun() {
 
+    func setUpMetaAndRun() {
         let metaData =
             [
                 Constants.title: String.randomText(),
                 Constants.site: String.randomUrl(),
                 Constants.description: String.randomText(),
-                Constants.image: String.randomImage()
-        ]
+                Constants.image: String.randomImage(),
+            ]
 
         var metaTemplate = self.metaTemplate
         metaTemplate = metaTemplate.replace(Constants.headRandomPre, with: String.randomTag())
@@ -171,7 +173,7 @@ final class MetaTests: XCTestCase {
 
         metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlMetaTags(metaTemplate, result: Response())
+        let result = slp.crawlMetaTags(metaTemplate, result: Response())
 
         XCTAssertEqual(result.title, metaData[Constants.title]!.decoded)
         XCTAssertEqual(result.description, metaData[Constants.description]!.decoded)
@@ -179,13 +181,8 @@ final class MetaTests: XCTestCase {
     }
 
     func testMeta() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpMetaAndRun()
-
+            setUpMetaAndRun()
         }
-
     }
-
 }

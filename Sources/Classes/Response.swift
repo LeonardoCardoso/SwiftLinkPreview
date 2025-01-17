@@ -20,6 +20,6 @@ public struct Response: Sendable {
     public internal(set) var icon: String?
     public internal(set) var video: String?
     public internal(set) var price: String?
-    
+
     public init() { }
 }

@@ -6,45 +6,37 @@
 //  Copyright © 2021 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
 // This final class tests videos
 final class VideoTests: XCTestCase {
-
     // MARK: - Vars
+
     let slp = SwiftLinkPreview()
 
-    
     func testImgur() {
         do {
-
             let source = try String(contentsOf: URL(string: "https://imgur.com/GaI4Ruu")!).extendedTrim
 
-            let result = self.slp.crawlMetaTags(source, result: Response())
+            let result = slp.crawlMetaTags(source, result: Response())
 
             XCTAssert(result.video != nil)
-
         } catch let err as NSError {
-
             print("\(err)")
-
         }
     }
-    
+
     func testGfycat() {
         do {
+            let source = try String(contentsOf: URL(string: "https://gfycat.com/ifr/ElementaryRemoteGavial")!)
+                .extendedTrim
 
-            let source = try String(contentsOf: URL(string: "https://gfycat.com/ifr/ElementaryRemoteGavial")!).extendedTrim
-
-            let result = self.slp.crawlMetaTags(source, result: Response())
+            let result = slp.crawlMetaTags(source, result: Response())
 
             XCTAssert(result.video != nil)
-
         } catch let err as NSError {
-
             print("\(err)")
-
         }
     }
 }

@@ -6,39 +6,39 @@
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
 // This class tests body texts
 final class BodyTests: XCTestCase {
-
     // MARK: - Vars
+
     var spanTemplate = ""
     var pTemplate = ""
     var divTemplate = ""
     let slp = SwiftLinkPreview()
 
     // MARK: - SetUps
+
     // Those setup functions get that template, and fulfil determinated areas with rand texts, images and tags
     override func setUp() {
         super.setUp()
 
-        self.spanTemplate = File.toString(Constants.bodyTextSpan)
-        self.divTemplate = File.toString(Constants.bodyTextDiv)
-        self.pTemplate = File.toString(Constants.bodyTextP)
-
+        spanTemplate = File.toString(Constants.bodyTextSpan)
+        divTemplate = File.toString(Constants.bodyTextDiv)
+        pTemplate = File.toString(Constants.bodyTextP)
     }
 
     // MARK: - Span
-    func setUpSpan() {
 
+    func setUpSpan() {
         let metaData =
             [
                 Constants.random1: String.randomText(),
-                Constants.random2: String.randomText()
-        ]
+                Constants.random2: String.randomText(),
+            ]
 
-        var template = self.spanTemplate
+        var template = spanTemplate
         template = template.replace(Constants.headRandom, with: String.randomText())
 
         template = template.replace(Constants.random1, with: metaData[Constants.random1]!)
@@ -51,34 +51,32 @@ final class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
 
-        let response = self.slp.crawlDescription(template, result: Response())
+        let response = slp.crawlDescription(template, result: Response())
 
         let comparable = response.result.description
 
-        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
-
+        XCTAssert(
+            comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!
+                .decoded
+        )
     }
 
     func testSpan() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpSpan()
-
+            setUpSpan()
         }
-
     }
 
     // MARK: - Div
-    func setUpDiv() {
 
+    func setUpDiv() {
         let metaData =
             [
                 Constants.random1: String.randomText(),
-                Constants.random2: String.randomText()
-        ]
+                Constants.random2: String.randomText(),
+            ]
 
-        var template = self.divTemplate
+        var template = divTemplate
         template = template.replace(Constants.headRandom, with: String.randomText())
 
         template = template.replace(Constants.random1, with: metaData[Constants.random1]!)
@@ -91,34 +89,32 @@ final class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
 
-        let response = self.slp.crawlDescription(template, result: Response())
+        let response = slp.crawlDescription(template, result: Response())
 
         let comparable = response.result.description
 
-        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
-
+        XCTAssert(
+            comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!
+                .decoded
+        )
     }
 
     func testDiv() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpDiv()
-
+            setUpDiv()
         }
-
     }
 
     // MARK: - P
-    func setUpP() {
 
+    func setUpP() {
         let metaData =
             [
                 Constants.random1: String.randomText(),
-                Constants.random2: String.randomText()
-        ]
+                Constants.random2: String.randomText(),
+            ]
 
-        var template = self.pTemplate
+        var template = pTemplate
         template = template.replace(Constants.headRandom, with: String.randomText())
 
         template = template.replace(Constants.random1, with: metaData[Constants.random1]!)
@@ -131,22 +127,19 @@ final class BodyTests: XCTestCase {
         template = template.replace(Constants.bodyRandomMiddle, with: String.randomText())
         template = template.replace(Constants.bodyRandomPos, with: String.randomText()).extendedTrim
 
-        let response = self.slp.crawlDescription(template, result: Response())
+        let response = slp.crawlDescription(template, result: Response())
 
         let comparable = response.result.description
 
-        XCTAssert(comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!.decoded)
-
+        XCTAssert(
+            comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!
+                .decoded
+        )
     }
 
     func testP() {
-
         for _ in 0 ..< 100 {
-
-            self.setUpP()
-
+            setUpP()
         }
-
     }
-
 }
