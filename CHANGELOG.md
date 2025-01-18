@@ -32,6 +32,8 @@
 - Added removal of duplicates from the images array [#45](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/45)
 - Added capture of base URL [#45](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/45)
 	- Changed by [LeonardoCardoso](https://github.com/LeonardoCardoso)
+- Make text kLimit to public variable (make user can config limit)
+    - Changed by [zhocker](https://github.com/zhocker)
 
 #### Changed
 - Updated Package.swift to swift-tools-version:5.0
