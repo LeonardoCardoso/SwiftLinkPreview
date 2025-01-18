@@ -27,7 +27,7 @@ final class TitleTests: XCTestCase {
 
     // MARK: - Title
 
-    func setUpTitle() {
+    func setUpTitle() throws {
         let metaData =
             [
                 Constants.title: String.randomText(),
@@ -36,26 +36,29 @@ final class TitleTests: XCTestCase {
             ]
 
         var metaTemplate = titleTemplate
-        metaTemplate = metaTemplate.replace(Constants.headRandomPre, with: metaData[Constants.headRandom]!)
-        metaTemplate = metaTemplate.replace(Constants.headRandomPos, with: metaData[Constants.headRandom]!)
+        let title = try XCTUnwrap(metaData[Constants.title])
+        let headRandom = try XCTUnwrap(metaData[Constants.headRandom])
+        let bodyRandom = try XCTUnwrap(metaData[Constants.bodyRandom])
+        metaTemplate = metaTemplate.replace(Constants.headRandomPre, with: headRandom)
+        metaTemplate = metaTemplate.replace(Constants.headRandomPos, with: headRandom)
 
-        metaTemplate = metaTemplate.replace(Constants.title, with: metaData[Constants.title]!)
+        metaTemplate = metaTemplate.replace(Constants.title, with: title)
 
-        metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: metaData[Constants.bodyRandom]!).extendedTrim
+        metaTemplate = metaTemplate.replace(Constants.bodyRandom, with: bodyRandom).extendedTrim
 
         let response = slp.crawlTitle(metaTemplate, result: Response())
 
         let comparable = response.result.title
-        let comparison = comparable == metaData[Constants.title]!.decoded.extendedTrim ||
-            comparable == metaData[Constants.headRandom]!.decoded.extendedTrim ||
-            comparable == metaData[Constants.bodyRandom]!.decoded.extendedTrim
+        let comparison = comparable == title.decoded.extendedTrim ||
+            comparable == headRandom.decoded.extendedTrim ||
+            comparable == bodyRandom.decoded.extendedTrim
 
         XCTAssert(comparison)
     }
 
-    func testTitle() {
+    func testTitle() throws {
         for _ in 0 ..< 100 {
-            setUpTitle()
+            try setUpTitle()
         }
     }
 }

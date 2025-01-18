@@ -31,7 +31,8 @@ extension String {
 
     // Decode HTML entities
     var decoded: String {
-        let encodedData = data(using: String.Encoding.utf8)!
+        guard let encodedData = data(using: String.Encoding.utf8) else { return self }
+
         let attributedOptions: [NSAttributedString.DocumentReadingOptionKey: Any] =
             [
                 .documentType: NSAttributedString.DocumentType.html,

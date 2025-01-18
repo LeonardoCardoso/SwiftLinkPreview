@@ -17,10 +17,10 @@ final class HugeTests: XCTestCase {
 
     // MARK: - Huge
 
-    func testHuge() {
+    func testHuge() throws {
         do {
             // Get reddit.com because it contains a huge HTML
-            let source = try String(contentsOf: URL(string: "https://reddit.com")!).extendedTrim
+            let source = try String(contentsOf: try XCTUnwrap(URL(string: "https://reddit.com"))).extendedTrim
 
             let title = slp.crawlCode(source, minimum: SwiftLinkPreview.titleMinimumRelevant)
             let description = slp.crawlCode(source, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
@@ -34,7 +34,7 @@ final class HugeTests: XCTestCase {
 
     // MARK: - Amazon
 
-    func testAmazonLinksWithGoogleBotUserAgent() {
+    func testAmazonLinksWithGoogleBotUserAgent() throws {
         // Amazon links are huge and serve up very different html based on the user agent string
         // Some user agents don't contain og tags and will fail to locate title and images
         let amazonUrl = "https://www.amazon.com/Beginning-HTML5-CSS3-Dummies-Tittel/dp/1118657209/"
@@ -52,11 +52,15 @@ final class HugeTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 15, handler: nil)
-        XCTAssert(!result!.title!.trim.isEmpty)
-        XCTAssertNotNil(result!.image)
+
+        let unwrappedResult = try XCTUnwrap(result)
+        let title = try XCTUnwrap(unwrappedResult.title)
+
+        XCTAssert(title.trim.isEmpty)
+        XCTAssertNotNil(unwrappedResult.image)
     }
 
-    func testAmazonLinksWithOriginalSlpUserAgent() {
+    func testAmazonLinksWithOriginalSlpUserAgent() throws {
         // Amazon links are huge and serve up very different html based on the user agent string
         // Some user agents don't contain og tags and will fail to locate title and images
         let amazonUrl = "https://www.amazon.com/Beginning-HTML5-CSS3-Dummies-Tittel/dp/1118657209/"
@@ -72,7 +76,11 @@ final class HugeTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 15, handler: nil)
-        XCTAssert(!result!.title!.trim.isEmpty)
-        XCTAssertNil(result!.image)
+
+        let unwrappedResult = try XCTUnwrap(result)
+        let title = try XCTUnwrap(unwrappedResult.title)
+
+        XCTAssert(title.trim.isEmpty)
+        XCTAssertNotNil(unwrappedResult.image)
     }
 }

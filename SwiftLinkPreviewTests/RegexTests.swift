@@ -21,19 +21,15 @@ final class RegexTests: XCTestCase {
         for url in URLs.bunch {
             let extracted = slp.extractURL(text: url[0])
 
-            // print(extracted?.absoluteString, url[1])
-
             XCTAssertEqual(extracted?.absoluteString, url[1])
         }
     }
 
-    func testCanonicalURL() {
+    func testCanonicalURL() throws {
         for url in URLs.bunch {
-            let finalUrl = URL(string: url[1])
+            let finalUrl = try XCTUnwrap(URL(string: url[1]))
 
-            let canonical = slp.extractCanonicalURL(finalUrl!)
-
-            // print(canonical, url[2])
+            let canonical = slp.extractCanonicalURL(finalUrl)
 
             XCTAssertEqual(canonical, url[2])
         }

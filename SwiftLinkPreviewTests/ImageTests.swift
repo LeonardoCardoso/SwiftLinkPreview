@@ -29,7 +29,7 @@ final class ImageTests: XCTestCase {
 
     // MARK: - Single
 
-    func setUpSingle() {
+    func setUpSingle() throws {
         let data = [Constants.image: String.randomImage()]
 
         var singleImageTemplate = self.singleImageTemplate
@@ -37,7 +37,7 @@ final class ImageTests: XCTestCase {
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandomPre, with: String.randomTag())
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandomPos, with: String.randomTag())
 
-        singleImageTemplate = singleImageTemplate.replace(Constants.image, with: data[Constants.image]!)
+        singleImageTemplate = singleImageTemplate.replace(Constants.image, with: try XCTUnwrap(data[Constants.image]))
 
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
@@ -50,15 +50,15 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(result.image, data[Constants.image])
     }
 
-    func testSingle() {
+    func testSingle() throws {
         for _ in 0 ..< 100 {
-            setUpSingle()
+            try setUpSingle()
         }
     }
 
     // MARK: - Gallery
 
-    func setUpGallery() {
+    func setUpGallery() throws {
         let data = [
             Constants.image1: String.randomImage(),
             Constants.image2: String.randomImage(),
@@ -70,9 +70,18 @@ final class ImageTests: XCTestCase {
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandomPre, with: String.randomTag())
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandomPos, with: String.randomTag())
 
-        galleryImageTemplate = galleryImageTemplate.replace(Constants.image1, with: data[Constants.image1]!)
-        galleryImageTemplate = galleryImageTemplate.replace(Constants.image2, with: data[Constants.image2]!)
-        galleryImageTemplate = galleryImageTemplate.replace(Constants.image3, with: data[Constants.image3]!)
+        galleryImageTemplate = galleryImageTemplate.replace(
+            Constants.image1,
+            with: try XCTUnwrap(data[Constants.image1])
+        )
+        galleryImageTemplate = galleryImageTemplate.replace(
+            Constants.image2,
+            with: try XCTUnwrap(data[Constants.image2])
+        )
+        galleryImageTemplate = galleryImageTemplate.replace(
+            Constants.image3,
+            with: try XCTUnwrap(data[Constants.image3])
+        )
 
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
@@ -83,15 +92,15 @@ final class ImageTests: XCTestCase {
         XCTAssertEqual(result.images?[2], data[Constants.image3])
     }
 
-    func testGallery() {
+    func testGallery() throws {
         for _ in 0 ..< 100 {
-            setUpGallery()
+            try setUpGallery()
         }
     }
 
-    func testImgur() {
+    func testImgur() throws {
         do {
-            let source = try String(contentsOf: URL(string: "https://imgur.com/GoAkW6w")!).extendedTrim
+            let source = try String(contentsOf: try XCTUnwrap(URL(string: "https://imgur.com/GoAkW6w"))).extendedTrim
 
             let result = slp.crawlMetaTags(source, result: Response())
 

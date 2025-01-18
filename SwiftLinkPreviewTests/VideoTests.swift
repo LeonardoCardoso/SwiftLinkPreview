@@ -15,28 +15,21 @@ final class VideoTests: XCTestCase {
 
     let slp = SwiftLinkPreview()
 
-    func testImgur() {
-        do {
-            let source = try String(contentsOf: URL(string: "https://imgur.com/GaI4Ruu")!).extendedTrim
+    func testImgur() throws {
+        let url = try XCTUnwrap(URL(string: "https://imgur.com/GaI4Ruu"))
+        let source = try String(contentsOf: url).extendedTrim
 
-            let result = slp.crawlMetaTags(source, result: Response())
+        let result = slp.crawlMetaTags(source, result: Response())
 
-            XCTAssert(result.video != nil)
-        } catch let err as NSError {
-            print("\(err)")
-        }
+        XCTAssert(result.video != nil)
     }
 
-    func testGfycat() {
-        do {
-            let source = try String(contentsOf: URL(string: "https://gfycat.com/ifr/ElementaryRemoteGavial")!)
-                .extendedTrim
+    func testGiphy() throws {
+        let url = try XCTUnwrap(URL(string: "https://giphy.com/gifs/cuddles-yPQcB2bQVBQ6k"))
+        let source = try String(contentsOf: url).extendedTrim
 
-            let result = slp.crawlMetaTags(source, result: Response())
+        let result = slp.crawlMetaTags(source, result: Response())
 
-            XCTAssert(result.video != nil)
-        } catch let err as NSError {
-            print("\(err)")
-        }
+        XCTAssert(result.video != nil)
     }
 }

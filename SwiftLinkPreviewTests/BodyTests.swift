@@ -31,7 +31,7 @@ final class BodyTests: XCTestCase {
 
     // MARK: - Span
 
-    func setUpSpan() {
+    func setUpSpan() throws {
         let metaData =
             [
                 Constants.random1: String.randomText(),
@@ -41,8 +41,10 @@ final class BodyTests: XCTestCase {
         var template = spanTemplate
         template = template.replace(Constants.headRandom, with: String.randomText())
 
-        template = template.replace(Constants.random1, with: metaData[Constants.random1]!)
-        template = template.replace(Constants.random2, with: metaData[Constants.random2]!)
+        let random1 = try XCTUnwrap(metaData[Constants.random1])
+        let random2 = try XCTUnwrap(metaData[Constants.random2])
+        template = template.replace(Constants.random1, with: random1)
+        template = template.replace(Constants.random2, with: random2)
 
         template = template.replace(Constants.tag1, with: String.randomText())
         template = template.replace(Constants.tag2, with: String.randomText())
@@ -55,21 +57,18 @@ final class BodyTests: XCTestCase {
 
         let comparable = response.result.description
 
-        XCTAssert(
-            comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!
-                .decoded
-        )
+        XCTAssert(comparable == random1.decoded || comparable == random2.decoded)
     }
 
-    func testSpan() {
+    func testSpan() throws {
         for _ in 0 ..< 100 {
-            setUpSpan()
+            try setUpSpan()
         }
     }
 
     // MARK: - Div
 
-    func setUpDiv() {
+    func setUpDiv() throws {
         let metaData =
             [
                 Constants.random1: String.randomText(),
@@ -79,8 +78,10 @@ final class BodyTests: XCTestCase {
         var template = divTemplate
         template = template.replace(Constants.headRandom, with: String.randomText())
 
-        template = template.replace(Constants.random1, with: metaData[Constants.random1]!)
-        template = template.replace(Constants.random2, with: metaData[Constants.random2]!)
+        let random1 = try XCTUnwrap(metaData[Constants.random1])
+        let random2 = try XCTUnwrap(metaData[Constants.random2])
+        template = template.replace(Constants.random1, with: random1)
+        template = template.replace(Constants.random2, with: random2)
 
         template = template.replace(Constants.tag1, with: String.randomText())
         template = template.replace(Constants.tag2, with: String.randomText())
@@ -94,20 +95,19 @@ final class BodyTests: XCTestCase {
         let comparable = response.result.description
 
         XCTAssert(
-            comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!
-                .decoded
+            comparable == random1.decoded || comparable == random2.decoded
         )
     }
 
-    func testDiv() {
+    func testDiv() throws {
         for _ in 0 ..< 100 {
-            setUpDiv()
+            try setUpDiv()
         }
     }
 
     // MARK: - P
 
-    func setUpP() {
+    func setUpP() throws {
         let metaData =
             [
                 Constants.random1: String.randomText(),
@@ -117,8 +117,10 @@ final class BodyTests: XCTestCase {
         var template = pTemplate
         template = template.replace(Constants.headRandom, with: String.randomText())
 
-        template = template.replace(Constants.random1, with: metaData[Constants.random1]!)
-        template = template.replace(Constants.random2, with: metaData[Constants.random2]!)
+        let random1 = try XCTUnwrap(metaData[Constants.random1])
+        let random2 = try XCTUnwrap(metaData[Constants.random2])
+        template = template.replace(Constants.random1, with: random1)
+        template = template.replace(Constants.random2, with: random2)
 
         template = template.replace(Constants.tag1, with: String.randomText())
         template = template.replace(Constants.tag2, with: String.randomText())
@@ -132,14 +134,13 @@ final class BodyTests: XCTestCase {
         let comparable = response.result.description
 
         XCTAssert(
-            comparable == metaData[Constants.random1]!.decoded || comparable == metaData[Constants.random2]!
-                .decoded
+            comparable == random1.decoded || comparable == random2.decoded
         )
     }
 
-    func testP() {
+    func testP() throws {
         for _ in 0 ..< 100 {
-            setUpP()
+            try setUpP()
         }
     }
 }

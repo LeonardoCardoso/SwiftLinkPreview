@@ -232,13 +232,16 @@ open class SwiftLinkPreview: NSObject, SwiftLinkPreviewType {
                             result.url = url
                             result.finalUrl = self.extractInURLRedirectionIfNeeded(unshortened)
                             result.canonicalUrl = self.extractCanonicalURL(unshortened)
-                            result.baseURL = result
-                                .baseURL ??
-                                (
-                                    result.canonicalUrl?
-                                        .starts(with: "http") == false ? "https://\(result.canonicalUrl!)" : result
-                                        .canonicalUrl
-                                )
+
+                            if let cannonicalURLString = result.canonicalUrl {
+                                result.baseURL = result
+                                    .baseURL ??
+                                    (
+                                        result.canonicalUrl?
+                                            .starts(with: "http") == false ? "https://\(cannonicalURLString)" : result
+                                            .canonicalUrl
+                                    )
+                            }
 
                             self.extractInfo(response: result, cancellable: cancellable, completion: {
                                 result.title = $0.title
