@@ -36,5 +36,60 @@ class HugeTests: XCTestCase {
         }
 
     }
+    
+    // MARK: - Amazon
+    func testAmazonLinksWithGoogleBotUserAgent() {
+                    
+        // Amazon links are huge and serve up very different html based on the user agent string
+        // Some user agents don't contain og tags and will fail to locate title and images
+        let amazonUrl = "https://www.amazon.com/Beginning-HTML5-CSS3-Dummies-Tittel/dp/1118657209/"
+        let expectation = self.expectation(description: "Loading web page")
+        var result:Response?
+        
+        let updatedSlp = SwiftLinkPreview(userAgent: SwiftLinkPreview.googleBotUserAgent)
+        
+        updatedSlp.preview(amazonUrl) {
+                        
+            result = $0
+            expectation.fulfill()
+            
+        } onError: { error in
+            
+            print(error)
+            XCTAssertNil(error)
+            
+        }
+
+        waitForExpectations(timeout: 15, handler: nil)
+        XCTAssert(!result!.title!.trim.isEmpty)
+        XCTAssertNotNil(result!.image)
+            
+    }
+    
+    func testAmazonLinksWithOriginalSlpUserAgent() {
+                    
+        // Amazon links are huge and serve up very different html based on the user agent string
+        // Some user agents don't contain og tags and will fail to locate title and images
+        let amazonUrl = "https://www.amazon.com/Beginning-HTML5-CSS3-Dummies-Tittel/dp/1118657209/"
+        let expectation = self.expectation(description: "Loading web page")
+        var result:Response?
+        
+        slp.preview(amazonUrl) {
+                        
+            result = $0
+            expectation.fulfill()
+            
+        } onError: { error in
+            
+            print(error)
+            XCTAssertNil(error)
+            
+        }
+
+        waitForExpectations(timeout: 15, handler: nil)
+        XCTAssert(!result!.title!.trim.isEmpty)
+        XCTAssertNil(result!.image)
+            
+    }
 
 }

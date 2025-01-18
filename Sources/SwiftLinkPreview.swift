@@ -7,7 +7,7 @@
 //
 import Foundation
 
-public enum SwiftLinkResponseKey: String {
+public enum SwiftLinkResponseKey: String, Sendable {
     case url
     case finalUrl
     case canonicalUrl
@@ -38,17 +38,22 @@ open class SwiftLinkPreview: NSObject {
     public let workQueue: DispatchQueue
     public let responseQueue: DispatchQueue
     public let cache: Cache
+    public let userAgent: String
 
     public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
-
+    public static let defaultUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+    // Google Bot https://github.com/jhy/jsoup/issues/976
+    public static let googleBotUserAgent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    
     // MARK: - Constructor
 
     //Swift-only init with default parameters
-    @nonobjc public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
+    @nonobjc public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance, userAgent: String = SwiftLinkPreview.defaultUserAgent) {
         self.workQueue = workQueue
         self.responseQueue = responseQueue
         self.cache = cache
         self.session = session
+        self.userAgent = userAgent
     }
 
     //Objective-C init with default parameters
@@ -57,25 +62,29 @@ open class SwiftLinkPreview: NSObject {
         let _workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue
         let _responseQueue: DispatchQueue = DispatchQueue.main
         let _cache: Cache  = DisabledCache.instance
+        let _userAgent: String = SwiftLinkPreview.defaultUserAgent
 
         self.workQueue = _workQueue
         self.responseQueue = _responseQueue
         self.cache = _cache
         self.session = _session
+        self.userAgent = _userAgent
     }
 
     //Objective-C init with paramaters.  nil objects will default.  Timeout values are ignored if InMemoryCache is disabled.
-    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue?, disableInMemoryCache: Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval) {
+    @objc public init(session: URLSession?, workQueue: DispatchQueue?, responseQueue: DispatchQueue?, disableInMemoryCache: Bool, cacheInvalidationTimeout: TimeInterval, cacheCleanupInterval: TimeInterval, userAgent: String?) {
 
         let _session = session ?? URLSession.shared
         let _workQueue = workQueue ?? SwiftLinkPreview.defaultWorkQueue
         let _responseQueue = responseQueue ?? DispatchQueue.main
         let _cache: Cache  = disableInMemoryCache ? DisabledCache.instance : InMemoryCache(invalidationTimeout: cacheInvalidationTimeout, cleanupInterval: cacheCleanupInterval)
+        let _userAgent = userAgent ?? SwiftLinkPreview.defaultUserAgent
 
         self.workQueue = _workQueue
         self.responseQueue = _responseQueue
         self.cache = _cache
         self.session = _session
+        self.userAgent = _userAgent
 
     }
 
@@ -83,9 +92,30 @@ open class SwiftLinkPreview: NSObject {
     // Make preview
     //Swift-only preview function using Swift specific closure types
     @nonobjc @discardableResult open func preview(_ text: String, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) -> Cancellable {
-
         let cancellable = Cancellable()
+        performPreview(text, cancellable: cancellable, onSuccess: onSuccess, onError: onError)
+        return cancellable
+    }
 
+    /// Asynchronously loads link preview metadata for the first link in the provided text.
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, visionOS 1.0, macCatalyst 13.0, *)
+    open func preview(_ text: String) async throws -> Response {
+        let cancellable = Cancellable()
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Response, any Error>) in
+                performPreview(text, cancellable: cancellable) { response in
+                    continuation.resume(returning: response)
+                } onError: { error in
+                    continuation.resume(throwing: error)
+                }
+            }
+        } onCancel: {
+            cancellable.cancel()
+        }
+
+    }
+
+    private func performPreview(_ text: String, cancellable: Cancellable, onSuccess: @escaping (Response) -> Void, onError: @escaping (PreviewError) -> Void) {
         self.session = URLSession(configuration: self.session.configuration,
                                   delegate: self, // To handle redirects
             delegateQueue: self.session.delegateQueue)
@@ -150,8 +180,6 @@ open class SwiftLinkPreview: NSObject {
         } else {
             onError(.noURLHasBeenFound(text))
         }
-
-        return cancellable
     }
 
     /*
@@ -380,7 +408,8 @@ extension SwiftLinkPreview {
             }
             var request = URLRequest( url: sourceUrl )
             request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
-            request.addValue("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36", forHTTPHeaderField: "user-Agent")
+            request.addValue(self.userAgent, forHTTPHeaderField: "user-Agent")
+            
             let (data, urlResponse, error) = session.synchronousDataTask(with: request )
             if let error = error {
                 if !cancellable.isCancelled {
