@@ -4,6 +4,8 @@
 
 > It makes a preview from an URL, grabbing all the information such as title, relevant texts and images.
 
+> Update 2025: I've decided to archive this repo due to the fact that any AI integration performs a job better than SLP. It was a nice concept at the beginning and it served its purpose. 🫡
+
 [![Platform](https://img.shields.io/badge/platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS-orange.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#requirements-and-details)
 [![CocoaPods](https://img.shields.io/badge/pod-v3.5.0-red.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#cocoapods)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/LeonardoCardoso/SwiftLinkPreview#carthage)
