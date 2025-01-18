@@ -44,7 +44,7 @@
 
 * iOS 8.0+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
 * Xcode 8.0+
-* Built with Swift 3
+* Built with Swift 5
 
 ## Installation
 
