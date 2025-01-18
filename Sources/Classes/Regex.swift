@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Regular expressions
 
 enum Regex {
+    public static var kLimit: Int = 500000
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
     static let openGraphImagePattern = "(.+?)\\.(gif||jpg|jpeg|png|bmp)$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
@@ -58,7 +59,7 @@ enum Regex {
 
             var matches: [NSTextCheckingResult] = []
 
-            let limit = 300_000
+            let limit = Regex.kLimit
 
             if string.count > limit {
                 for item in string.split(by: limit) {
