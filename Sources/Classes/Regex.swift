@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Regular expressions
 
 enum Regex {
-    public static var kLimit: Int = 500000
+    public static var kLimit: Int = 1_000_000
     static let imagePattern = "(.+?)\\.(gif|jpg|jpeg|png|bmp)$"
     static let openGraphImagePattern = "(.+?)\\.(gif||jpg|jpeg|png|bmp)$"
     static let videoTagPattern = "<video[^>]+src=\"([^\"]+)"
