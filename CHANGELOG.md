@@ -34,6 +34,8 @@
 	- Changed by [LeonardoCardoso](https://github.com/LeonardoCardoso)
 
 #### Changed
+- Updated Package.swift to swift-tools-version:5.0
+    - Changed by [LeonardoCardoso](https://github.com/LeonardoCardoso)
 - Updated README.md [#150](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/150)
 	- Changed by [benlmyers](https://github.com/benlmyers)
 - Updated regex limit [#148](https://github.com/LeonardoCardoso/SwiftLinkPreview/issues/148)
