@@ -6,30 +6,30 @@
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
-// This class tests body images
-class ImageTests: XCTestCase {
-
+// This final class tests body images
+final class ImageTests: XCTestCase {
     // MARK: - Vars
+
     var singleImageTemplate = ""
     var galleryImageTemplate = ""
     let slp = SwiftLinkPreview()
 
     // MARK: - SetUps
+
     // Those setup functions get that template, and fulfil determinated areas with rand texts, images and tags
     override func setUp() {
         super.setUp()
 
-        self.singleImageTemplate = File.toString(Constants.bodyImageSingle)
-        self.galleryImageTemplate = File.toString(Constants.bodyImageGallery)
-
+        singleImageTemplate = File.toString(Constants.bodyImageSingle)
+        galleryImageTemplate = File.toString(Constants.bodyImageGallery)
     }
 
     // MARK: - Single
-    func setUpSingle() {
 
+    func setUpSingle() throws {
         let data = [Constants.image: String.randomImage()]
 
         var singleImageTemplate = self.singleImageTemplate
@@ -37,34 +37,32 @@ class ImageTests: XCTestCase {
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandomPre, with: String.randomTag())
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandomPos, with: String.randomTag())
 
-        singleImageTemplate = singleImageTemplate.replace(Constants.image, with: data[Constants.image]!)
+        singleImageTemplate = singleImageTemplate.replace(Constants.image, with: try XCTUnwrap(data[Constants.image]))
 
         singleImageTemplate = singleImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlImages(singleImageTemplate, result:
-        Response())
+        let result = slp.crawlImages(
+            singleImageTemplate,
+            result:
+            Response()
+        )
 
         XCTAssertEqual(result.image, data[Constants.image])
-
     }
 
-    func testSingle() {
-
+    func testSingle() throws {
         for _ in 0 ..< 100 {
-
-            self.setUpSingle()
-
+            try setUpSingle()
         }
-
     }
 
     // MARK: - Gallery
-    func setUpGallery() {
 
+    func setUpGallery() throws {
         let data = [
             Constants.image1: String.randomImage(),
             Constants.image2: String.randomImage(),
-            Constants.image3: String.randomImage()
+            Constants.image3: String.randomImage(),
         ]
 
         var galleryImageTemplate = self.galleryImageTemplate
@@ -72,45 +70,43 @@ class ImageTests: XCTestCase {
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandomPre, with: String.randomTag())
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandomPos, with: String.randomTag())
 
-        galleryImageTemplate = galleryImageTemplate.replace(Constants.image1, with: data[Constants.image1]!)
-        galleryImageTemplate = galleryImageTemplate.replace(Constants.image2, with: data[Constants.image2]!)
-        galleryImageTemplate = galleryImageTemplate.replace(Constants.image3, with: data[Constants.image3]!)
+        galleryImageTemplate = galleryImageTemplate.replace(
+            Constants.image1,
+            with: try XCTUnwrap(data[Constants.image1])
+        )
+        galleryImageTemplate = galleryImageTemplate.replace(
+            Constants.image2,
+            with: try XCTUnwrap(data[Constants.image2])
+        )
+        galleryImageTemplate = galleryImageTemplate.replace(
+            Constants.image3,
+            with: try XCTUnwrap(data[Constants.image3])
+        )
 
         galleryImageTemplate = galleryImageTemplate.replace(Constants.bodyRandom, with: String.randomTag()).extendedTrim
 
-        let result = self.slp.crawlImages(galleryImageTemplate, result: Response())
+        let result = slp.crawlImages(galleryImageTemplate, result: Response())
 
         XCTAssertEqual(result.images?[0], data[Constants.image1])
         XCTAssertEqual(result.images?[1], data[Constants.image2])
         XCTAssertEqual(result.images?[2], data[Constants.image3])
-
     }
 
-    func testGallery() {
-
+    func testGallery() throws {
         for _ in 0 ..< 100 {
-
-            self.setUpGallery()
-
+            try setUpGallery()
         }
-
     }
-    
-    func testImgur() {
-        
+
+    func testImgur() throws {
         do {
+            let source = try String(contentsOf: try XCTUnwrap(URL(string: "https://imgur.com/GoAkW6w"))).extendedTrim
 
-            let source = try String(contentsOf: URL(string: "https://imgur.com/GoAkW6w")!).extendedTrim
-
-            let result = self.slp.crawlMetaTags(source, result: Response())
+            let result = slp.crawlMetaTags(source, result: Response())
 
             print(result)
-
         } catch let err as NSError {
-
             print("\(err)")
-
         }
     }
-
 }

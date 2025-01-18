@@ -1,0 +1,943 @@
+//
+//  SwiftLinkPreview.swift
+//  SwiftLinkPreview
+//
+//  Created by Leonardo Cardoso on 09/06/2016.
+//  Copyright © 2016 leocardz.com. All rights reserved.
+//
+import Foundation
+
+public enum SwiftLinkResponseKey: String, Sendable {
+    case url
+    case finalUrl
+    case canonicalUrl
+    case title
+    case description
+    case image
+    case images
+    case icon
+    case video
+    case price
+}
+
+@objc
+public protocol CancellableType {
+    var isCancelled: Bool { get }
+    func cancel()
+}
+
+open class Cancellable: NSObject, CancellableType {
+    public var isCancelled: Bool = false
+
+    @objc open func cancel() {
+        isCancelled = true
+    }
+}
+
+public protocol SwiftLinkPreviewType {
+    func preview(
+        _ text: String,
+        onSuccess: @escaping (Response) -> Void,
+        onError: @escaping (PreviewError) -> Void
+    ) -> CancellableType
+
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, visionOS 1.0, macCatalyst 13.0, *)
+    func preview(_ text: String) async throws -> Response
+
+    func previewLink(
+        _ text: String,
+        onSuccess: @escaping ([String: Any]) -> Void,
+        onError: @escaping (NSError) -> Void
+    ) -> CancellableType
+
+    func crawlMetaTags(_ htmlCode: String, result: Response) -> Response
+
+    func crawlImages(_ htmlCode: String, result: Response) -> Response
+
+    func extractURL(text: String) -> URL?
+
+    func extractCanonicalURL(_ finalUrl: URL) -> String
+
+    func crawIcon(_ htmlCode: String, result: Response) -> Response
+
+    func crawlCode(_ content: String, minimum: Int) -> String
+
+    func crawlDescription(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response)
+
+    func crawlTitle(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response)
+
+    func crawlMetaBase(_ htmlCode: String, result: Response) -> Response
+
+    func formatImageURLs(_ array: [String]?, base: String?) -> [String]?
+}
+
+open class SwiftLinkPreview: NSObject, SwiftLinkPreviewType {
+    // MARK: - Vars
+
+    static let titleMinimumRelevant: Int = 15
+    static let decriptionMinimumRelevant: Int = 100
+
+    public var session: URLSession
+    public let workQueue: DispatchQueue
+    public let responseQueue: DispatchQueue
+    public let cache: Cache
+    public let userAgent: String
+
+    public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
+    public static let defaultUserAgent =
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+    // Google Bot https://github.com/jhy/jsoup/issues/976
+    public static let googleBotUserAgent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+
+    // MARK: - Initializers
+
+    // Swift-only init with default parameters
+    @nonobjc public init(
+        session: URLSession = URLSession.shared,
+        workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue,
+        responseQueue: DispatchQueue = DispatchQueue.main,
+        cache: Cache = DisabledCache.instance,
+        userAgent: String = SwiftLinkPreview.defaultUserAgent
+    ) {
+        self.workQueue = workQueue
+        self.responseQueue = responseQueue
+        self.cache = cache
+        self.session = session
+        self.userAgent = userAgent
+    }
+
+    // Objective-C init with default parameters
+    @objc override public init() {
+        let _session = URLSession.shared
+        let _workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue
+        let _responseQueue = DispatchQueue.main
+        let _cache: Cache = DisabledCache.instance
+        let _userAgent: String = SwiftLinkPreview.defaultUserAgent
+
+        self.workQueue = _workQueue
+        self.responseQueue = _responseQueue
+        self.cache = _cache
+        self.session = _session
+        self.userAgent = _userAgent
+    }
+
+    // Objective-C init with paramaters.  nil objects will default.  Timeout values are ignored if InMemoryCache is
+    // disabled.
+    @objc public init(
+        session: URLSession?,
+        workQueue: DispatchQueue?,
+        responseQueue: DispatchQueue?,
+        disableInMemoryCache: Bool,
+        cacheInvalidationTimeout: TimeInterval,
+        cacheCleanupInterval: TimeInterval,
+        userAgent: String?
+    ) {
+        let _session = session ?? URLSession.shared
+        let _workQueue = workQueue ?? SwiftLinkPreview.defaultWorkQueue
+        let _responseQueue = responseQueue ?? DispatchQueue.main
+        let _cache: Cache = disableInMemoryCache ? DisabledCache.instance : InMemoryCache(
+            invalidationTimeout: cacheInvalidationTimeout,
+            cleanupInterval: cacheCleanupInterval
+        )
+        let _userAgent = userAgent ?? SwiftLinkPreview.defaultUserAgent
+
+        self.workQueue = _workQueue
+        self.responseQueue = _responseQueue
+        self.cache = _cache
+        self.session = _session
+        self.userAgent = _userAgent
+    }
+
+    // MARK: - Functions
+
+    // Make preview
+    // Swift-only preview function using Swift specific closure types
+    @nonobjc @discardableResult open func preview(
+        _ text: String,
+        onSuccess: @escaping (Response) -> Void,
+        onError: @escaping (PreviewError) -> Void
+    ) -> CancellableType {
+        let cancellable = Cancellable()
+        performPreview(text, cancellable: cancellable, onSuccess: onSuccess, onError: onError)
+        return cancellable
+    }
+
+    /// Asynchronously loads link preview metadata for the first link in the provided text.
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, visionOS 1.0, macCatalyst 13.0, *)
+    open func preview(_ text: String) async throws -> Response {
+        let cancellable = Cancellable()
+        return try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<
+                Response,
+                any Error
+            >) in
+                performPreview(text, cancellable: cancellable) { response in
+                    continuation.resume(returning: response)
+                } onError: { error in
+                    continuation.resume(throwing: error)
+                }
+            }
+        } onCancel: {
+            cancellable.cancel()
+        }
+    }
+
+    private func performPreview(
+        _ text: String,
+        cancellable: CancellableType,
+        onSuccess: @escaping (Response) -> Void,
+        onError: @escaping (PreviewError) -> Void
+    ) {
+        session = URLSession(
+            configuration: session.configuration,
+            delegate: self, // To handle redirects
+            delegateQueue: session.delegateQueue
+        )
+
+        let successResponseQueue = { response in
+            if !cancellable.isCancelled {
+                self.responseQueue.async {
+                    if !cancellable.isCancelled {
+                        onSuccess(response)
+                    }
+                }
+            }
+        }
+
+        let errorResponseQueue = { error in
+            if !cancellable.isCancelled {
+                self.responseQueue.async {
+                    if !cancellable.isCancelled {
+                        onError(error)
+                    }
+                }
+            }
+        }
+
+        if let url = extractURL(text: text) {
+            workQueue.async { [weak self] in
+                guard let self else { return }
+                if cancellable.isCancelled { return }
+
+                if let result = self.cache.slp_getCachedResponse(url: url.absoluteString) {
+                    successResponseQueue(result)
+                } else {
+                    self.unshortenURL(url, cancellable: cancellable, completion: { [weak self] unshortened in
+                        guard let self else { return }
+
+                        if let result = self.cache.slp_getCachedResponse(url: unshortened.absoluteString) {
+                            successResponseQueue(result)
+                        } else {
+                            var result = Response()
+                            result.url = url
+                            result.finalUrl = self.extractInURLRedirectionIfNeeded(unshortened)
+                            result.canonicalUrl = self.extractCanonicalURL(unshortened)
+
+                            if let cannonicalURLString = result.canonicalUrl {
+                                result.baseURL = result
+                                    .baseURL ??
+                                    (
+                                        result.canonicalUrl?
+                                            .starts(with: "http") == false ? "https://\(cannonicalURLString)" : result
+                                            .canonicalUrl
+                                    )
+                            }
+
+                            self.extractInfo(response: result, cancellable: cancellable, completion: {
+                                result.title = $0.title
+                                result.description = $0.description
+
+                                result.image = self.formatImageURL($0.image, base: $0.baseURL)
+                                result.images = self.formatImageURLs($0.images, base: $0.baseURL)
+                                result.icon = self.formatImageURL($0.icon, base: $0.baseURL)
+                                result.video = self.formatImageURL($0.video, base: $0.baseURL)
+                                result.price = $0.price
+
+                                self.cache.slp_setCachedResponse(url: unshortened.absoluteString, response: result)
+                                self.cache.slp_setCachedResponse(url: url.absoluteString, response: result)
+
+                                successResponseQueue(result)
+                            }, onError: errorResponseQueue)
+                        }
+                    }, onError: errorResponseQueue)
+                }
+            }
+        } else {
+            onError(.noURLHasBeenFound(text))
+        }
+    }
+
+    private func formatImageURL(_ url: String?, base: String?) -> String? {
+        guard var url else { return nil }
+
+        if !url.starts(with: "http"), let base = base {
+            url = "\(base)\(url)"
+        }
+
+        return url
+    }
+
+    public func formatImageURLs(_ array: [String]?, base: String?) -> [String]? {
+        guard var array else { return nil }
+
+        for i in 0 ..< array.count {
+            if let formatted = formatImageURL(array[0], base: base) {
+                array[i] = formatted
+            }
+        }
+
+        return Array(Set(array))
+    }
+
+    // Extract url redirection inside the GET query.
+    // Like https://www.dji.com/404?url=http%3A%2F%2Fwww.dji.com%2Fmatrice600-pro%2Finfo#specs ->
+    // http://www.dji.com/de/matrice600-pro/info#specs
+    private func extractInURLRedirectionIfNeeded(_ url: URL) -> URL {
+        var url = url
+        var absoluteString = url.absoluteString + "&id=12"
+
+        if let range = absoluteString.range(of: "url="),
+           let lastChar = absoluteString.last,
+           let lastCharIndex = absoluteString
+               .range(of: String(lastChar), options: .backwards, range: nil, locale: nil) {
+            absoluteString = String(absoluteString[range.upperBound ..< lastCharIndex.upperBound])
+
+            if let range = absoluteString.range(of: "&"),
+               let firstChar = absoluteString.first,
+               let firstCharIndex = absoluteString.firstIndex(of: firstChar) {
+                absoluteString =
+                    String(absoluteString[firstCharIndex ..< absoluteString.index(before: range.upperBound)])
+
+                if let decoded = absoluteString.removingPercentEncoding, let newURL = URL(string: decoded) {
+                    url = newURL
+                }
+            }
+        }
+
+        return url
+    }
+
+    // Objective-C wrapper for preview method.  Core incompataility is use of Swift specific enum types in closures.
+    // Returns a dictionary of rsults rather than enum for success, and an NSError object on error that encodes the
+    // local error description on error
+    // Keys for the dictionary are derived from the enum names above.  That enum def is canonical, below is a
+    // convenience comment
+    // url
+    // finalUrl
+    // canonicalUrl
+    // title
+    // description
+    // image
+    // images
+    // icon
+    //
+    @objc @discardableResult open func previewLink(
+        _ text: String,
+        onSuccess: @escaping ([String: Any]) -> Void,
+        onError: @escaping (NSError) -> Void
+    ) -> CancellableType {
+        func success(_ result: Response) {
+            onSuccess(result.dictionary)
+        }
+
+        func failure(_ theError: PreviewError) {
+            var errorCode: Int
+            errorCode = 1
+
+            switch theError {
+            case .noURLHasBeenFound:
+                errorCode = 1
+            case .invalidURL:
+                errorCode = 2
+            case .cannotBeOpened:
+                errorCode = 3
+            case .parseError:
+                errorCode = 4
+            }
+
+            onError(NSError(
+                domain: "SwiftLinkPreviewDomain",
+                code: errorCode,
+                userInfo: [NSLocalizedDescriptionKey: theError.description]
+            ))
+        }
+
+        return preview(text, onSuccess: success, onError: failure)
+    }
+}
+
+// Extraction functions
+extension SwiftLinkPreview {
+    // Extract first URL from text
+    public func extractURL(text: String) -> URL? {
+        do {
+            let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+            let range = NSRange(location: 0, length: text.utf16.count)
+            let matches = detector.matches(in: text, options: [], range: range)
+
+            return matches.compactMap { $0.url }.first
+        } catch {
+            return nil
+        }
+    }
+
+    // Unshorten URL by following redirections
+    private func unshortenURL(
+        _ url: URL,
+        cancellable: CancellableType,
+        completion: @escaping (URL) -> Void,
+        onError: @escaping (PreviewError) -> Void
+    ) {
+        if cancellable.isCancelled { return }
+
+        var task: URLSessionDataTask?
+        var request = URLRequest(url: url)
+        request.httpMethod = "HEAD"
+
+        task = session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
+            guard let self, !cancellable.isCancelled else { return }
+
+            if error != nil {
+                self.workQueue.async {
+                    if !cancellable.isCancelled {
+                        onError(.cannotBeOpened("\(url.absoluteString): \(error.debugDescription)"))
+                    }
+                }
+                task = nil
+            } else {
+                if let finalResult = response?.url {
+                    if finalResult.absoluteString == url.absoluteString {
+                        if response?.mimeType?.contains("/html") ?? false {
+                            var request = URLRequest(url: url)
+                            request.addValue(
+                                "text/html,application/xhtml+xml,application/xml",
+                                forHTTPHeaderField: "Accept"
+                            )
+                            self.session.dataTask(
+                                with: request,
+                                completionHandler: { [weak self] data, response, error in
+                                    guard let self, !cancellable.isCancelled else { return }
+
+                                    if error != nil {
+                                        self.workQueue.async {
+                                            if !cancellable.isCancelled {
+                                                onError(
+                                                    .cannotBeOpened("\(url.absoluteString): \(error.debugDescription)")
+                                                )
+                                            }
+                                        }
+                                        return
+                                    }
+
+                                    if let response = response, let data = data {
+                                        let encoding = response.textEncodingName.flatMap {
+                                            String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(
+                                                CFStringConvertIANACharSetNameToEncoding($0 as CFString)
+                                            ))
+                                        } ?? .utf8
+                                        if let html = String(data: data, encoding: encoding) {
+                                            for meta in Regex
+                                                .pregMatchAll(html, regex: Regex.metaTagPattern, index: 1) {
+                                                if meta.contains("http-equiv=\"refresh\"") || meta
+                                                    .contains("http-equiv='refresh'"),
+                                                    let value = Regex.pregMatchFirst(
+                                                        meta,
+                                                        regex: Regex.metaTagContentPattern,
+                                                        index: 2
+                                                    )?.decoded.extendedTrim,
+                                                    let redirectString = value.split(separator: ";")
+                                                        .first(where: { $0.lowercased().starts(with: "url=") })?
+                                                        .split(separator: "=", maxSplits: 1).last,
+                                                        let redirectURL = URL(string: self.addImagePrefixIfNeeded(
+                                                            String(redirectString),
+                                                            url: url
+                                                        )) {
+                                                    self.unshortenURL(
+                                                        redirectURL,
+                                                        cancellable: cancellable,
+                                                        completion: completion,
+                                                        onError: onError
+                                                    )
+                                                    return
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    self.workQueue.async {
+                                        if !cancellable.isCancelled {
+                                            completion(url)
+                                        }
+                                    }
+                                }
+                            ).resume()
+                        } else {
+                            self.workQueue.async {
+                                if !cancellable.isCancelled {
+                                    completion(url)
+                                }
+                            }
+                            task = nil
+                        }
+                    } else {
+                        task?.cancel()
+                        task = nil
+                        self.unshortenURL(
+                            finalResult,
+                            cancellable: cancellable,
+                            completion: completion,
+                            onError: onError
+                        )
+                    }
+                } else {
+                    self.workQueue.async {
+                        if !cancellable.isCancelled {
+                            completion(url)
+                        }
+                    }
+                    task = nil
+                }
+            }
+        })
+
+        if let task = task {
+            task.resume()
+        } else {
+            workQueue.async {
+                if !cancellable.isCancelled {
+                    onError(.cannotBeOpened(url.absoluteString))
+                }
+            }
+        }
+    }
+
+    // Extract HTML code and the information contained on it
+    private func extractInfo(
+        response: Response,
+        cancellable: CancellableType,
+        completion: @escaping (Response) -> Void,
+        onError: @escaping (PreviewError) -> Void
+    ) {
+        guard !cancellable.isCancelled, let url = response.finalUrl else { return }
+
+        if url.absoluteString.isImage() {
+            var result = response
+
+            result.title = ""
+            result.description = ""
+            result.images = [url.absoluteString]
+            result.image = url.absoluteString
+
+            completion(result)
+        } else {
+            guard let sourceUrl = url.scheme == "http" || url.scheme == "https" ? url : URL(string: "http://\(url)")
+            else {
+                if !cancellable.isCancelled { onError(.invalidURL(url.absoluteString)) }
+                return
+            }
+            var request = URLRequest(url: sourceUrl)
+            request.addValue("text/html,application/xhtml+xml,application/xml", forHTTPHeaderField: "Accept")
+            request.addValue(userAgent, forHTTPHeaderField: "user-Agent")
+
+            let (data, urlResponse, error) = session.synchronousDataTask(with: request)
+            if let error = error {
+                if !cancellable.isCancelled {
+                    let details = "\(sourceUrl.absoluteString): \(error.localizedDescription)"
+                    onError(.cannotBeOpened(details))
+                    return
+                }
+            }
+            if let data = data, let urlResponse = urlResponse, let encoding = urlResponse.textEncodingName,
+               let source = NSString(
+                   data: data,
+                   encoding:
+                   CFStringConvertEncodingToNSStringEncoding(
+                       CFStringConvertIANACharSetNameToEncoding(encoding as CFString)
+                   )
+               ) {
+                if !cancellable.isCancelled {
+                    parseHtmlString(source as String, response: response, completion: completion)
+                }
+            } else {
+                do {
+                    let data = try Data(contentsOf: sourceUrl)
+                    var source: NSString?
+                    NSString.stringEncoding(
+                        for: data,
+                        encodingOptions: nil,
+                        convertedString: &source,
+                        usedLossyConversion: nil
+                    )
+
+                    if let source = source {
+                        if !cancellable.isCancelled {
+                            parseHtmlString(source as String, response: response, completion: completion)
+                        }
+                    } else {
+                        onError(.cannotBeOpened(sourceUrl.absoluteString))
+                    }
+                } catch _ {
+                    if !cancellable.isCancelled {
+                        onError(.parseError(sourceUrl.absoluteString))
+                    }
+                }
+            }
+        }
+    }
+
+    private func parseHtmlString(
+        _ htmlString: String,
+        response: Response,
+        completion: @escaping (Response) -> Void
+    ) {
+        completion(performPageCrawling(cleanSource(htmlString), response: response))
+    }
+
+    // Removing unnecessary data from the source
+    private func cleanSource(_ source: String) -> String {
+        var source = source
+
+        source = source.deleteTagByPattern(Regex.inlineStylePattern)
+        source = source.deleteTagByPattern(Regex.inlineScriptPattern)
+        source = source.deleteTagByPattern(Regex.scriptPattern)
+        source = source.deleteTagByPattern(Regex.commentPattern)
+
+        return source
+    }
+
+    // Perform the page crawiling
+    private func performPageCrawling(
+        _ htmlCode: String,
+        response: Response
+    ) -> Response {
+        var result = crawIcon(htmlCode, result: response)
+
+        let sanitizedHtmlCode = htmlCode.deleteTagByPattern(Regex.linkPattern).extendedTrim
+
+        result = crawlMetaTags(sanitizedHtmlCode, result: result)
+
+        result = crawlMetaBase(sanitizedHtmlCode, result: result)
+
+        var otherResponse = crawlTitle(sanitizedHtmlCode, result: result)
+
+        otherResponse = crawlDescription(otherResponse.htmlCode, result: otherResponse.result)
+
+        otherResponse = crawlPrice(otherResponse.htmlCode, result: otherResponse.result)
+
+        return crawlImages(otherResponse.htmlCode, result: otherResponse.result)
+    }
+
+    // Extract canonical URL
+    public func extractCanonicalURL(_ finalUrl: URL) -> String {
+        let preUrl: String = finalUrl.absoluteString
+        let url = preUrl
+            .replace("http://", with: "")
+            .replace("https://", with: "")
+            .replace("file://", with: "")
+            .replace("ftp://", with: "")
+
+        if preUrl != url {
+            if let canonicalUrl = Regex.pregMatchFirst(url, regex: Regex.cannonicalUrlPattern, index: 1) {
+                if !canonicalUrl.isEmpty {
+                    return extractBaseUrl(canonicalUrl)
+                } else {
+                    return extractBaseUrl(url)
+                }
+            } else {
+                return extractBaseUrl(url)
+            }
+        } else {
+            return extractBaseUrl(preUrl)
+        }
+    }
+
+    // Extract base URL
+    fileprivate func extractBaseUrl(_ url: String) -> String {
+        return String(url.split(separator: "/", maxSplits: 1, omittingEmptySubsequences: true)[0])
+    }
+}
+
+// Tag functions
+public extension SwiftLinkPreview {
+    // searc for favicn
+    func crawIcon(_ htmlCode: String, result: Response) -> Response {
+        var result = result
+
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.linkPattern, index: 1)
+
+        let filters = [
+            { (link: String) -> Bool in link.range(of: "apple-touch") != nil },
+            { (link: String) -> Bool in link.range(of: "shortcut") != nil },
+            { (link: String) -> Bool in link.range(of: "icon") != nil },
+        ]
+
+        for filter in filters {
+            if let first = metatags.filter(filter).first {
+                let matches = Regex.pregMatchAll(first, regex: Regex.hrefPattern, index: 1)
+                if let val = matches.first {
+                    result.icon = addImagePrefixIfNeeded(val.replace("\"", with: ""), result: result)
+                    return result
+                }
+            }
+        }
+
+        return result
+    }
+
+    // Search for meta tags
+    func crawlMetaTags(_ htmlCode: String, result: Response) -> Response {
+        var result = result
+
+        let possibleTags: [String] = [
+            Response.Key.title.rawValue,
+            Response.Key.description.rawValue,
+            Response.Key.image.rawValue,
+            Response.Key.video.rawValue,
+        ]
+
+        let metatags = Regex.pregMatchAll(htmlCode, regex: Regex.metaTagPattern, index: 1)
+
+        for metatag in metatags {
+            for tag in possibleTags {
+                if metatag.range(of: "property=\"og:\(tag)") != nil ||
+                    metatag.range(of: "property='og:\(tag)") != nil ||
+                    metatag.range(of: "name=\"twitter:\(tag)") != nil ||
+                    metatag.range(of: "name='twitter:\(tag)") != nil ||
+                    metatag.range(of: "name=\"\(tag)") != nil ||
+                    metatag.range(of: "name='\(tag)") != nil ||
+                    metatag.range(of: "itemprop=\"\(tag)") != nil ||
+                    metatag.range(of: "itemprop='\(tag)") != nil {
+                    if let key = Response.Key(rawValue: tag),
+                       result.value(for: key) == nil {
+                        if let value = Regex.pregMatchFirst(metatag, regex: Regex.metaTagContentPattern, index: 2) {
+                            let value = value.decoded.extendedTrim
+                            if tag == "image" {
+                                let value = addImagePrefixIfNeeded(value, result: result)
+                                if value.isOpenGraphImage() { result.set(value, for: key) }
+                            } else if tag == "video" {
+                                let value = addImagePrefixIfNeeded(value, result: result)
+                                if value.isVideo() { result.set(value, for: key) }
+                            } else {
+                                result.set(value, for: key)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return result
+    }
+
+    func crawlMetaBase(_ htmlCode: String, result: Response) -> Response {
+        var result = result
+
+        if let base = Regex.pregMatchAll(htmlCode, regex: Regex.baseTagPattern, index: 2).first {
+            result.set(base, for: .baseURL)
+        }
+
+        return result
+    }
+
+    // Crawl for title if needed
+    func crawlTitle(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
+        var result = result
+        let title = result.title
+
+        if title == nil || title?.isEmpty ?? true {
+            if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
+                if value.isEmpty {
+                    let fromBody: String = crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant)
+                    if !fromBody.isEmpty {
+                        result.title = fromBody.decoded.extendedTrim
+                        return (htmlCode.replace(fromBody, with: ""), result)
+                    }
+                } else {
+                    result.title = value.decoded.extendedTrim
+                }
+            }
+        }
+
+        return (htmlCode, result)
+    }
+
+    // Crawl for description if needed
+    func crawlDescription(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
+        var result = result
+        let description = result.description
+
+        if description == nil || description?.isEmpty ?? true {
+            let value: String = crawlCode(htmlCode, minimum: SwiftLinkPreview.decriptionMinimumRelevant)
+            if !value.isEmpty {
+                result.description = value.decoded.extendedTrim
+            }
+        }
+
+        return (htmlCode, result)
+    }
+
+    // Crawl for images
+    func crawlImages(_ htmlCode: String, result: Response) -> Response {
+        var result = result
+
+        let mainImage = result.image
+
+        if mainImage == nil || mainImage?.isEmpty == true {
+            let images = result.images
+
+            if images == nil || images?.isEmpty ?? true {
+                // Should look for <meta property="og:image" content=""/> first instead of <img/> tag.
+                let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 2)
+                if !values.isEmpty {
+                    result.images = values
+                    result.image = values.first
+                } else {
+                    // If no OpenGraph image found pick any from <img/> tag to show.
+                    let values = Regex.pregMatchAll(htmlCode, regex: Regex.imageTagPattern, index: 2)
+                    if !values.isEmpty {
+                        let imgs = values.map { self.addImagePrefixIfNeeded($0, result: result) }
+                        result.images = imgs
+                        result.image = imgs.first
+                    }
+                }
+            }
+        } else {
+            let values = Regex.pregMatchAll(htmlCode, regex: Regex.secondaryImageTagPattern, index: 2)
+            if !values.isEmpty {
+                result.images = values
+                result.image = values.first
+            } else {
+                result.images = [addImagePrefixIfNeeded(mainImage ?? String(), result: result)]
+            }
+        }
+        return result
+    }
+
+    // Crawl for price
+    private func crawlPrice(_ htmlCode: String, result: Response) -> (htmlCode: String, result: Response) {
+        var result = result
+
+        let mainPrice = result.price
+
+        if mainPrice == nil || mainPrice?.isEmpty ?? true {
+            let values = Regex.pregMatchAll(htmlCode, regex: Regex.pricePattern, index: 1)
+            if !values.isEmpty {
+                result.price = values.first
+            }
+        }
+
+        return (htmlCode, result)
+    }
+
+    // Add prefix image if needed
+    private func addImagePrefixIfNeeded(_ image: String, url: URL) -> String {
+        addImagePrefixIfNeeded(
+            image,
+            canonicalUrl: extractCanonicalURL(url),
+            finalUrl: extractInURLRedirectionIfNeeded(url).absoluteString
+        )
+    }
+
+    private func addImagePrefixIfNeeded(_ image: String, result: Response) -> String {
+        addImagePrefixIfNeeded(image, canonicalUrl: result.canonicalUrl, finalUrl: result.finalUrl?.absoluteString)
+    }
+
+    private func addImagePrefixIfNeeded(_ image: String, canonicalUrl: String?, finalUrl: String?) -> String {
+        var image = image
+
+        // TODO: account for HTML <base>
+        if let canonicalUrl = canonicalUrl, let finalUrl = finalUrl, let proto = finalUrl.split(separator: ":").first {
+            if image.hasPrefix("/") {
+                if image.hasPrefix("//") {
+                    // image url is //domain/path
+                    image = proto + ":" + image
+                } else {
+                    // image url is /path relative to base url
+                    image = proto + "://" + canonicalUrl + image
+                }
+            } else if !image.contains("://") {
+                // image is relative to request url
+                let requestUrl = removeSuffixIfNeeded(finalUrl)
+                if requestUrl.hasSuffix("/") {
+                    image = requestUrl + image
+                } else {
+                    image = (requestUrl as NSString).deletingLastPathComponent + "/" + image
+                }
+            }
+        }
+
+        return image
+    }
+
+    private func removeSuffixIfNeeded(_ image: String) -> String {
+        var image = image
+
+        if let index = image.firstIndex(of: "?") { image = String(image[..<index]) }
+
+        return image
+    }
+
+    // Crawl the entire code
+    func crawlCode(_ content: String, minimum: Int) -> String {
+        let resultFirstSearch = getTagContent("p", content: content, minimum: minimum)
+
+        if !resultFirstSearch.isEmpty {
+            return resultFirstSearch
+        } else {
+            let resultSecondSearch = getTagContent("div", content: content, minimum: minimum)
+
+            if !resultSecondSearch.isEmpty {
+                return resultSecondSearch
+            } else {
+                let resultThirdSearch = getTagContent("span", content: content, minimum: minimum)
+
+                if !resultThirdSearch.isEmpty {
+                    return resultThirdSearch
+                } else {
+                    if resultThirdSearch.count >= resultFirstSearch.count {
+                        if resultThirdSearch.count >= resultThirdSearch.count {
+                            return resultThirdSearch
+                        } else {
+                            return resultThirdSearch
+                        }
+                    } else {
+                        return resultFirstSearch
+                    }
+                }
+            }
+        }
+    }
+
+    // Get tag content
+    private func getTagContent(_ tag: String, content: String, minimum: Int) -> String {
+        let pattern = Regex.tagPattern(tag)
+
+        let index = 2
+        let rawMatches = Regex.pregMatchAll(content, regex: pattern, index: index)
+
+        let matches = rawMatches.filter { $0.extendedTrim.tagsStripped.count >= minimum }
+        var result = !matches.isEmpty ? matches[0] : ""
+
+        if result.isEmpty {
+            if let match = Regex.pregMatchFirst(content, regex: pattern, index: 2) {
+                result = match.extendedTrim.tagsStripped
+            }
+        }
+
+        return result
+    }
+}
+
+extension SwiftLinkPreview: URLSessionDataDelegate {
+    public func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Void
+    ) {
+        var request = request
+        request.httpMethod = "GET"
+        completionHandler(request)
+    }
+}

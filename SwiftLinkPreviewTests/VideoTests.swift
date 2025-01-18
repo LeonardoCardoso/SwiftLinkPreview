@@ -6,45 +6,30 @@
 //  Copyright © 2021 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
-// This class tests videos
-class VideoTests: XCTestCase {
-
+// This final class tests videos
+final class VideoTests: XCTestCase {
     // MARK: - Vars
+
     let slp = SwiftLinkPreview()
 
-    
-    func testImgur() {
-        do {
+    func testImgur() throws {
+        let url = try XCTUnwrap(URL(string: "https://imgur.com/GaI4Ruu"))
+        let source = try String(contentsOf: url).extendedTrim
 
-            let source = try String(contentsOf: URL(string: "https://imgur.com/GaI4Ruu")!).extendedTrim
+        let result = slp.crawlMetaTags(source, result: Response())
 
-            let result = self.slp.crawlMetaTags(source, result: Response())
-
-            XCTAssert(result.video != nil)
-
-        } catch let err as NSError {
-
-            print("\(err)")
-
-        }
+        XCTAssert(result.video != nil)
     }
-    
-    func testGfycat() {
-        do {
 
-            let source = try String(contentsOf: URL(string: "https://gfycat.com/ifr/ElementaryRemoteGavial")!).extendedTrim
+    func testGiphy() throws {
+        let url = try XCTUnwrap(URL(string: "https://giphy.com/gifs/cuddles-yPQcB2bQVBQ6k"))
+        let source = try String(contentsOf: url).extendedTrim
 
-            let result = self.slp.crawlMetaTags(source, result: Response())
+        let result = slp.crawlMetaTags(source, result: Response())
 
-            XCTAssert(result.video != nil)
-
-        } catch let err as NSError {
-
-            print("\(err)")
-
-        }
+        XCTAssert(result.video != nil)
     }
 }

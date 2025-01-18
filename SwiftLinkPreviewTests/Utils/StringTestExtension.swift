@@ -10,7 +10,6 @@ import Foundation
 import GameplayKit
 
 extension String {
-
     static let loremIpsum =
         [
             "Et harum quidem rerum facilis est et expedita distinctio.",
@@ -26,8 +25,8 @@ extension String {
             "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
             "Neque porro quisquam est&rsquo;, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
             "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
-            "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-    ]
+            "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
+        ]
 
     static let protocolType = ["http://", "https://"]
     static let tagType = ["span", "p", "div"]
@@ -35,50 +34,41 @@ extension String {
 
     // Random String
     static func randomString(_ length: Int) -> String {
-
         let charactersString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let charactersArray = charactersString.map { String($0) }
 
         var string = ""
-        for _ in 0..<length {
+        for _ in 0 ..< length {
             string += charactersArray[Int.random(upper: charactersArray.count)]
         }
 
         return string
-
     }
 
     // Random Text
     static func randomText() -> String {
-
         return loremIpsum[Int.random(upper: loremIpsum.count)]
-
     }
 
     // Random Tag
     static func randomTag() -> String {
-
         let tag = tagType[Int.random(upper: tagType.count)]
         return "<\(tag)>\(randomText())</\(tag)>"
-
     }
 
     // Random Tag
     static func randomImageTag() -> String {
-
         let options = [
             "<img src=\"\(randomImage())\" />",
             "<img src=\"\(randomImage())\" ></img>",
-            "<img src=\"\(randomImage())\" >"
+            "<img src=\"\(randomImage())\" >",
         ]
 
         return options[Int.random(upper: options.count)]
-
     }
 
     // Random URL
     static func randomUrl() -> String {
-
         var rand = Int.random(upper: 30) + 5
         let base = String.randomString(rand)
 
@@ -86,18 +76,12 @@ extension String {
         rand = rand.hashValue > 3 ? 3 : rand
         let end = String.randomString(rand)
 
-        let prtcl = self.protocolType[Int.random(upper: protocolType.count)]
-        let url = "\(prtcl)\(base).\(end.lowercased())"
-
-        return url
-
+        let prtcl = protocolType[Int.random(upper: protocolType.count)]
+        return "\(prtcl)\(base).\(end.lowercased())"
     }
 
     // Random Image
     static func randomImage() -> String {
-
         return "\(randomUrl())/\(String.randomString(Int.random(upper: 15) + 5)).\(imageType[Int.random(upper: imageType.count)])"
-
     }
-
 }

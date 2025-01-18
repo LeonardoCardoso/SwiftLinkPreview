@@ -9,7 +9,7 @@
 import Foundation
 
 public struct Response: Sendable {
-
+    public internal(set) var baseURL: String?
     public internal(set) var url: URL?
     public internal(set) var finalUrl: URL?
     public internal(set) var canonicalUrl: String?
@@ -20,7 +20,6 @@ public struct Response: Sendable {
     public internal(set) var icon: String?
     public internal(set) var video: String?
     public internal(set) var price: String?
-    
+
     public init() { }
-    
 }

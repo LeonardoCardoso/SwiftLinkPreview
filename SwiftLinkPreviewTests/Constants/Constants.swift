@@ -8,8 +8,7 @@
 
 import Foundation
 
-struct Constants {
-
+enum Constants {
     static let huge = "huge"
     static let bodyTitle = "body-text-span"
     static let bodyTextSpan = "body-text-span"
@@ -20,6 +19,7 @@ struct Constants {
     static let bodyIcon = "head-meta-icon"
     static let headMetaTwitter = "head-meta-twitter"
     static let headMetaMeta = "head-meta-meta"
+    static let headMetaBase = "head-meta-base"
     static let headMetaItemprop = "head-meta-itemprop"
     static let headMetaFacebook = "head-meta-facebook"
     static let headTitle = "head-title"
@@ -62,5 +62,4 @@ struct Constants {
 
     static let href = "[:href]"
     static let rel = "[:rel]"
-
 }

@@ -6,44 +6,32 @@
 //  Copyright © 2016 leocardz.com. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftLinkPreview
+import XCTest
 
 // This class tests URLs
-class RegexTests: XCTestCase {
-
+final class RegexTests: XCTestCase {
     // MARK: - Vars
+
     let slp = SwiftLinkPreview()
 
     // MARK: - Functions
+
     func testURL() {
-
         for url in URLs.bunch {
-
             let extracted = slp.extractURL(text: url[0])
 
-            // print(extracted?.absoluteString, url[1])
-
             XCTAssertEqual(extracted?.absoluteString, url[1])
-
         }
-
     }
 
-    func testCanonicalURL() {
-
+    func testCanonicalURL() throws {
         for url in URLs.bunch {
+            let finalUrl = try XCTUnwrap(URL(string: url[1]))
 
-            let finalUrl = URL(string: url[1])
-
-            let canonical = self.slp.extractCanonicalURL(finalUrl!)
-
-            // print(canonical, url[2])
+            let canonical = slp.extractCanonicalURL(finalUrl)
 
             XCTAssertEqual(canonical, url[2])
-
         }
-
     }
-
 }
